@@ -11,5 +11,8 @@ mlir-translate --mlir-to-llvmir gpu/build/kernels-host.mlir > gpu/build/kernels-
 "$VXC" gpu/fp8.vx --action emit-llvm > gpu/build/fp8-host.mlir
 mlir-translate --mlir-to-llvmir gpu/build/fp8-host.mlir > gpu/build/fp8-host.ll
 "$CLANG" -O2 -fPIC -c gpu/build/fp8-host.ll -o gpu/build/fp8-host.o
+"$VXC" gpu/gemm.vx --action emit-llvm > gpu/build/gemm-host.mlir
+mlir-translate --mlir-to-llvmir gpu/build/gemm-host.mlir > gpu/build/gemm-host.ll
+"$CLANG" -O2 -fPIC -c gpu/build/gemm-host.ll -o gpu/build/gemm-host.o
 "$CXX" -std=c++20 -O2 -fPIC -shared -pthread gpu/testing/simt.cpp \
-    gpu/build/kernels-host.o gpu/build/fp8-host.o -lm -o gpu/build/libsimt.so
+    gpu/build/kernels-host.o gpu/build/fp8-host.o gpu/build/gemm-host.o -lm -o gpu/build/libsimt.so

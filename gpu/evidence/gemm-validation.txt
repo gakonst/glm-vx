@@ -1,0 +1,24 @@
+Date: 2026-10-04
+Workspace: work/gpu-20261004
+Scope: offline compiler, NVIDIA assembler, CPU SIMT equations, mock CUDA API.
+
+source ../vx-toolchain/env.sh
+bash gpu/testing/build_simt.sh
+Result: exit 0; compiles unchanged GPU Vx bodies to host objects and links the
+explicitly test-only SIMT/MMA equation harness. Host target override warnings are
+expected and are not GPU execution.
+
+PTXAS=/srv/nanocodex/workspace/glm-vx/gpu/toolchain/cuda-tools/nvidia/cuda_nvcc/bin/ptxas bash gpu/build.sh
+Result: exit 0; kernels, FP8 and GEMM compile and assemble for sm80.
+
+python3 gpu/toolchain/build_ptx.py --source gpu/gemm.vx --output gpu/build/gemm-sm90.ptx --arch sm_90 --shared-floats 320 --ptxas /srv/nanocodex/workspace/glm-vx/gpu/toolchain/cuda-tools/nvidia/cuda_nvcc/bin/ptxas
+Result: exit 0; real MMA, conversions, shared staging and barriers. LLVM 22.1.8
+verify and ptxas 12.9.86 pass. Source-matched manifests/resource logs adjacent.
+Both GEMM entries: zero stack, zero spills. TF32: 56 registers, 1280 shared bytes.
+
+/srv/nanocodex/workspace/glm-vx/.venv/bin/python -m pytest gpu -q
+Result: 146 passed, 22 skipped in 6.93s. Hardware-dependent tests skipped on this
+CPU host. Eight added real-device GEMM cases are among those skips.
+
+No device correctness, numerical precision guarantee, race-safety validation,
+measured speedup, runtime occupancy or optimality is established by this report.

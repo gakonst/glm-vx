@@ -1,0 +1,91 @@
+// C[M,N] = A[M,K] B[K,N], contiguous row-major float32 storage.
+// Reduced precision is explicit: TF32 round-nearest-ties-away inputs, F32 sum.
+extern "C" {
+  fn vx_gpu_thread_idx_x() -> i32;
+  fn vx_gpu_block_idx_x() -> i32;
+  fn vx_gpu_block_dim_x() -> i32;
+  fn vx_gpu_shared_f32() -> *mut f32;
+  fn vx_gpu_barrier() -> void;
+  fn vx_gpu_mma_tf32_m16n8k8(out: *mut f32, offset: i32, a0: f32, a1: f32, a2: f32, a3: f32, b0: f32, b1: f32, c0: f32, c1: f32, c2: f32, c3: f32) -> void;
+}
+
+// One warp/CTA, one 16x8 output tile. Shared: A[128], B[64], D[32,4].
+// Every lane executes every barrier/MMA. Bounds mask loads/stores, not lanes.
+fn glm_vx_gpu_gemm_tf32(out: *mut f32, a: *const f32, b: *const f32, m: i32, n: i32, k: i32) -> void {
+  if m <= 0 { return; }
+  if n <= 0 { return; }
+  if k < 0 { return; }
+  unsafe {
+    if vx_gpu_block_dim_x() != 32 { return; }
+    let lane: i32 = vx_gpu_thread_idx_x();
+    let tile: i64 = vx_gpu_block_idx_x() as i64;
+    let tiles_n: i64 = ((n as i64) + 7) / 8;
+    let row0: i64 = (tile / tiles_n) * 16;
+    let col0: i64 = (tile % tiles_n) * 8;
+    if row0 >= (m as i64) { return; }
+    let shared: *mut f32 = vx_gpu_shared_f32();
+    let group: i32 = lane / 4;
+    let thread: i32 = lane % 4;
+    let acc: i32 = 192 + lane * 4;
+    let mut c0: f32 = 0.0;
+    let mut c1: f32 = 0.0;
+    let mut c2: f32 = 0.0;
+    let mut c3: f32 = 0.0;
+    for step in 0..(((k as i64) + 7) / 8) {
+      let k0: i64 = step * 8;
+      for load in 0..4 {
+        let index: i32 = lane + load * 32;
+        let row: i64 = row0 + ((index / 8) as i64);
+        let col: i64 = k0 + ((index % 8) as i64);
+        let mut value: f32 = 0.0;
+        if row < (m as i64) { if col < (k as i64) { value = a[row * (k as i64) + col]; } }
+        shared[index] = value;
+      }
+      for load in 0..2 {
+        let index: i32 = lane + load * 32;
+        let row: i64 = k0 + ((index / 8) as i64);
+        let col: i64 = col0 + ((index % 8) as i64);
+        let mut value: f32 = 0.0;
+        if row < (k as i64) { if col < (n as i64) { value = b[row * (n as i64) + col]; } }
+        shared[128 + index] = value;
+      }
+      vx_gpu_barrier();
+      vx_gpu_mma_tf32_m16n8k8(shared, acc,
+        shared[group * 8 + thread], shared[(group + 8) * 8 + thread],
+        shared[group * 8 + thread + 4], shared[(group + 8) * 8 + thread + 4],
+        shared[128 + thread * 8 + group], shared[128 + (thread + 4) * 8 + group],
+        c0, c1, c2, c3);
+      c0 = shared[acc]; c1 = shared[acc + 1]; c2 = shared[acc + 2]; c3 = shared[acc + 3];
+      vx_gpu_barrier();
+    }
+    let row: i64 = row0 + (group as i64);
+    let col: i64 = col0 + ((thread * 2) as i64);
+    if row < (m as i64) {
+      if col < (n as i64) { out[row * (n as i64) + col] = c0; }
+      if col + 1 < (n as i64) { out[row * (n as i64) + col + 1] = c1; }
+    }
+    if row + 8 < (m as i64) {
+      if col < (n as i64) { out[(row + 8) * (n as i64) + col] = c2; }
+      if col + 1 < (n as i64) { out[(row + 8) * (n as i64) + col + 1] = c3; }
+    }
+    return;
+  }
+}
+
+// Full F32 scalar multiply/add reference. No silent precision downgrade.
+fn glm_vx_gpu_gemm_f32(out: *mut f32, a: *const f32, b: *const f32, m: i32, n: i32, k: i32) -> void {
+  if m <= 0 { return; }
+  if n <= 0 { return; }
+  if k < 0 { return; }
+  unsafe {
+    if vx_gpu_block_dim_x() != 128 { return; }
+    let index: i64 = (vx_gpu_block_idx_x() as i64) * 128 + (vx_gpu_thread_idx_x() as i64);
+    if index >= (m as i64) * (n as i64) { return; }
+    let row: i64 = index / (n as i64);
+    let col: i64 = index % (n as i64);
+    let mut sum: f32 = 0.0;
+    for q in 0..k { sum = sum + a[row * (k as i64) + (q as i64)] * b[(q as i64) * (n as i64) + col]; }
+    out[index] = sum;
+    return;
+  }
+}

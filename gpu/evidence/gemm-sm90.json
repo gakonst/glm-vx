@@ -1,0 +1,34 @@
+{
+  "entries": [
+    "glm_vx_gpu_gemm_f32",
+    "glm_vx_gpu_gemm_tf32"
+  ],
+  "hardware_index_registers": [
+    "%ctaid.x",
+    "%ntid.x",
+    "%tid.x"
+  ],
+  "tensor_core_mma": true,
+  "tf32_rna_conversion": true,
+  "warp_shuffle": false,
+  "block_barrier": true,
+  "shared_memory": true,
+  "device_exp2": false,
+  "device_sqrt": false,
+  "schema": "glm-vx-ptx-v1",
+  "arch": "sm_90",
+  "ptx_version": "7.8",
+  "source_sha256": "c3273e51bb3942993bca7eb221dec46bd6c61729439ec7b94eea4cc694f9514e",
+  "ptx_sha256": "e39db947b21234e025326c224bd5b61a8bc217fa85a9e8920ab40b88047fd245",
+  "shared_floats": 320,
+  "gpu_execution_validated": false,
+  "tools": {
+    "vxc": "vxc 0.0.2",
+    "mlir-translate": "Ubuntu LLVM version 22.1.8",
+    "opt": "Ubuntu LLVM version 22.1.8",
+    "llc": "Ubuntu LLVM version 22.1.8"
+  },
+  "assembly_validated": true,
+  "ptxas_version": "ptxas: NVIDIA (R) Ptx optimizing assembler\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Tue_May_27_02:18:05_PDT_2025\nCuda compilation tools, release 12.9, V12.9.86\nBuild cuda_12.9.r12.9/compiler.36037853_0",
+  "cubin_sha256": "69a48311f79551db49fa47d16795264646c700cda205ec53ab6bdfd09758c3cf"
+}

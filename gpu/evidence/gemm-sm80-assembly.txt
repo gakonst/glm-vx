@@ -1,0 +1,11 @@
+ptxas info    : 0 bytes gmem
+ptxas info    : Compiling entry function 'glm_vx_gpu_gemm_tf32' for 'sm_80'
+ptxas info    : Function properties for glm_vx_gpu_gemm_tf32
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 56 registers, used 1 barriers, 1280 bytes smem, 388 bytes cmem[0]
+ptxas info    : Compile time = 7.099 ms
+ptxas info    : Compiling entry function 'glm_vx_gpu_gemm_f32' for 'sm_80'
+ptxas info    : Function properties for glm_vx_gpu_gemm_f32
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 32 registers, used 0 barriers, 388 bytes cmem[0]
+ptxas info    : Compile time = 8.453 ms

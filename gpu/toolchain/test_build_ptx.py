@@ -67,7 +67,7 @@ class ContractTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             output = Path(temp)/'probe.ptx'
             subprocess.run([sys.executable, str(HERE/'build_ptx.py'), '--source',
-                str(HERE/'experiments/thread.vx'), '--output', str(output)], check=True,
+                str(HERE/'probe.vx'), '--output', str(output)], check=True,
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             ptx = output.read_text()
             for token in ('.visible .entry glm_vx_gpu_probe', '%tid.x', '%ctaid.x',
@@ -88,6 +88,39 @@ class ContractTests(unittest.TestCase):
             for token in ('shfl.sync.idx', 'shfl.sync.down', 'bar.sync', '.shared'):
                 self.assertIn(token, ptx)
 
+    def test_mma_adapter_contract(self):
+        declaration = 'declare void @vx_gpu_mma_tf32_m16n8k8(ptr, i32, ' + ', '.join(['float'] * 10) + ')\n'
+        with self.assertRaisesRegex(ValueError, '320 shared'):
+            builder.adapter_ir(VALID + declaration, 256)
+        with self.assertRaisesRegex(ValueError, 'ABI mismatch'):
+            builder.adapter_ir(VALID + declaration.replace('ptr, i32', 'ptr, i64'), 320)
+        ir, _ = builder.adapter_ir(VALID + declaration, 320)
+        self.assertIn('mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32', ir)
+        self.assertEqual(ir.count('cvt.rna.tf32.f32'), 6)
+        self.assertIn('sideeffect', ir)
+        self.assertIn(') convergent', ir)
+
+    def test_tensor_core_entry_cannot_be_scalar_relabel(self):
+        fake = '.visible .entry glm_vx_gpu_gemm_tf32() { %tid.x; }'
+        with self.assertRaisesRegex(ValueError, 'missing required PTX'):
+            builder.validate_ptx(fake, ['glm_vx_gpu_gemm_tf32'])
+
+    def test_real_vx_tensor_core_gemm(self):
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp)/'gemm.ptx'
+            command = [sys.executable, str(HERE/'build_ptx.py'), '--source',
+                       str(HERE.parent/'gemm.vx'), '--output', str(output), '--shared-floats', '320']
+            subprocess.run(command, check=True, capture_output=True, text=True)
+            ptx = output.read_text()
+            for token in ('mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32',
+                          'cvt.rna.tf32.f32', 'ld.shared.', 'st.shared.', 'bar.sync'):
+                self.assertIn(token, ptx)
+            previous = ptx
+            failed = subprocess.run(command + ['--arch', 'sm_75'], capture_output=True, text=True)
+            self.assertNotEqual(failed.returncode, 0)
+            self.assertIn('requires sm_80', failed.stderr)
+            self.assertEqual(output.read_text(), previous)
+
     def test_failed_assembly_preserves_previous_output(self):
         with tempfile.TemporaryDirectory() as temp:
             directory = Path(temp)
@@ -97,7 +130,7 @@ class ContractTests(unittest.TestCase):
             assembler.write_text('#!/bin/sh\nif [ "$1" = "--version" ]; then echo test-assembler; exit 0; fi\nexit 42\n')
             assembler.chmod(0o700)
             result = subprocess.run([sys.executable, str(HERE/'build_ptx.py'), '--source',
-                str(HERE/'experiments/thread.vx'), '--output', str(output),
+                str(HERE/'probe.vx'), '--output', str(output),
                 '--ptxas', str(assembler)], stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE, text=True)
             self.assertNotEqual(result.returncode, 0)

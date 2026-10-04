@@ -18,7 +18,7 @@ PATH, or set `VXC` and `VX_GPU_LLVM_BIN`. Then:
 gpu/build.sh
 # Optional: PTXAS=/path/to/ptxas gpu/build.sh validates native assembly too.
 # On the original build machine, first: source ../vx-toolchain/env.sh
-# Both files emit PTX plus source/hash/toolchain manifests in gpu/build/.
+# All three modules emit PTX plus source/hash/toolchain manifests in gpu/build/.
 ```
 
 On a machine with an SM80+ NVIDIA GPU and compatible CUDA driver:
@@ -60,6 +60,9 @@ only for its matching F32 shape. This selects the best *tested* layout; it does
 not prove global optimality. No plan is emitted when CUDA is unavailable.
 
 ## Resident kernels
+
+- [Tiled GEMM](GEMM.md): explicit TF32 tensor-core MMA with shared staging and
+  arbitrary residual shapes, alongside a separate full F32 reference mode.
 
 - Coalesced warp-per-row float32 matvec; tails need no padded weight allocation.
 - Direct **FP8 E4M3FN + 128×128 block scales** matvec; no expanded float32 weight

@@ -49,7 +49,7 @@ on failure, and a nonzero exit must never be treated as a usable new build.
 
 ## Evidence and limits
 
-`experiments/thread.vx` is the minimal real-source probe. Its PTX contains
+`probe.vx` is the tracked minimal real-source probe. Its PTX contains
 `%tid.x`, `%ctaid.x`, `%ntid.x`, `ex2.approx.ftz.f32`, and `sqrt.rn.f32`.
 `experiments/kernels.ptx` demonstrates eleven entries for the numerical kernels;
 `experiments/fp8.ptx` demonstrates the FP8 projection entry. Corresponding JSON
@@ -123,3 +123,7 @@ preservation. Re-run after source changes; these hashes describe this snapshot.
 
 Published source-matched assembly manifests and resource reports are copied to
 `gpu/evidence/`; `experiments/` is local scratch and is not committed.
+
+The optional [tensor-core GEMM module](../GEMM.md) extends the isolated ABI with
+a convergent TF32 MMA intrinsic. Its Vx implementation owns tiling and shared
+staging; PTX validation rejects a tensor-core entry lacking actual MMA.

@@ -36,3 +36,8 @@ subnormal results flushed to zero. sqrtf uses LLVM sqrt and NVPTX sqrt.rn.f32.
 Neither math operation calls the host or requires libdevice. Numerical GPU
 validation remains required; CPU emulation uses platform expf/sqrtf and cannot
 validate the approximation's GPU error.
+
+The optional TF32 MMA intrinsic and its exact warp, storage and precision
+contract are documented in [GEMM.md](../GEMM.md). Compile `gemm.vx` with
+`--shared-floats 320` and sm80 or newer. Its adapter uses LLVM inline PTX for
+TF32 conversion and MMA, while staging/indexing/masking remain real Vx.

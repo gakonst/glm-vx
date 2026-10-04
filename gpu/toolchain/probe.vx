@@ -1,0 +1,14 @@
+extern "C" {
+  fn vx_gpu_thread_idx_x() -> i32;
+  fn vx_gpu_block_idx_x() -> i32;
+  fn vx_gpu_block_dim_x() -> i32;
+  fn expf(x: f32) -> f32;
+  fn sqrtf(x: f32) -> f32;
+}
+fn glm_vx_gpu_probe(out: *mut f32, x: *const f32, n: i32) -> void {
+  unsafe {
+    let i: i32 = vx_gpu_block_idx_x() * vx_gpu_block_dim_x() + vx_gpu_thread_idx_x();
+    if i < n { out[i] = expf(x[i]) + sqrtf(x[i]); }
+    return;
+  }
+}

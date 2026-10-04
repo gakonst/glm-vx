@@ -27,6 +27,7 @@ SIGNATURES = {**{name: ("i32", "") for name in INDEX},
     "vx_gpu_shuffle_down_f32": ("float", "float, i32"),
     "vx_gpu_shuffle_idx_f32": ("float", "float, i32"),
     "vx_gpu_barrier": ("void", ""), "vx_gpu_shared_f32": ("ptr", ""),
+    "vx_gpu_mma_tf32_m16n8k8": ("void", "ptr, i32, " + ", ".join(["float"] * 10)),
     "expf": ("float", "float"), "sqrtf": ("float", "float")}
 DECL = re.compile(r"^declare\s+(\w+)\s+@([\w.$]+)\(([^)]*)\)(?:[ \t]+[^\n]*)?$", re.M)
 DEFINE = re.compile(r"^define\s+(\w+)\s+@([\w.$]+)\(([^)]*)\)([^\n]*)\{", re.M)
@@ -99,6 +100,25 @@ define internal ptr @vx_gpu_shared_f32() alwaysinline {{
   %p = addrspacecast ptr addrspace(3) @vx_gpu_shared_storage to ptr
   ret ptr %p
 }}''')
+    if 'vx_gpu_mma_tf32_m16n8k8' in used:
+        if shared_floats < 320:
+            raise ValueError('TF32 GEMM requires at least 320 shared floats')
+        # Vx has a scalar C ABI, so bridge the aggregate MMA result through a
+        # lane-private four-float output region. No arithmetic kernel is replaced.
+        conversions = '\n'.join(
+            f'  %{x}t = call i32 asm "cvt.rna.tf32.f32 $0, $1;", "=r,f"(float %{x})'
+            for x in ('a0', 'a1', 'a2', 'a3', 'b0', 'b1'))
+        stores = '\n'.join(f"  %d{i} = extractvalue {{float, float, float, float}} %d, {i}\n"
+            f"  %p{i} = getelementptr float, ptr %base, i32 {i}\n"
+            f"  store float %d{i}, ptr %p{i}, align 4" for i in range(4))
+        wrappers.append('''define internal void @vx_gpu_mma_tf32_m16n8k8(ptr %out, i32 %offset,
+    float %a0, float %a1, float %a2, float %a3, float %b0, float %b1,
+    float %c0, float %c1, float %c2, float %c3) alwaysinline convergent {
+''' + conversions + '''
+  %d = call {float, float, float, float} asm sideeffect
+    "mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32 {$0,$1,$2,$3}, {$4,$5,$6,$7}, {$8,$9}, {$10,$11,$12,$13};",
+    "=f,=f,=f,=f,r,r,r,r,r,r,f,f,f,f"(i32 %a0t, i32 %a1t, i32 %a2t, i32 %a3t, i32 %b0t, i32 %b1t, float %c0, float %c1, float %c2, float %c3) convergent
+''' + '  %base = getelementptr float, ptr %out, i32 %offset\n' + stores + '\n  ret void\n}')
     if 'expf' in used:
         wrappers.append('''declare float @llvm.nvvm.ex2.approx.ftz.f(float)
 define internal float @expf(float %x) alwaysinline {
@@ -134,10 +154,18 @@ def validate_ptx(ptx: str, entries: list[str]) -> dict:
         raise ValueError(f"PTX entries differ: expected {entries}, got {found}")
     if '.extern .func' in ptx or re.search(r'\bcall(?:\.uni)?\b', ptx):
         raise ValueError("PTX contains a device call; expected fully inlined device-only kernels")
+    if 'glm_vx_gpu_gemm_tf32' in entries:
+        body = ptx.split('.visible .entry glm_vx_gpu_gemm_tf32(', 1)[1].split('.visible .entry', 1)[0]
+        for token in ('mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32',
+                      'cvt.rna.tf32.f32', 'ld.shared.', 'st.shared.', 'bar.sync'):
+            if token not in body:
+                raise ValueError(f'TF32 GEMM is missing required PTX operation: {token}')
     registers = sorted(set(re.findall(r'%(?:tid|ctaid|ntid|nctaid)\.x', ptx)))
     if not registers:
         raise ValueError("PTX has no hardware thread/block indexing")
     return {'entries': found, 'hardware_index_registers': registers,
+        'tensor_core_mma': 'mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32' in ptx,
+        'tf32_rna_conversion': 'cvt.rna.tf32.f32' in ptx,
         'warp_shuffle': 'shfl.sync.' in ptx, 'block_barrier': 'bar.sync' in ptx,
         'shared_memory': '.shared ' in ptx, 'device_exp2': 'ex2.approx.ftz.f32' in ptx,
         'device_sqrt': 'sqrt.rn.f32' in ptx}
@@ -170,6 +198,8 @@ def main() -> int:
             run([vxc, '--emit-llvm', str(args.source.resolve())], work/'source.mlir')
             ir = run([translate, '--mlir-to-llvmir', str(work/'source.mlir')], work/'source.ll')
             adapted, entries = adapter_ir(ir, args.shared_floats)
+            if "@vx_gpu_mma_tf32_m16n8k8" in ir and int(args.arch[3:5]) < 80:
+                raise ValueError("TF32 MMA requires sm_80 or newer")
             (work/'device.ll').write_text(adapted)
             run([opt, '-S', '-passes=always-inline,default<O3>,verify', str(work/'device.ll'), '-o', str(work/'optimized.ll')])
             run([llc, '-march=nvptx64', f'-mcpu={args.arch}', f'-mattr=+ptx{ptx_isa}', '-O3', str(work/'optimized.ll'), '-o', str(work/'kernel.ptx')])

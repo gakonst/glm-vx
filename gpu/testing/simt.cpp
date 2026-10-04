@@ -7,9 +7,12 @@
 #include <memory>
 #include <cstdint>
 #include <cmath>
+#include <bit>
 struct Warp {
     std::barrier<> sync{32};
     float floats[32]{};
+    float mma_a[16][8]{};
+    float mma_b[8][8]{};
     int32_t integers[32]{};
 };
 thread_local int32_t emu_tid, emu_bid, emu_block, emu_grid;
@@ -64,6 +67,29 @@ extern "C" int32_t vx_gpu_shuffle_down_i32(int32_t v,int32_t d){return vx_shfl_d
 extern "C" int32_t vx_gpu_shuffle_idx_i32(int32_t v,int32_t d){return vx_shfl_i32(v,d);}
 extern "C" void vx_gpu_barrier(){emu_barrier->arrive_and_wait();}
 extern "C" float* vx_gpu_shared_f32(){return emu_shared;}
+// Test-only equation model of PTX lane fragments; not hardware MMA rounding.
+static float tf32_rna(float value) {
+    uint32_t bits=std::bit_cast<uint32_t>(value);
+    if ((bits & 0x7f800000u)==0x7f800000u) return value;
+    return std::bit_cast<float>((bits+0x1000u)&0xffffe000u);
+}
+extern "C" void vx_gpu_mma_tf32_m16n8k8(float* out, int32_t offset,
+    float a0,float a1,float a2,float a3,float b0,float b1,
+    float c0,float c1,float c2,float c3) {
+    int lane=emu_tid%32, g=lane/4, t=lane%4;
+    auto& w=*emu_warp;
+    w.mma_a[g][t]=tf32_rna(a0); w.mma_a[g+8][t]=tf32_rna(a1);
+    w.mma_a[g][t+4]=tf32_rna(a2); w.mma_a[g+8][t+4]=tf32_rna(a3);
+    w.mma_b[t][g]=tf32_rna(b0); w.mma_b[t+4][g]=tf32_rna(b1);
+    w.sync.arrive_and_wait();
+    float acc[4]={c0,c1,c2,c3};
+    for (int i=0;i<4;i++) {
+        int row=g+(i/2)*8, col=t*2+i%2;
+        for (int k=0;k<8;k++) acc[i]=std::fma(w.mma_a[row][k],w.mma_b[k][col],acc[i]);
+        out[offset+i]=acc[i];
+    }
+    w.sync.arrive_and_wait();
+}
 extern "C" int32_t simt_launch(void (*entry)(void*),void* arg,int32_t grid,int32_t block){
     if(grid<1||block<32||block%32||block>256)return -1;
     for(int b=0;b<grid;b++){
