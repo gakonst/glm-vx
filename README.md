@@ -62,6 +62,9 @@ checkpoint, memory-mapped loading, bounded expert decoding and CPU generation.
 The earlier tiny-model benchmarks remain synthetic; they are not trained-model
 performance evidence.
 
+[Correctness gates and Vx performance audit](docs/CORRECTNESS-AND-PERFORMANCE.md)
+records the remaining parity work and an isolated compiler optimization experiment.
+
 ## GPU implementation
 
 [GPU code](gpu/README.md) adds coalesced F32/FP8 projection, fused residual/RMSNorm,
