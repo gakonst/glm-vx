@@ -287,7 +287,7 @@ def test_nonfinite_float_data_rejected(tmp_path, qtype, dtype, value):
 def test_quantized_row_slice_clipping_and_empty_ranges(tmp_path, row_slice):
     encoded, expected = q8_bytes((7, 64))
     path = write_gguf(tmp_path / "rows.gguf", [("matrix", encoded, gguf.GGMLQuantizationType.Q8_0)])
-    with opened(path, decode_rows=1, decode_threads=threads) as store:
+    with opened(path, decode_rows=1) as store:
         np.testing.assert_array_equal(store.read("matrix", rows=row_slice), expected[row_slice])
 
 
