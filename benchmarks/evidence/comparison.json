@@ -1,0 +1,45 @@
+{
+  "baseline_commit": "1fe1f1f6e04ca3f78303f36d2494614fa03e6ee7",
+  "candidate": "accompanying source revision",
+  "backend": "vx-cpu-f32",
+  "model": "tiny random weights seed7",
+  "gpu_measured": false,
+  "runs_per_revision": 3,
+  "requests_per_run": 16,
+  "concurrency": 4,
+  "prompt_lengths": [
+    8,
+    128
+  ],
+  "output_tokens_per_request": 32,
+  "openblas_threads": 1,
+  "candidate_decode_prefill_tokens": 4,
+  "baseline_prefill_chunk": 16,
+  "warmup_requests_per_run": 1,
+  "matched_output_hashes_all_runs": true,
+  "baseline_median_of_runs": {
+    "output_tokens_per_second": 164.65767002047127,
+    "p95_ttft_ms": 478.06795686483383,
+    "p95_inter_token_ms": 42.46989265084267,
+    "p50_request_ms": 784.0063106268644,
+    "p95_request_ms": 940.2295891195536
+  },
+  "candidate_median_of_runs": {
+    "output_tokens_per_second": 166.68102636583316,
+    "p95_ttft_ms": 852.2980734705925,
+    "p95_inter_token_ms": 16.430459916591644,
+    "p50_request_ms": 525.620236992836,
+    "p95_request_ms": 1252.663703635335
+  },
+  "python": "3.10.12",
+  "kernel": "5.15.0-164-generic",
+  "cpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           48 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  24\nOn-line CPU(s) list:                     0-23\nVendor ID:                               AuthenticAMD\nModel name:                              AMD EPYC 4484PX 12-Core Processor\nCPU family:                              25\nModel:                                   97\nThread(s) per core:                      2\nCore(s) per socket:                      12\nSocket(s):                               1\nStepping:                                2\nFrequency boost:                         enabled\nCPU max MHz:                             5660.2700\nCPU min MHz:                             3000.0000\nBogoMIPS:                                8783.49\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp ibrs_enhanced vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local avx512_bf16 clzero irperf xsaveerptr rdpru wbnoinvd cppc arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid overflow_recov succor smca fsrm flush_l1d ibpb_exit_to_user\nVirtualization:                          AMD-V\nL1d cache:                               384 KiB (12 instances)\nL1i cache:                               384 KiB (12 instances)\nL2 cache:                                12 MiB (12 instances)\nL3 cache:                                128 MiB (2 instances)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-23\nVulnerability Gather data sampling:      Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Mitigation; safe RET\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl and seccomp\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; STIBP always-on; PBRSB-eIBRS Not affected; BHI Not affected\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Mitigation; Clear CPU buffers\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Mitigation; IBPB before exit to userspace\n",
+  "limits": "Shared machine, localhost, tiny untrained model. Three repeats do not establish throughput significance. Raw p95 values are per-run, summarized by median. One-token budget exploratory run retained separately.",
+  "source_sha256": {
+    "glm_vx/model.py": "bc61b25bc9dd2fc020f9767126a61254f3dce2beef61d2815639d82b67696f89",
+    "glm_vx/scheduler.py": "1d495ce76cc64eb191c11a90d98562d7c3343246d067a5cb227b6131a8a5f383",
+    "glm_vx/server.py": "8057c8683108070ca0138c6f72ae832f1d424a30cb29b1ed1688bb2118acc549",
+    "gpu/backend.py": "7869d59ee0dedc47a3ebbc4db3ebbe606866d5dea1153251abf3a9111bbed577",
+    "benchmarks/serve.py": "0c032feb73d65ae5b4efe6bcfeda2ddb92f6b653278f56aba9d3d2419e00d5dc"
+  }
+}

@@ -195,6 +195,11 @@ class GlmMoeDsaModel:
         return self._linear(prefix + '.o_proj', np.concatenate(outputs), has_bias), selected
 
     def _mlp(self, prefix, x):
+        resident_mlp = getattr(self.backend, 'mlp', None)
+        if callable(resident_mlp):
+            return resident_mlp(self._weight(prefix + '.gate_proj.weight'),
+                                self._weight(prefix + '.up_proj.weight'),
+                                self._weight(prefix + '.down_proj.weight'), x)
         return self._linear(prefix + '.down_proj', self.backend.swiglu(
             self._linear(prefix + '.gate_proj', x), self._linear(prefix + '.up_proj', x)))
 
@@ -211,6 +216,9 @@ class GlmMoeDsaModel:
                                        self.backend.swiglu(projected[:half], projected[half:]))
         up = self._weight(f'{prefix}.experts.{expert}.up_proj.weight')
         down = self._weight(f'{prefix}.experts.{expert}.down_proj.weight')
+        resident_mlp = getattr(self.backend, 'mlp', None)
+        if callable(resident_mlp):
+            return resident_mlp(gate, up, down, x)
         return self.backend.matvec(down, self.backend.swiglu(self.backend.matvec(gate, x), self.backend.matvec(up, x)))
 
     def _feed_forward(self, layer, x):
@@ -230,6 +238,18 @@ class GlmMoeDsaModel:
 
     def forward(self, token_id, cache):
         """Append one token at cache.position and return next-token logits."""
+        return self._forward(token_id, cache, output_logits=True)
+
+    def prefill_token(self, token_id, cache):
+        """Append a non-final prompt token without computing unused logits.
+
+        The transformer and causal cache are identical to forward(). Only the
+        final model norm and vocabulary projection are omitted. The final prompt
+        token must still use forward() to produce the first sampling logits.
+        """
+        return self._forward(token_id, cache, output_logits=False)
+
+    def _forward(self, token_id, cache, *, output_logits):
         if not isinstance(token_id, (int, np.integer)) or not 0 <= int(token_id) < int(self.config['vocab_size']):
             raise ValueError('token_id must be an integer in the vocabulary')
         if not isinstance(cache, RequestCache) or len(cache.layers) != self.n_layers:
@@ -250,9 +270,11 @@ class GlmMoeDsaModel:
                 attended, selected = self._attention(layer, self._norm(prefix + '.input_layernorm', x, self.eps), position, state, selected)
                 x = x + attended
                 x = x + self._feed_forward(layer, self._norm(prefix + '.post_attention_layernorm', x, self.eps))
-            x = self._norm('model.norm', x, self.eps)
-            head = 'model.embed_tokens' if self.config.get('tie_word_embeddings', False) else 'lm_head'
-            logits = self._linear(head, x)
+            logits = None
+            if output_logits:
+                x = self._norm('model.norm', x, self.eps)
+                head = 'model.embed_tokens' if self.config.get('tie_word_embeddings', False) else 'lm_head'
+                logits = self._linear(head, x)
         except Exception:
             # A missing shard/backend failure must not poison the request cache.
             for state, old_selection in zip(cache.layers, old_selections):

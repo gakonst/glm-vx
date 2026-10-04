@@ -3,3 +3,4 @@
 # Upstream model/compiler references are not this project's implementation.
 metadata/** linguist-vendored
 gpu/evidence/** linguist-generated
+benchmarks/evidence/** linguist-generated

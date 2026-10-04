@@ -28,6 +28,9 @@ class Handler(BaseHTTPRequestHandler):
     def setup(self):
         super().setup()
         self.connection.settimeout(30)
+        # SSE tokens are small latency-sensitive writes. Do not let Nagle wait
+        # for an ACK before sending a subsequent token.
+        self.connection.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
     def log_message(self,*args): pass
     def _json(self,code,value):
         data=json.dumps(value,allow_nan=False).encode()
@@ -124,6 +127,7 @@ def main():
     p.add_argument('--host',default='127.0.0.1'); p.add_argument('--port',type=int,default=8000)
     p.add_argument('--max-sequences',type=int,default=8); p.add_argument('--token-budget',type=int,default=8192)
     p.add_argument('--prefill-chunk',type=int,default=16)
+    p.add_argument('--decode-prefill-tokens',type=int,default=4,help='total prefill tokens per round with active decoders; lower favors decode latency')
     p.add_argument('--gpu-ptx-dir',help='directory containing compiled kernels.ptx')
     p.add_argument('--gpu-device',type=int,default=0)
     p.add_argument('--gpu-weight-cache-mib',type=int,default=512)
@@ -158,7 +162,7 @@ def main():
         from tokenizers import Tokenizer
         tokenizer=Tokenizer.from_file(args.tokenizer)
     model=Model(config,weights,backend)
-    scheduler=Scheduler(model,max_sequences=args.max_sequences,token_budget=args.token_budget,prefill_chunk=args.prefill_chunk)
+    scheduler=Scheduler(model,max_sequences=args.max_sequences,token_budget=args.token_budget,prefill_chunk=args.prefill_chunk,decode_prefill_tokens=args.decode_prefill_tokens)
     server=Server((args.host,args.port),scheduler,tokenizer,name)
     print(json.dumps({'listening':f'http://{args.host}:{server.server_port}','model':name,'backend':backend.name}),flush=True)
     try:server.serve_forever()

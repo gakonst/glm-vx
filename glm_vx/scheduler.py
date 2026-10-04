@@ -33,12 +33,13 @@ class Request:
     rng: object = None
 
 class Scheduler:
-    def __init__(self, model, *, max_sequences=8, token_budget=8192, prefill_chunk=16):
-        if min(max_sequences,token_budget,prefill_chunk) < 1: raise ValueError("positive limits required")
+    def __init__(self, model, *, max_sequences=8, token_budget=8192, prefill_chunk=16, decode_prefill_tokens=4):
+        if min(max_sequences,token_budget,prefill_chunk,decode_prefill_tokens) < 1: raise ValueError("positive limits required")
         self.model = model
         self.max_sequences = max_sequences
         self.token_budget = token_budget
         self.prefill_chunk = prefill_chunk
+        self.decode_prefill_tokens = decode_prefill_tokens
         self.lock = threading.Condition()
         self.pending = deque()
         self.reserved = 0
@@ -89,15 +90,25 @@ class Scheduler:
         probs /= probs.sum()
         return int(req.rng.choice(len(probs),p=probs))
 
-    def _step(self, req):
-        if req.cancelled.is_set(): self._finish(req,"cancelled"); return False
+    def _step(self, req, prefill_limit):
+        if self.closed or req.cancelled.is_set(): self._finish(req,"cancelled"); return False
         if req.cache is None: req.cache = self.model.new_cache()
         if req.cursor < len(req.tokens):
-            end = min(req.cursor+self.prefill_chunk,len(req.tokens))
+            end = min(req.cursor+prefill_limit,len(req.tokens))
             while req.cursor < end:
-                if req.cancelled.is_set(): self._finish(req,"cancelled"); return False
-                logits = self.model.forward(req.tokens[req.cursor],req.cache)
+                if self.closed or req.cancelled.is_set(): self._finish(req,"cancelled"); return False
+                prefill_token = getattr(self.model, "prefill_token", None)
+                if req.cursor < len(req.tokens)-1 and callable(prefill_token):
+                    prefill_token(req.tokens[req.cursor],req.cache)
+                else:
+                    logits = self.model.forward(req.tokens[req.cursor],req.cache)
                 req.cursor += 1
+                if req.cursor < end:
+                    # A forward call is indivisible. Reconsider admissions at
+                    # each token boundary, even during an otherwise idle chunk.
+                    with self.lock:
+                        if self.pending or self.closed:
+                            return True
             if req.cursor < len(req.tokens): return True
         else:
             logits = self.model.forward(req.next_token,req.cache)
@@ -113,20 +124,40 @@ class Scheduler:
         return True
 
     def _run(self):
-        active = deque()
+        decoding, prefilling = deque(), deque()
         while True:
             with self.lock:
-                while not active and not self.pending and not self.closed: self.lock.wait()
-                active.extend(self.pending)
+                while not decoding and not prefilling and not self.pending and not self.closed:
+                    self.lock.wait()
+                prefilling.extend(self.pending)
                 self.pending.clear()
                 if self.closed:
-                    for req in active: req.cancelled.set()
-                if self.closed and not active: return
-            req = active.popleft()
-            try:
-                if self._step(req): active.append(req)
-            except Exception as exc:
-                self._finish(req,"error",str(exc))
+                    for req in (*decoding, *prefilling): req.cancelled.set()
+                if self.closed and not decoding and not prefilling: return
+
+            # One turn for every ready decoder, followed by bounded *total*
+            # prefill work, rather than a chunk for each prefilling request.
+            # Rotating the prefill queue guarantees progress without letting
+            # multiple long prompts multiply the gap between decode turns.
+            work = list(decoding)
+            decoding.clear()
+            prefill_limit = min(self.decode_prefill_tokens, self.prefill_chunk) if work else self.prefill_chunk
+            if prefilling:
+                work.append(prefilling.popleft())
+            for req in work:
+                try:
+                    if self._step(req, prefill_limit):
+                        if req.cursor < len(req.tokens):
+                            with self.lock:
+                                # An arrival that interrupted this chunk gets
+                                # its turn before the interrupted request.
+                                prefilling.extend(self.pending)
+                                self.pending.clear()
+                            prefilling.append(req)
+                        else:
+                            decoding.append(req)
+                except Exception as exc:
+                    self._finish(req,"error",str(exc))
 
     def status(self):
         with self.lock:

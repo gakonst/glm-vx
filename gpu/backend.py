@@ -110,6 +110,36 @@ class GPUBackend:
             return self._read(out)
         finally:self._release(temps)
 
+    def mlp(self,gate,up,down,x):
+        """Run down(SwiGLU(gate(x), up(x))) with resident intermediates.
+
+        Upload all inputs before launching so blocking transfers cannot split
+        the chain. Immutable weights share the bounded cache and stay pinned
+        until all four launches finish; only the final projection is read back.
+        """
+        gate,up,down,x=array(gate,'gate weight'),array(up,'up weight'),array(down,'down weight'),array(x)
+        if (gate.ndim!=2 or up.shape!=gate.shape or down.ndim!=2 or x.ndim!=1
+                or gate.shape[1]!=x.size or down.shape[1]!=gate.shape[0]):
+            raise ValueError('MLP shape mismatch')
+        width=gate.shape[0];temps=[]
+        try:
+            gd,ud,dd=[self._upload(w,temps,True) for w in (gate,up,down)]
+            xd=self._upload(x,temps)
+            gated=self._out((width,),temps);upped=self._out((width,),temps)
+            activated=self._out((width,),temps);out=self._out((down.shape[0],),temps)
+            for weight,source,destination,shape in (
+                    (gd,xd,gated,gate.shape),(ud,xd,upped,up.shape)):
+                rows,cols=shape
+                block=self.tuning['selected_block'] if self.tuning and self.tuning['shape']==[rows,cols] else 128
+                self._launch('matvec',(rows+block//32-1)//(block//32),block,
+                             [destination,weight,source,I(rows),I(cols)])
+            self._launch('swiglu',(width+255)//256,256,[activated,gated,upped,I(width)])
+            rows,cols=down.shape
+            block=self.tuning['selected_block'] if self.tuning and self.tuning['shape']==[rows,cols] else 128
+            self._launch('matvec',(rows+block//32-1)//(block//32),block,[out,dd,activated,I(rows),I(cols)])
+            return self._read(out)
+        finally:self._release(temps)
+
     def rmsnorm(self,x,w,eps):
         x,w=array(x),array(w,'weight');eps=scalar_f32(eps,'epsilon',positive=True)
         if w.ndim!=1 or w.size!=x.shape[-1] or not np.isfinite(eps) or eps<=0:raise ValueError('invalid RMSNorm shape/epsilon')

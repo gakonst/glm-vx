@@ -4,6 +4,10 @@ This revision adds GPU-oriented Vx code, an explicit CUDA Driver API runtime,
 a hybrid serving adapter, and a real-device layout tuner. **GPU execution and
 performance have not been measured here. Optimality is not established.**
 
+Subsequent serving improvements and current test evidence are recorded in
+[the serving report](../benchmarks/README.md). The original GPU validation
+counts below describe the initial GPU implementation.
+
 ## Delivered
 
 - Eleven main Vx GPU entries: fused residual/RMSNorm, scalar/row RMSNorm and

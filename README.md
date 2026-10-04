@@ -58,6 +58,16 @@ warp/block reductions, split online-softmax compressed MLA, and a CUDA Driver AP
 runtime. Use `--backend vx-gpu` for the explicitly hybrid serving adapter.
 The [original CPU report](REPORT.md) remains a baseline, not a GPU benchmark.
 
+## Serving performance
+
+The [HTTP load benchmark and measurements](benchmarks/README.md) track client
+TTFT, inter-token gaps, request latency and throughput with mixed prompt lengths.
+Prefill skips unused vocabulary heads, GPU MLP intermediates stay on-device,
+and decode-first scheduling bounds total prefill work per round.
+`--decode-prefill-tokens` (default 4) trades prompt progress for smoother decode.
+Measured CPU streaming improvements carry a long-prompt TTFT tradeoff; no GPU
+throughput claim is made.
+
 ## Implementation
 
 - `kernels/kernels.vx`: float32 matvec, RMSNorm, LayerNorm, interleaved RoPE,
@@ -67,7 +77,7 @@ The [original CPU report](REPORT.md) remains a baseline, not a GPU benchmark.
   indexer selection, and causal sequential prefill.
 - `glm_vx/checkpoint.py`: lazy read-only safetensors mmap with checked headers,
   BF16/F16/F32/FP8 E4M3FN decoding and block scales. No remote code execution.
-- `glm_vx/scheduler.py`: fair request interleaving, chunked sequential prefill,
+- `glm_vx/scheduler.py`: decode-first interleaving, bounded sequential prefill,
   prompt-plus-output token admission, cancellation, failure isolation and cleanup.
   Disconnect detection is cooperative between model forwards (socket polling
   every 250 ms); keep the TCP connection open until the reply. Shutdown raises
