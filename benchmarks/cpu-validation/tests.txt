@@ -1,0 +1,11 @@
+....................................... [ 21%]
+......................................................sssssssssssss. [ 58%]
+.................s...................................................... [ 97%]
+.....                                                                    [100%]
+=========================== short test summary info ============================
+SKIPPED [7] gpu/test_fp8.py:183: Real FP8 GPU validation unavailable: Cannot load NVIDIA CUDA driver libcuda.so.1: libcuda.so.1: cannot open shared object file: No such file or directory
+SKIPPED [1] gpu/test_fp8.py:192: Real FP8 GPU validation unavailable: Cannot load NVIDIA CUDA driver libcuda.so.1: libcuda.so.1: cannot open shared object file: No such file or directory
+SKIPPED [4] gpu/test_hardware.py:19: real GPU unavailable: Cannot load NVIDIA CUDA driver libcuda.so.1: libcuda.so.1: cannot open shared object file: No such file or directory
+SKIPPED [1] gpu/test_hardware.py:26: real GPU unavailable: Cannot load NVIDIA CUDA driver libcuda.so.1: libcuda.so.1: cannot open shared object file: No such file or directory
+SKIPPED [1] gpu/test_resident_mlp.py:166: real GPU unavailable: Cannot load NVIDIA CUDA driver libcuda.so.1: libcuda.so.1: cannot open shared object file: No such file or directory
+170 passed, 14 skipped, 37 subtests passed in 16.82s
