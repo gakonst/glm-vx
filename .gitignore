@@ -13,3 +13,5 @@ upstream_model_reference.py
 *.cubin
 gpu/toolchain/cuda-tools/
 gpu/toolchain/experiments/
+*.gguf
+*.gguf.part

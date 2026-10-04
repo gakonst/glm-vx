@@ -1,0 +1,2 @@
+METADATA ONLY: 1809 GGUF tensors; all base model mappings/shapes validated; NO numeric weights read
+QUANT TYPES ['F32', 'IQ1_S', 'IQ2_XXS', 'IQ3_XXS', 'IQ4_XS', 'Q2_K', 'Q3_K', 'Q4_K', 'Q5_K', 'Q6_K', 'Q8_0']

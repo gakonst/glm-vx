@@ -9,6 +9,7 @@ requires-python = ">=3.10"
 dependencies = ["numpy>=1.24", "tokenizers>=0.20"]
 [project.optional-dependencies]
 test = ["pytest>=8"]
+gguf = ["gguf==0.17.1", "jinja2>=3.1.6"]
 [project.scripts]
 glm-vx = "glm_vx.server:main"
 [tool.setuptools.packages.find]

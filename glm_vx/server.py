@@ -122,7 +122,10 @@ def main():
     p.add_argument('--backend',choices=['vx','vx-gpu','numpy-reference'],default='vx')
     source=p.add_mutually_exclusive_group(required=True)
     source.add_argument('--tiny',action='store_true',help='random weights, correctness demo only')
-    source.add_argument('--checkpoint',help='local checkpoint directory; experimental CPU path')
+    source.add_argument('--checkpoint',help='local safetensors checkpoint directory')
+    source.add_argument('--gguf',help='GLM-DSA GGUF first shard or directory; CPU disk-offload PoC')
+    p.add_argument('--config',help='HF config.json matching the GGUF; defaults to config.json beside its shards')
+    p.add_argument('--decoded-cache-mib',type=int,default=512,help='bounded GGUF decoded-weight cache')
     p.add_argument('--tokenizer',help='local tokenizer.json')
     p.add_argument('--host',default='127.0.0.1'); p.add_argument('--port',type=int,default=8000)
     p.add_argument('--max-sequences',type=int,default=8); p.add_argument('--token-budget',type=int,default=8192)
@@ -134,6 +137,7 @@ def main():
     p.add_argument('--gpu-tuning',help='verified shape-specific plan produced by python -m gpu.tune')
     args=p.parse_args()
     if args.gpu_weight_cache_mib<0:p.error('GPU weight cache must be nonnegative')
+    if args.decoded_cache_mib<0:p.error('decoded cache must be nonnegative')
     from .model import Model,tiny_weights
     if args.backend=='vx':
         from kernels.backend import VxBackend
@@ -149,6 +153,14 @@ def main():
         config=tiny_config(); weights=tiny_weights(config,seed=7); name='glm-vx-tiny-random'
         if args.backend=='vx-gpu':
             for value in weights.values():value.flags.writeable=False
+    elif args.gguf:
+        from pathlib import Path
+        from .gguf_checkpoint import GGUFCheckpoint
+        directory=Path(args.gguf) if Path(args.gguf).is_dir() else Path(args.gguf).parent
+        with open(args.config or directory/'config.json') as f:config=json.load(f)
+        weights=GGUFCheckpoint(args.gguf,config,cache_bytes=args.decoded_cache_mib*1024**2)
+        if not args.tokenizer and (directory/'tokenizer.json').exists():args.tokenizer=str(directory/'tokenizer.json')
+        name='glm-gguf-vx-experimental'
     else:
         from .checkpoint import Checkpoint
         from .config import GLMConfig

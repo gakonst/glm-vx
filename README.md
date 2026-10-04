@@ -51,6 +51,13 @@ contain one delta ID each. Clients must not concatenate the final full list agai
 The service binds loopback by default. It has no authentication or TLS; place a
 suitable gateway in front before exposing it to a network.
 
+## Quantized full-model CPU path
+
+[GGUF setup and limitations](docs/GGUF.md) describes the full GLM-5.3 IQ1_S
+checkpoint, memory-mapped loading, bounded expert decoding and CPU generation.
+The earlier tiny-model benchmarks remain synthetic; they are not trained-model
+performance evidence.
+
 ## GPU implementation
 
 [GPU code](gpu/README.md) adds coalesced F32/FP8 projection, fused residual/RMSNorm,
