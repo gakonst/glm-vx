@@ -44,8 +44,8 @@ def _feed_forward(model, layer, x):
     routed = [b.route(row, bias, count, float(c.get('routed_scaling_factor', 1.0))) for row in router_logits]
     ids = np.stack([r[0] for r in routed])
     weights = np.stack([r[1] for r in routed])
-    # Group compute by expert, but accumulate in the original per-token routing
-    # order. Sorting the accumulation by expert ID would change F32 semantics.
+    # Group compute by expert and accumulate in ascending expert ID, matching
+    # the pinned official eager reduction. Shared experts are added last.
     outputs = np.empty((len(x), count, model.hidden), dtype=np.float32)
     for expert in np.unique(ids):
         rows, slots = np.nonzero(ids == expert)
@@ -61,7 +61,7 @@ def _feed_forward(model, layer, x):
         outputs[rows, slots] = values
     result = np.zeros_like(x)
     for row in range(len(x)):
-        for slot in range(count):
+        for slot in np.argsort(ids[row], kind='stable'):
             result[row] += outputs[row, slot] * float(weights[row, slot])
     if int(c.get('n_shared_experts', 1)) > 0:
         result += _mlp(model, prefix + '.shared_experts', x)

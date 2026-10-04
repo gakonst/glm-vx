@@ -70,8 +70,8 @@ def main():
         temporary=destination.with_suffix(destination.suffix+'.tmp')
         temporary.write_text(json.dumps(report,indent=2,allow_nan=False)+'\n');temporary.replace(destination)
     class TracedModel(Model):
-        def _feed_forward(self,layer,x):
-            result=super()._feed_forward(layer,x)
+        def _feed_forward(self,layer,x,position=0):
+            result=super()._feed_forward(layer,x,position)
             print(json.dumps({'event':'layer','layer':layer,'elapsed_seconds':time.monotonic()-start}),flush=True)
             return result
     weights=None
