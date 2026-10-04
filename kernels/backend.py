@@ -63,6 +63,7 @@ class VxBackend:
             'topk': [_I, _F, _S, _S],
             'index_scores': [_F, _F, _F, _F, _S, _S, _S, _R],
             'matvec': [_F, _F, _F, _S, _S],
+            'matmul_nt': [_F, _F, _F, _S, _S, _S],
             'rmsnorm': [_F, _F, _F, _S, _R],
             'rope_glm': [_F, _F, _F, _F, _S, _S],
             'softmax': [_F, _F, _S],
@@ -85,6 +86,17 @@ class VxBackend:
             raise ValueError('matvec expects weight[rows,cols] and input[cols]')
         out = np.empty(w.shape[0], dtype=np.float32)
         self._call('matvec', out, w, x, *w.shape)
+        return out
+
+    def linear_batch(self, w, x):
+        """Native Vx X[batch,input] @ W[output,input]^T, scalar F32 reductions."""
+        w, x = _array(w, 'weight'), _array(x, 'input')
+        if w.ndim != 2 or x.ndim != 2 or w.shape[1] != x.shape[1]:
+            raise ValueError('linear_batch expects weight[output,input] and input[batch,input]')
+        if w.shape[0] * x.shape[0] > _MAX:
+            raise ValueError('linear_batch output exceeds Vx int32 indexing capacity')
+        out = np.empty((x.shape[0], w.shape[0]), dtype=np.float32)
+        self._call('matmul_nt', out, x, w, x.shape[0], w.shape[0], w.shape[1])
         return out
 
     def rmsnorm(self, x, w, eps):
