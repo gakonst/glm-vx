@@ -1,0 +1,37 @@
+{
+  "status": "completed_cpu_chat_smoke",
+  "engine_commit": "19eed85e435c772975f59aa5c432af21deaea60a",
+  "model": "unsloth/GLM-5.3-GGUF",
+  "revision": "346b3591c7f28d1a23716f97a065ecf12ec14771",
+  "quantization": "UD-IQ1_S mixed-bit",
+  "weight_bytes": 216715365893,
+  "all_six_shards_sha256_verified": true,
+  "backend": "vx-cpu-f32",
+  "prompt_token_ids": [
+    154822,
+    154824,
+    154827,
+    13041,
+    154828,
+    154841
+  ],
+  "generated_token_ids": [
+    10056,
+    752
+  ],
+  "text": "Let me",
+  "finish_reason": "length",
+  "elapsed_seconds": 2032.3357555568218,
+  "first_token_seconds_including_load": 1767.9422697648406,
+  "peak_rss_bytes": 32172982272,
+  "independent_llama_cpp_text_matches": true,
+  "reference_revision": "11fe02151f79c41d0d4af7da708755d73b9c0da6",
+  "limits": [
+    "Only two output tokens: beginning of reasoning, not a complete answer or quality evaluation.",
+    "Six-token abbreviated role prefix omits official reasoning-effort system turn.",
+    "All 78 ordinary decoder layers run, including cached generation; optional MTP layer is not used.",
+    "Shared CPU and disk: independent reference build/loading/inference overlapped this run; not a controlled benchmark.",
+    "Reference uses native quantized arithmetic; matching two greedy tokens does not establish full logit or long-context parity.",
+    "No GPU execution or performance/optimality claim."
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "gguf_vocab": 154880,
+  "hf_vocab": 154856,
+  "mismatch_count": 24,
+  "mismatch_examples": [
+    {
+      "id": 154856,
+      "gguf": "[PAD154856]",
+      "hf": null
+    },
+    {
+      "id": 154857,
+      "gguf": "[PAD154857]",
+      "hf": null
+    },
+    {
+      "id": 154858,
+      "gguf": "[PAD154858]",
+      "hf": null
+    },
+    {
+      "id": 154859,
+      "gguf": "[PAD154859]",
+      "hf": null
+    },
+    {
+      "id": 154860,
+      "gguf": "[PAD154860]",
+      "hf": null
+    },
+    {
+      "id": 154861,
+      "gguf": "[PAD154861]",
+      "hf": null
+    },
+    {
+      "id": 154862,
+      "gguf": "[PAD154862]",
+      "hf": null
+    },
+    {
+      "id": 154863,
+      "gguf": "[PAD154863]",
+      "hf": null
+    },
+    {
+      "id": 154864,
+      "gguf": "[PAD154864]",
+      "hf": null
+    },
+    {
+      "id": 154865,
+      "gguf": "[PAD154865]",
+      "hf": null
+    },
+    {
+      "id": 154866,
+      "gguf": "[PAD154866]",
+      "hf": null
+    },
+    {
+      "id": 154867,
+      "gguf": "[PAD154867]",
+      "hf": null
+    }
+  ],
+  "prompt_and_specials": {
+    "9703": {
+      "gguf": "Hello",
+      "hf": "Hello"
+    },
+    "154822": {
+      "gguf": "[gMASK]",
+      "hf": "[gMASK]"
+    },
+    "154824": {
+      "gguf": "<sop>",
+      "hf": "<sop>"
+    },
+    "154827": {
+      "gguf": "<|user|>",
+      "hf": "<|user|>"
+    },
+    "13041": {
+      "gguf": "Hi",
+      "hf": "Hi"
+    },
+    "154828": {
+      "gguf": "<|assistant|>",
+      "hf": "<|assistant|>"
+    },
+    "154841": {
+      "gguf": "<think>",
+      "hf": "<think>"
+    },
+    "154820": {
+      "gguf": "<|endoftext|>",
+      "hf": "<|endoftext|>"
+    }
+  }
+}

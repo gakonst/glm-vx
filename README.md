@@ -9,8 +9,12 @@ oracle; the `vx` backend never silently falls back to NumPy matrix operations.
 **Current status: tested CPU prototype plus an explicit NVIDIA GPU kernel/backend path.**
 The GPU path compiles to PTX; actual GPU execution and optimal performance remain
 unverified. See [GPU implementation and run instructions](gpu/README.md).
-The complete published GLM-5.3 checkpoint has not been run. The included tiny
-model has deterministic random weights and is for testing mechanics only.
+The full trained GLM-5.3 mixed-bit GGUF checkpoint has executed on CPU through
+all 78 base-decoder layers, generating **“Let me”** from a six-token abbreviated
+chat prefix. Both tokens match an independent llama.cpp CPU reference. This
+short smoke took about 34 minutes and 32.2 GB peak RSS; it is not a complete
+answer or a practical-speed result. See [actual model evidence](docs/gguf-evidence/real-chat-summary.json).
+The included tiny model has deterministic random weights and is for testing mechanics only.
 
 ## Run
 
@@ -116,8 +120,10 @@ FP8 activation-quantized GEMM path. Metadata and source revisions are recorded i
 `metadata/sources.json` and `docs/model.md`.
 
 The available machine has no detected NVIDIA GPU, about 93 GiB RAM and roughly
-326 GiB disk free at initial inspection. The checkpoint is about 756 GB: it cannot
-be downloaded here in full. No GPU hardware was rented or provisioned.
+326 GiB disk free at initial inspection. The original FP8 checkpoint is about
+756 GB and does not fit on this disk. The 216.7 GB mixed-bit GGUF checkpoint was
+downloaded in full and all six shard SHA256 hashes verified. No GPU hardware
+was rented or provisioned.
 
 To deliver an optimized production engine still requires: measured GPU tuning and tensor-core lowering, fused/parallel prefill, FP8 GEMM and quantized
 activation parity, paged KV/prefix sharing, tensor/expert parallel collectives,

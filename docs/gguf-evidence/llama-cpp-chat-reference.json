@@ -1,0 +1,31 @@
+{
+  "implementation": "llama.cpp independent CPU reference only",
+  "revision": "11fe02151f79c41d0d4af7da708755d73b9c0da6",
+  "prompt": "[gMASK]<sop><|user|>Hi<|assistant|><think>",
+  "prompt_token_ids": [
+    154822,
+    154824,
+    154827,
+    13041,
+    154828,
+    154841
+  ],
+  "generated_text": "Let me",
+  "retokenized_output_ids": [
+    10056,
+    752
+  ],
+  "output_ids_note": "IDs obtained by retokenizing the reference printed text; CLI did not emit generated token IDs.",
+  "cpu_threads": 4,
+  "gpu_layers": 0,
+  "temperature": 0,
+  "predict": 2,
+  "no_warmup": true,
+  "limitations": [
+    "Abbreviated chat prefix omits official reasoning-effort system turn.",
+    "Only two output tokens, not a complete answer.",
+    "Shared-machine run overlapping Vx inference; not a controlled benchmark.",
+    "Reference inference is separate and is not used by GLM-Vx."
+  ],
+  "command": "build/bin/llama-completion -m /path/to/GLM-5.3-UD-IQ1_S-00001-of-00006.gguf -ngl 0 -t 4 -tb 4 -c 64 -n 2 --temp 0 --no-warmup --no-conversation --verbose-prompt --special -p '[gMASK]<sop><|user|>Hi<|assistant|><think>'"
+}
