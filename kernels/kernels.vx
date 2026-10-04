@@ -123,7 +123,44 @@ fn glm_vx_matmul_nt(out: *mut f32, a: *const f32, b: *const f32, m: i32, n: i32,
         out[(base + 7) * n + c] = s7;
       }
     }
-    for r in ((m / 8) * 8)..m {
+    // Reuse each weight for 4- and 2-row tails without changing any dot's
+    // left-to-right f32 accumulation order. At most one row remains scalar.
+    let mut tail: i32 = (m / 8) * 8;
+    if m - tail >= 4 {
+      for c in 0..n {
+        let mut s0: f32 = 0.0;
+        let mut s1: f32 = 0.0;
+        let mut s2: f32 = 0.0;
+        let mut s3: f32 = 0.0;
+        for j in 0..k {
+          let w: f32 = b[c * k + j];
+          s0 = s0 + a[tail * k + j] * w;
+          s1 = s1 + a[(tail + 1) * k + j] * w;
+          s2 = s2 + a[(tail + 2) * k + j] * w;
+          s3 = s3 + a[(tail + 3) * k + j] * w;
+        }
+        out[tail * n + c] = s0;
+        out[(tail + 1) * n + c] = s1;
+        out[(tail + 2) * n + c] = s2;
+        out[(tail + 3) * n + c] = s3;
+      }
+      tail = tail + 4;
+    }
+    if m - tail >= 2 {
+      for c in 0..n {
+        let mut s0: f32 = 0.0;
+        let mut s1: f32 = 0.0;
+        for j in 0..k {
+          let w: f32 = b[c * k + j];
+          s0 = s0 + a[tail * k + j] * w;
+          s1 = s1 + a[(tail + 1) * k + j] * w;
+        }
+        out[tail * n + c] = s0;
+        out[(tail + 1) * n + c] = s1;
+      }
+      tail = tail + 2;
+    }
+    for r in tail..m {
       for c in 0..n {
         let mut sum: f32 = 0.0;
         for j in 0..k { sum = sum + a[r * k + j] * b[c * k + j]; }
