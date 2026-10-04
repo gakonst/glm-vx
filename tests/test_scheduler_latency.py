@@ -186,3 +186,35 @@ def test_configured_prefill_budget_is_shared_across_long_requests():
             model.expect(1, turn+1, 15); model.advance()
             for offset in range(3):
                 model.expect(2+turn%2, (turn//2)*3+offset); model.advance()
+
+
+def test_slow_consumer_has_fixed_queue_and_does_not_block_other_requests():
+    with running(prefill_chunk=1, max_pending_events=3) as (scheduler, model):
+        abandoned = scheduler.submit([1], 30)
+        model.expect(1, 0)
+        survivor = scheduler.submit([2], 1)
+        model.release_all()
+        assert done(survivor)['reason'] == 'length'
+        with scheduler.lock:
+            assert scheduler.lock.wait_for(lambda: scheduler.count == 0, timeout=3)
+        # Two tokens and one terminal event; limit independent of max_tokens.
+        assert abandoned.events.maxsize == abandoned.events.qsize() == 3
+        assert done(abandoned)['reason'] == 'backpressure'
+        assert abandoned.generated == 2
+        assert abandoned.cache is None
+        assert scheduler.status()['reserved_tokens'] == 0
+
+
+def test_cancellation_sweeps_queued_request_before_other_long_prefills():
+    with running(prefill_chunk=1, max_sequences=4) as (scheduler, model):
+        scheduler.submit([1] * 30, 1)
+        model.expect(1, 0)
+        scheduler.submit([2] * 30, 1)
+        cancelled = scheduler.submit([3] * 30, 1)
+        scheduler.cancel(cancelled)
+        model.advance()
+        # Reaping happens before another indivisible model forward starts.
+        model.expect(2, 0)
+        assert done(cancelled)['reason'] == 'cancelled'
+        assert cancelled.generated == 0
+        assert scheduler.status()['active_requests'] == 2

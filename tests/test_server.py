@@ -61,3 +61,60 @@ def test_disconnected_json_client_cancels_between_forwards():
         assert model.calls==1
     finally:
         release.set();client.close();server.shutdown();server.server_close();sched.close();thread.join()
+
+
+def test_http_prefix_reuse_json_sse_and_health_accounting():
+    from glm_vx.model import Model as TinyModel, tiny_weights
+    from glm_vx.tiny import tiny_config
+    from glm_vx.backend import NumpyBackend
+    cfg=tiny_config(); model=TinyModel(cfg,tiny_weights(cfg,seed=11),NumpyBackend())
+    sched=Scheduler(model,prefix_cache_bytes=1000000,prefill_chunk=1)
+    server=Server(('127.0.0.1',0),sched)
+    thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+    try:
+        body={'prompt':[1,5,3,8], 'max_tokens':5, 'temperature':.8, 'seed':42}
+        code,cold=request(server.server_port,body)
+        assert code==200
+        cold=json.loads(cold)
+        assert cold['usage']['prompt_tokens_details']['cached_tokens']==0
+        code,warm=request(server.server_port,{**body,'stream':True})
+        assert code==200
+        events=[json.loads(line[6:]) for line in warm.decode().splitlines() if line.startswith('data: ') and line!='data: [DONE]']
+        assert events[-1]['choices']==cold['choices']
+        assert events[-1]['usage']['prompt_tokens_details']['cached_tokens']==4
+        assert events[-1]['timings']['prefill_seconds']==0
+        c=http.client.HTTPConnection('127.0.0.1',server.server_port,timeout=5)
+        c.request('GET','/health'); health=json.loads(c.getresponse().read());c.close()
+        assert health['prefix_cache']['hits']==1
+        assert 0 < health['prefix_cache']['retained_bytes'] <= 1000000
+    finally: server.shutdown();server.server_close();sched.close();thread.join()
+
+
+def test_disconnected_stream_client_cancels_cached_decode():
+    import socket
+    import time
+    from glm_vx.model import Model as TinyModel, tiny_weights
+    from glm_vx.tiny import tiny_config
+    from glm_vx.backend import NumpyBackend
+    cfg=tiny_config(); model=TinyModel(cfg,tiny_weights(cfg,seed=11),NumpyBackend())
+    sched=Scheduler(model,prefix_cache_bytes=1000000)
+    server=Server(('127.0.0.1',0),sched)
+    thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+    entered,release=threading.Event(),threading.Event(); calls=[]
+    client=socket.create_connection(server.server_address)
+    try:
+        assert request(server.server_port,{'prompt':[1,3,5],'max_tokens':1})[0]==200
+        original=model.forward
+        def blocked(token,cache):
+            calls.append(cache.position);entered.set();assert release.wait(5)
+            return original(token,cache)
+        model.forward=blocked
+        body=json.dumps({'prompt':[1,3,5],'max_tokens':20,'stream':True}).encode()
+        client.sendall(b'POST /v1/completions HTTP/1.1\r\nHost: localhost\r\nContent-Length: '+str(len(body)).encode()+b'\r\n\r\n'+body)
+        assert entered.wait(2)
+        client.shutdown(socket.SHUT_RDWR);client.close()
+        time.sleep(.4);release.set()
+        with sched.lock: assert sched.lock.wait_for(lambda: sched.count==0,timeout=3)
+        assert calls==[3]
+        assert sched.status()['prefix_cache']['hits']==1
+    finally: release.set();client.close();server.shutdown();server.server_close();sched.close();thread.join()

@@ -12,12 +12,13 @@ import threading
 import time
 import uuid
 import numpy as np
+from .prefix import PrefixCache
 
 class BusyError(Exception): pass
 
 @dataclass
 class Request:
-    tokens: list
+    tokens: tuple
     max_tokens: int
     temperature: float = 0.0
     seed: int = 0
@@ -31,10 +32,19 @@ class Request:
     created: float = field(default_factory=time.monotonic)
     first_token_at: float | None = None
     rng: object = None
+    cached_tokens: int = 0
+    finished: bool = False
+    reservation: int = 0
+    prefill_seconds: float = 0.0
+    decode_seconds: float = 0.0
+    prefix_seconds: float = 0.0
 
 class Scheduler:
-    def __init__(self, model, *, max_sequences=8, token_budget=8192, prefill_chunk=16, decode_prefill_tokens=4):
+    def __init__(self, model, *, max_sequences=8, token_budget=8192, prefill_chunk=16, decode_prefill_tokens=4, prefix_cache_bytes=0, max_pending_events=64):
         if min(max_sequences,token_budget,prefill_chunk,decode_prefill_tokens) < 1: raise ValueError("positive limits required")
+        if type(max_pending_events) is not int or max_pending_events < 2: raise ValueError("at least two pending events required")
+        self.max_pending_events = max_pending_events
+        self.prefix_cache = PrefixCache(model, prefix_cache_bytes)
         self.model = model
         self.max_sequences = max_sequences
         self.token_budget = token_budget
@@ -58,10 +68,11 @@ class Scheduler:
         if type(seed) is not int or seed < 0: raise ValueError("seed must be a nonnegative integer")
         amount = len(tokens) + max_tokens
         if amount > cfg['max_position_embeddings']: raise ValueError("request exceeds context limit")
-        req = Request(list(tokens),max_tokens,float(temperature),seed)
+        req = Request(tuple(tokens),max_tokens,float(temperature),seed)
+        req.reservation = amount
         req.rng = np.random.default_rng(seed)
         # Buffer cannot grow unbounded when a client stops reading.
-        req.events = queue.Queue(maxsize=max_tokens+2)
+        req.events = queue.Queue(maxsize=min(max_tokens+2, self.max_pending_events))
         with self.lock:
             if self.closed: raise BusyError("scheduler is closed")
             if self.count >= self.max_sequences or self.reserved+amount > self.token_budget:
@@ -73,17 +84,23 @@ class Scheduler:
         return req
 
     def _finish(self, req, reason, error=None):
+        if req.finished: return
+        req.finished = True
         req.cache = None
         with self.lock:
-            self.reserved -= len(req.tokens)+req.max_tokens
+            self.reserved -= req.reservation
             self.count -= 1
             self.lock.notify_all()
+        # Keep one terminal slot even for an abandoned consumer.
         req.events.put_nowait({"type":"done","reason":reason,"error":error,
-            "prompt_tokens":len(req.tokens),"completion_tokens":req.generated})
+            "prompt_tokens":len(req.tokens),"completion_tokens":req.generated,
+            "cached_prompt_tokens":req.cached_tokens,
+            "timings":{"prefill_seconds":req.prefill_seconds,"decode_seconds":req.decode_seconds,
+                       "prefix_seconds":req.prefix_seconds}})
 
     def _sample(self, logits, req):
         logits = np.asarray(logits,dtype=np.float32)
-        if logits.ndim != 1 or not np.all(np.isfinite(logits)): raise ValueError("nonfinite or invalid logits")
+        if logits.shape != (self.model.config['vocab_size'],) or not np.all(np.isfinite(logits)): raise ValueError("nonfinite or invalid logits")
         if req.temperature == 0: return int(np.argmax(logits))
         scaled = (logits.astype(np.float64)-float(np.max(logits)))/req.temperature
         probs = np.exp(scaled)
@@ -92,16 +109,30 @@ class Scheduler:
 
     def _step(self, req, prefill_limit):
         if self.closed or req.cancelled.is_set(): self._finish(req,"cancelled"); return False
-        if req.cache is None: req.cache = self.model.new_cache()
+        if req.events.qsize() >= req.events.maxsize-1:
+            self._finish(req,"backpressure","client output queue is full"); return False
+        hit_logits = None
+        if req.cache is None:
+            start = time.perf_counter()
+            hit = self.prefix_cache.lookup(req.tokens)
+            req.prefix_seconds += time.perf_counter()-start
+            if hit is None:
+                req.cache = self.model.new_cache()
+            else:
+                req.cache = hit.cache
+                req.cursor = req.cached_tokens = hit.tokens
+                hit_logits = hit.logits
         if req.cursor < len(req.tokens):
             end = min(req.cursor+prefill_limit,len(req.tokens))
             while req.cursor < end:
                 if self.closed or req.cancelled.is_set(): self._finish(req,"cancelled"); return False
+                start = time.perf_counter()
                 prefill_token = getattr(self.model, "prefill_token", None)
                 if req.cursor < len(req.tokens)-1 and callable(prefill_token):
                     prefill_token(req.tokens[req.cursor],req.cache)
                 else:
                     logits = self.model.forward(req.tokens[req.cursor],req.cache)
+                req.prefill_seconds += time.perf_counter()-start
                 req.cursor += 1
                 if req.cursor < end:
                     # A forward call is indivisible. Reconsider admissions at
@@ -110,8 +141,17 @@ class Scheduler:
                         if self.pending or self.closed:
                             return True
             if req.cursor < len(req.tokens): return True
+            if self.closed or req.cancelled.is_set(): self._finish(req,"cancelled"); return False
+            start = time.perf_counter()
+            self.prefix_cache.store(req.tokens, req.cache, logits)
+            req.prefix_seconds += time.perf_counter()-start
+        elif hit_logits is not None:
+            logits = hit_logits
         else:
+            start = time.perf_counter()
             logits = self.model.forward(req.next_token,req.cache)
+            req.decode_seconds += time.perf_counter()-start
+        if self.closed or req.cancelled.is_set(): self._finish(req,"cancelled"); return False
         token = self._sample(logits,req)
         req.generated += 1
         req.next_token = token
@@ -134,6 +174,14 @@ class Scheduler:
                 if self.closed:
                     for req in (*decoding, *prefilling): req.cancelled.set()
                 if self.closed and not decoding and not prefilling: return
+
+            # Reap every cancelled admission at the next model boundary, even
+            # if its ordinary round-robin prefill turn is far away.
+            for requests in (decoding, prefilling):
+                for _ in range(len(requests)):
+                    req = requests.popleft()
+                    if req.cancelled.is_set(): self._finish(req, "cancelled")
+                    else: requests.append(req)
 
             # One turn for every ready decoder, followed by bounded *total*
             # prefill work, rather than a chunk for each prefilling request.
@@ -162,7 +210,12 @@ class Scheduler:
     def status(self):
         with self.lock:
             return {"active_requests":self.count,"reserved_tokens":self.reserved,
-                    "max_sequences":self.max_sequences,"token_budget":self.token_budget}
+                    "max_sequences":self.max_sequences,"token_budget":self.token_budget,
+                    "max_pending_events":self.max_pending_events,"prefix_cache":self.prefix_cache.status()}
+
+    def cancel(self, req):
+        req.cancelled.set()
+        with self.lock: self.lock.notify_all()
 
     def close(self, timeout=10):
         with self.lock:
@@ -171,3 +224,4 @@ class Scheduler:
         self.thread.join(timeout=timeout)
         if self.thread.is_alive():
             raise TimeoutError("model worker is still stopping; checkpoint resources must remain open")
+        self.prefix_cache.clear()

@@ -11,7 +11,7 @@ from urllib.parse import urlsplit
 
 
 def completion(url, prompt, tokens, timeout=60):
-    started = time.perf_counter(); times = []; ids = []; finished = False
+    started = time.perf_counter(); times = []; ids = []; finished = False; usage = {}; timings = {}
     conn = None
     try:
         parsed = urlsplit(url)
@@ -49,6 +49,8 @@ def completion(url, prompt, tokens, timeout=60):
                 if choice['finish_reason'] not in ('length','stop'):
                     raise RuntimeError('unexpected finish reason')
                 if choice.get('token_ids') != ids: raise RuntimeError('terminal token IDs disagree')
+                usage = event.get("usage", {})
+                timings = event.get("timings", {})
                 finished = True
                 continue
             if finished: raise RuntimeError('tokens after finish')
@@ -60,7 +62,8 @@ def completion(url, prompt, tokens, timeout=60):
             ids.extend(emitted); times.extend([tick] * len(emitted))
         if not ids: raise RuntimeError('no output tokens')
         return {'ok':True, 'prompt_tokens':len(prompt), 'output_tokens':len(ids),
-                'ttft_ms':(times[0]-started)*1000,
+                'cached_prompt_tokens':usage.get('prompt_tokens_details', {}).get('cached_tokens', 0),
+                'server_timings':timings, 'ttft_ms':(times[0]-started)*1000,
                 'inter_token_ms':[(b-a)*1000 for a,b in zip(times,times[1:])],
                 'latency_ms':(time.perf_counter()-started)*1000,
                 'output_sha256':hashlib.sha256(json.dumps(ids).encode()).hexdigest()}
@@ -85,6 +88,10 @@ def summarize(rows, elapsed):
     successful = [row for row in rows if row['ok']]
     return {'successful_requests':len(successful), 'failed_requests':len(rows)-len(successful),
             'elapsed_seconds':elapsed,
+            'cached_prompt_tokens':sum(row.get('cached_prompt_tokens',0) for row in successful),
+            'computed_prompt_tokens':sum(row.get('prompt_tokens',0)-row.get('cached_prompt_tokens',0) for row in successful),
+            'server_seconds':{key:sum(row.get('server_timings',{}).get(key,0) for row in successful)
+                              for key in ('prefill_seconds','decode_seconds','prefix_seconds')},
             'successful_output_tokens':sum(row['output_tokens'] for row in successful),
             'output_tokens_per_second':sum(row['output_tokens'] for row in successful)/elapsed,
             'ttft_ms':percentiles([row['ttft_ms'] for row in successful]),
@@ -101,14 +108,16 @@ def main():
     p.add_argument('--tokens', type=int, default=32)
     p.add_argument('--vocab-size', type=int, default=256)
     p.add_argument('--timeout', type=float, default=60)
+    p.add_argument('--prompt-reuse', type=int, default=0, help='repeat prompts from this many request templates; 0 uses unique prompts')
     p.add_argument('--warmup', type=int, default=1)
     p.add_argument('--output', required=True)
     args = p.parse_args()
     try: lengths = [int(n) for n in args.prompt_lengths.split(',')]
     except ValueError: p.error('prompt lengths must be comma-separated integers')
-    if min(args.requests,args.concurrency,args.tokens,args.vocab_size,*lengths) < 1 or args.warmup < 0 or not math.isfinite(args.timeout) or args.timeout <= 0:
+    if min(args.requests,args.concurrency,args.tokens,args.vocab_size,*lengths) < 1 or args.warmup < 0 or args.prompt_reuse < 0 or not math.isfinite(args.timeout) or args.timeout <= 0:
         p.error('positive workload sizes/timeout and nonnegative warmup required')
     def run(index):
+        if args.prompt_reuse: index %= args.prompt_reuse
         length = lengths[index % len(lengths)]
         prompt = [(index*17 + j*3 + 1) % args.vocab_size for j in range(length)]
         return completion(args.url, prompt, args.tokens, args.timeout)

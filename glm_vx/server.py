@@ -35,6 +35,7 @@ class Handler(BaseHTTPRequestHandler):
     def _json(self,code,value):
         data=json.dumps(value,allow_nan=False).encode()
         self.send_response(code)
+        if code == 429: self.send_header('Retry-After', '1')
         self.send_header('Content-Type','application/json')
         self.send_header('Content-Length',str(len(data)))
         self.end_headers(); self.wfile.write(data)
@@ -96,7 +97,7 @@ class Handler(BaseHTTPRequestHandler):
                         self._sse({'id':req.id,'object':'text_completion','created':created,'model':self.server.model_name,
                             'choices':[{'index':0,'text':'','token_ids':[ids[-1]],'finish_reason':None}]})
                 else:
-                    if event['reason']=='error':
+                    if event['reason'] in ('error', 'backpressure'):
                         if streaming: self._sse({'error':event['error']})
                         else: self._json(500,{'error':event['error']})
                     else:
@@ -104,7 +105,9 @@ class Handler(BaseHTTPRequestHandler):
                         result={'id':req.id,'object':'text_completion','created':created,'model':self.server.model_name,
                             'choices':[{'index':0,'text':text,'token_ids':ids,'finish_reason':event['reason']}],
                             'usage':{'prompt_tokens':event['prompt_tokens'],'completion_tokens':event['completion_tokens'],
-                                'total_tokens':event['prompt_tokens']+event['completion_tokens']}}
+                                'total_tokens':event['prompt_tokens']+event['completion_tokens'],
+                                'prompt_tokens_details':{'cached_tokens':event['cached_prompt_tokens']}},
+                            'timings':event['timings']}
                         if streaming:self._sse(result)
                         else:self._json(200,result)
                     if streaming:self.wfile.write(b'data: [DONE]\n\n'); self.wfile.flush()
@@ -115,7 +118,7 @@ class Handler(BaseHTTPRequestHandler):
             if not streaming:self._json(400,{'error':str(exc)})
         except (BrokenPipeError,ConnectionResetError,TimeoutError):pass
         finally:
-            if req:req.cancelled.set()
+            if req:self.server.scheduler.cancel(req)
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
@@ -130,6 +133,8 @@ def main():
     p.add_argument('--tokenizer',help='local tokenizer.json')
     p.add_argument('--host',default='127.0.0.1'); p.add_argument('--port',type=int,default=8000)
     p.add_argument('--max-sequences',type=int,default=8); p.add_argument('--token-budget',type=int,default=8192)
+    p.add_argument('--prefix-cache-mib',type=int,default=0,help='CPU prompt snapshot storage budget; disabled by default, includes retained Python storage')
+    p.add_argument('--max-pending-events',type=int,default=64,help='bounded unread output events per request; slow consumers are terminated')
     p.add_argument('--prefill-chunk',type=int,default=16)
     p.add_argument('--decode-prefill-tokens',type=int,default=4,help='total prefill tokens per round with active decoders; lower favors decode latency')
     p.add_argument('--gpu-ptx-dir',help='directory containing compiled kernels.ptx')
@@ -137,6 +142,8 @@ def main():
     p.add_argument('--gpu-weight-cache-mib',type=int,default=512)
     p.add_argument('--gpu-tuning',help='verified shape-specific plan produced by python -m gpu.tune')
     args=p.parse_args()
+    if args.prefix_cache_mib<0:p.error('prefix cache must be nonnegative')
+    if args.max_pending_events<2:p.error('max pending events must be at least two')
     if args.gpu_weight_cache_mib<0:p.error('GPU weight cache must be nonnegative')
     if args.decoded_cache_mib<0:p.error('decoded cache must be nonnegative')
     from .model import Model,tiny_weights
@@ -175,7 +182,7 @@ def main():
         from tokenizers import Tokenizer
         tokenizer=Tokenizer.from_file(args.tokenizer)
     model=Model(config,weights,backend)
-    scheduler=Scheduler(model,max_sequences=args.max_sequences,token_budget=args.token_budget,prefill_chunk=args.prefill_chunk,decode_prefill_tokens=args.decode_prefill_tokens)
+    scheduler=Scheduler(model,max_sequences=args.max_sequences,token_budget=args.token_budget,prefill_chunk=args.prefill_chunk,decode_prefill_tokens=args.decode_prefill_tokens,prefix_cache_bytes=args.prefix_cache_mib*1024**2,max_pending_events=args.max_pending_events)
     server=Server((args.host,args.port),scheduler,tokenizer,name)
     print(json.dumps({'listening':f'http://{args.host}:{server.server_port}','model':name,'backend':backend.name}),flush=True)
     try:server.serve_forever()
