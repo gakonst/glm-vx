@@ -6,7 +6,9 @@ orchestration, request scheduling and HTTP. No vLLM, SGLang, Transformers or
 PyTorch inference runtime is used. NumPy supplies storage and an explicit test
 oracle; the `vx` backend never silently falls back to NumPy matrix operations.
 
-**Current status: CPU correctness prototype, not an optimal GPU serving engine.**
+**Current status: tested CPU prototype plus an explicit NVIDIA GPU kernel/backend path.**
+The GPU path compiles to PTX; actual GPU execution and optimal performance remain
+unverified. See [GPU implementation and run instructions](gpu/README.md).
 The complete published GLM-5.3 checkpoint has not been run. The included tiny
 model has deterministic random weights and is for testing mechanics only.
 
@@ -48,6 +50,13 @@ contain one delta ID each. Clients must not concatenate the final full list agai
 
 The service binds loopback by default. It has no authentication or TLS; place a
 suitable gateway in front before exposing it to a network.
+
+## GPU implementation
+
+[GPU code](gpu/README.md) adds coalesced F32/FP8 projection, fused residual/RMSNorm,
+warp/block reductions, split online-softmax compressed MLA, and a CUDA Driver API
+runtime. Use `--backend vx-gpu` for the explicitly hybrid serving adapter.
+The [original CPU report](REPORT.md) remains a baseline, not a GPU benchmark.
 
 ## Implementation
 
@@ -93,8 +102,7 @@ The available machine has no detected NVIDIA GPU, about 93 GiB RAM and roughly
 326 GiB disk free at initial inspection. The checkpoint is about 756 GB: it cannot
 be downloaded here in full. No GPU hardware was rented or provisioned.
 
-To deliver an optimized production engine still requires: GPU-target Vx kernels
-and measured tensor-core lowering, fused/parallel prefill, FP8 GEMM and quantized
+To deliver an optimized production engine still requires: measured GPU tuning and tensor-core lowering, fused/parallel prefill, FP8 GEMM and quantized
 activation parity, paged KV/prefix sharing, tensor/expert parallel collectives,
 GPU topology-specific placement, trained-checkpoint logits/generation parity,
 and throughput/latency benchmarks against established engines on matching

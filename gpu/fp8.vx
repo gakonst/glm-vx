@@ -1,0 +1,89 @@
+// FP8 e4m3fn block-scaled projection. See FP8.md for the launch contract.
+// Keep this CPU-reference prefix self-contained: test_fp8.py compiles it unchanged.
+fn glm_vx_fp8_decode(byte: u8) -> f32 {
+  let bits: i32 = byte as i32;
+  let exponent: i32 = (bits >> 3) & 15;
+  let mantissa: i32 = bits & 7;
+  let mut magnitude: f32 = (mantissa as f32) / 512.0;
+  if exponent > 0 {
+    let power: i32 = 1 << (exponent - 1);
+    magnitude = ((8 + mantissa) as f32) * (power as f32) / 512.0;
+  }
+  // e4m3fn has no infinity: exponent=15/mantissa=7 encodes NaN.
+  if exponent == 15 { if mantissa == 7 { magnitude = 0.0 / 0.0; } }
+  let mut sign: f32 = 1.0;
+  if (bits & 128) != 0 { sign = -1.0; }
+  return magnitude * sign;
+}
+
+// Sequential oracle for CPU validation; not the GPU execution path.
+fn glm_vx_fp8_matvec_reference(out: *mut f32, weight: *const u8, scales: *const f32, x: *const f32, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols < 0 { return -1; }
+  let scale_cols: i64 = ((cols as i64) + 127) / 128;
+  unsafe {
+    for row in 0..rows {
+      let row_base: i64 = (row as i64) * (cols as i64);
+      let scale_base: i64 = ((row as i64) / 128) * scale_cols;
+      let mut sum: f32 = 0.0;
+      for col in 0..cols {
+        let c: i64 = col as i64;
+        let value: f32 = glm_vx_fp8_decode(weight[row_base + c]);
+        sum = sum + (value * scales[scale_base + c / 128]) * x[c];
+      }
+      out[row] = sum;
+    }
+  }
+  return 0;
+}
+
+// GPU ENTRY: CPU tests compile the unchanged prefix above this marker.
+extern "C" {
+  fn vx_gpu_thread_idx_x() -> i32;
+  fn vx_gpu_block_idx_x() -> i32;
+  fn vx_gpu_block_dim_x() -> i32;
+  fn vx_gpu_shuffle_down_f32(value: f32, delta: i32) -> f32;
+}
+
+// One complete warp owns each row; block size must be a multiple of 32.
+// Four adjacent-lane byte loads cover each 128-column scale tile.
+fn glm_vx_gpu_fp8_matvec(out: *mut f32, weight: *const u8, scales: *const f32, x: *const f32, rows: i32, cols: i32) -> void {
+  if rows <= 0 { return; }
+  if cols < 0 { return; }
+  unsafe {
+    let tid: i32 = vx_gpu_thread_idx_x();
+    let lane: i32 = tid & 31;
+    let block: i32 = vx_gpu_block_dim_x();
+    if block < 32 { return; }
+    if block > 1024 { return; }
+    if block % 32 != 0 { return; }
+    let warps: i32 = block / 32;
+    let row: i64 = (vx_gpu_block_idx_x() as i64) * (warps as i64) + ((tid / 32) as i64);
+    if row < (rows as i64) {
+      let k: i64 = cols as i64;
+      let scale_cols: i64 = (k + 127) / 128;
+      let row_base: i64 = row * k;
+      let scale_base: i64 = (row / 128) * scale_cols;
+      let mut sum: f32 = 0.0;
+      for tile in 0..scale_cols {
+        let scale: f32 = scales[scale_base + tile];
+        let tile_base: i64 = tile * 128 + (lane as i64);
+        for step in 0..4 {
+          let col: i64 = tile_base + ((step * 32) as i64);
+          if col < k {
+            let value: f32 = glm_vx_fp8_decode(weight[row_base + col]);
+            sum = sum + (value * scale) * x[col];
+          }
+        }
+      }
+      // This branch is uniform across each warp, including a partial final block.
+      sum = sum + vx_gpu_shuffle_down_f32(sum, 16);
+      sum = sum + vx_gpu_shuffle_down_f32(sum, 8);
+      sum = sum + vx_gpu_shuffle_down_f32(sum, 4);
+      sum = sum + vx_gpu_shuffle_down_f32(sum, 2);
+      sum = sum + vx_gpu_shuffle_down_f32(sum, 1);
+      if lane == 0 { out[row] = sum; }
+    }
+    return;
+  }
+}

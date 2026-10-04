@@ -174,6 +174,16 @@ class GlmMoeDsaModel:
         rotary_keys = np.stack([state.rope_keys[int(i)] for i in selected])
         kv_weight = self._weight(prefix + '.kv_b_proj.weight').reshape(self.heads, self.nope + self.value_dim, self.rank)
         outputs = []
+        fused = getattr(b, 'compressed_attention', None)
+        if callable(fused):
+            latent_queries = np.stack([b.matvec(kv_weight[h, :self.nope].T, query[h, :self.nope])
+                                       for h in range(self.heads)])
+            rotary_queries = np.stack([b.rope(query[h, self.nope:], position, self.theta)
+                                       for h in range(self.heads)])
+            attended = fused(latent_queries, rotary_queries, latents, rotary_keys,
+                             (self.nope + self.rot) ** -0.5)
+            outputs = [b.matvec(kv_weight[h, self.nope:], attended[h]) for h in range(self.heads)]
+            return self._linear(prefix + '.o_proj', np.concatenate(outputs), has_bias), selected
         for h in range(self.heads):
             # q_nope . (W_k c) == c . (W_k^T q_nope).
             latent_query = b.matvec(kv_weight[h, :self.nope].T, query[h, :self.nope])

@@ -1,0 +1,42 @@
+{
+  "entries": [
+    "glm_vx_gpu_softmax_rows",
+    "glm_vx_gpu_softmax",
+    "glm_vx_gpu_rmsnorm_rows",
+    "glm_vx_gpu_rmsnorm",
+    "glm_vx_gpu_router",
+    "glm_vx_gpu_mla_merge",
+    "glm_vx_gpu_mla_partial",
+    "glm_vx_gpu_matvec",
+    "glm_vx_gpu_rope_glm",
+    "glm_vx_gpu_swiglu",
+    "glm_vx_gpu_residual_rmsnorm"
+  ],
+  "hardware_index_registers": [
+    "%ctaid.x",
+    "%nctaid.x",
+    "%ntid.x",
+    "%tid.x"
+  ],
+  "warp_shuffle": true,
+  "block_barrier": true,
+  "shared_memory": true,
+  "device_exp2": true,
+  "device_sqrt": true,
+  "schema": "glm-vx-ptx-v1",
+  "arch": "sm_90",
+  "ptx_version": "7.8",
+  "source_sha256": "85463e38228f811ec2357d4eafb629eabf9ac74bfcdf081801d448979fd79e05",
+  "ptx_sha256": "20aad9f6475dbeb2a21acb9125d1b8aa0636d5517368439b670d24b4ed3e786d",
+  "shared_floats": 256,
+  "gpu_execution_validated": false,
+  "tools": {
+    "vxc": "vxc 0.0.2",
+    "mlir-translate": "Ubuntu LLVM version 22.1.8",
+    "opt": "Ubuntu LLVM version 22.1.8",
+    "llc": "Ubuntu LLVM version 22.1.8"
+  },
+  "assembly_validated": true,
+  "ptxas_version": "ptxas: NVIDIA (R) Ptx optimizing assembler\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Tue_May_27_02:18:05_PDT_2025\nCuda compilation tools, release 12.9, V12.9.86\nBuild cuda_12.9.r12.9/compiler.36037853_0",
+  "cubin_sha256": "54e2b64d45d45e53c8f3a6d009a88300c7c9ed9c5a5dccc7da55ab574fb0b483"
+}

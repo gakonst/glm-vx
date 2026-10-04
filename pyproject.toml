@@ -12,4 +12,4 @@ test = ["pytest>=8"]
 [project.scripts]
 glm-vx = "glm_vx.server:main"
 [tool.setuptools.packages.find]
-include = ["glm_vx*", "kernels*"]
+include = ["glm_vx*", "kernels*", "gpu*"]

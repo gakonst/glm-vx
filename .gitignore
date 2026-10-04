@@ -9,3 +9,7 @@ build/
 *.log
 get-pip.py
 upstream_model_reference.py
+*.ptx
+*.cubin
+gpu/toolchain/cuda-tools/
+gpu/toolchain/experiments/

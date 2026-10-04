@@ -1,0 +1,6 @@
+ptxas info    : 0 bytes gmem
+ptxas info    : Compiling entry function 'glm_vx_gpu_fp8_matvec' for 'sm_90'
+ptxas info    : Function properties for glm_vx_gpu_fp8_matvec
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 29 registers, used 0 barriers
+ptxas info    : Compile time = 5.931 ms

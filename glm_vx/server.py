@@ -116,7 +116,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--backend',choices=['vx','numpy-reference'],default='vx')
+    p.add_argument('--backend',choices=['vx','vx-gpu','numpy-reference'],default='vx')
     source=p.add_mutually_exclusive_group(required=True)
     source.add_argument('--tiny',action='store_true',help='random weights, correctness demo only')
     source.add_argument('--checkpoint',help='local checkpoint directory; experimental CPU path')
@@ -124,17 +124,27 @@ def main():
     p.add_argument('--host',default='127.0.0.1'); p.add_argument('--port',type=int,default=8000)
     p.add_argument('--max-sequences',type=int,default=8); p.add_argument('--token-budget',type=int,default=8192)
     p.add_argument('--prefill-chunk',type=int,default=16)
+    p.add_argument('--gpu-ptx-dir',help='directory containing compiled kernels.ptx')
+    p.add_argument('--gpu-device',type=int,default=0)
+    p.add_argument('--gpu-weight-cache-mib',type=int,default=512)
+    p.add_argument('--gpu-tuning',help='verified shape-specific plan produced by python -m gpu.tune')
     args=p.parse_args()
+    if args.gpu_weight_cache_mib<0:p.error('GPU weight cache must be nonnegative')
     from .model import Model,tiny_weights
     if args.backend=='vx':
         from kernels.backend import VxBackend
         backend=VxBackend()
+    elif args.backend=='vx-gpu':
+        from gpu.backend import GPUBackend
+        backend=GPUBackend(args.gpu_ptx_dir,args.gpu_device,args.gpu_weight_cache_mib*1024**2,args.gpu_tuning)
     else:
         from .backend import NumpyBackend
         backend=NumpyBackend()
     if args.tiny:
         from .tiny import tiny_config
         config=tiny_config(); weights=tiny_weights(config,seed=7); name='glm-vx-tiny-random'
+        if args.backend=='vx-gpu':
+            for value in weights.values():value.flags.writeable=False
     else:
         from .checkpoint import Checkpoint
         from .config import GLMConfig
@@ -156,5 +166,6 @@ def main():
     finally:
         server.server_close(); scheduler.close()
         if hasattr(weights,'close'):weights.close()
+        if hasattr(backend,'close'):backend.close()
 
 if __name__=='__main__':main()

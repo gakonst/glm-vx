@@ -1,0 +1,56 @@
+ptxas info    : 0 bytes gmem
+ptxas info    : Compiling entry function 'glm_vx_gpu_residual_rmsnorm' for 'sm_80'
+ptxas info    : Function properties for glm_vx_gpu_residual_rmsnorm
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 32 registers, used 1 barriers, 1024 bytes smem, 404 bytes cmem[0]
+ptxas info    : Compile time = 16.928 ms
+ptxas info    : Compiling entry function 'glm_vx_gpu_swiglu' for 'sm_80'
+ptxas info    : Function properties for glm_vx_gpu_swiglu
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 22 registers, used 0 barriers, 380 bytes cmem[0]
+ptxas info    : Compile time = 7.862 ms
+ptxas info    : Compiling entry function 'glm_vx_gpu_rope_glm' for 'sm_80'
+ptxas info    : Function properties for glm_vx_gpu_rope_glm
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 22 registers, used 0 barriers, 392 bytes cmem[0]
+ptxas info    : Compile time = 3.267 ms
+ptxas info    : Compiling entry function 'glm_vx_gpu_matvec' for 'sm_80'
+ptxas info    : Function properties for glm_vx_gpu_matvec
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 0 barriers, 384 bytes cmem[0]
+ptxas info    : Compile time = 7.891 ms
+ptxas info    : Compiling entry function 'glm_vx_gpu_mla_partial' for 'sm_80'
+ptxas info    : Function properties for glm_vx_gpu_mla_partial
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 40 registers, used 1 barriers, 1024 bytes smem, 440 bytes cmem[0]
+ptxas info    : Compile time = 17.521 ms
+ptxas info    : Compiling entry function 'glm_vx_gpu_mla_merge' for 'sm_80'
+ptxas info    : Function properties for glm_vx_gpu_mla_merge
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 32 registers, used 0 barriers, 388 bytes cmem[0]
+ptxas info    : Compile time = 15.332 ms
+ptxas info    : Compiling entry function 'glm_vx_gpu_router' for 'sm_80'
+ptxas info    : Function properties for glm_vx_gpu_router
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 24 registers, used 1 barriers, 396 bytes cmem[0]
+ptxas info    : Compile time = 11.825 ms
+ptxas info    : Compiling entry function 'glm_vx_gpu_rmsnorm' for 'sm_80'
+ptxas info    : Function properties for glm_vx_gpu_rmsnorm
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 28 registers, used 1 barriers, 1024 bytes smem, 384 bytes cmem[0]
+ptxas info    : Compile time = 18.987 ms
+ptxas info    : Compiling entry function 'glm_vx_gpu_rmsnorm_rows' for 'sm_80'
+ptxas info    : Function properties for glm_vx_gpu_rmsnorm_rows
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 1 barriers, 1024 bytes smem, 388 bytes cmem[0]
+ptxas info    : Compile time = 19.185 ms
+ptxas info    : Compiling entry function 'glm_vx_gpu_softmax' for 'sm_80'
+ptxas info    : Function properties for glm_vx_gpu_softmax
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 27 registers, used 1 barriers, 1024 bytes smem, 372 bytes cmem[0]
+ptxas info    : Compile time = 15.424 ms
+ptxas info    : Compiling entry function 'glm_vx_gpu_softmax_rows' for 'sm_80'
+ptxas info    : Function properties for glm_vx_gpu_softmax_rows
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 30 registers, used 1 barriers, 1024 bytes smem, 376 bytes cmem[0]
+ptxas info    : Compile time = 16.321 ms

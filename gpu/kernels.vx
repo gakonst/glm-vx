@@ -1,0 +1,473 @@
+// Parallel f32 NVIDIA kernels written in Vx. ABI/launch contracts: kernels.h.
+// The compiler adapter replaces only these hardware/math externs with NVVM.
+extern "C" {
+  fn vx_gpu_thread_idx_x() -> i32;
+  fn vx_gpu_block_idx_x() -> i32;
+  fn vx_gpu_block_dim_x() -> i32;
+  fn vx_gpu_grid_dim_x() -> i32;
+  fn vx_gpu_shuffle_down_f32(value: f32, delta: i32) -> f32;
+  fn vx_gpu_shuffle_idx_f32(value: f32, source: i32) -> f32;
+  fn vx_gpu_barrier() -> void;
+  fn vx_gpu_shared_f32() -> *mut f32;
+  fn expf(x: f32) -> f32;
+  fn sqrtf(x: f32) -> f32;
+}
+
+// All 32 lanes participate; only lane zero holds the full sum.
+fn vxk_warp_sum(value: f32) -> f32 {
+  let mut result: f32 = 0.0;
+  unsafe {
+    let mut sum: f32 = value;
+    sum = sum + vx_gpu_shuffle_down_f32(sum, 16);
+    sum = sum + vx_gpu_shuffle_down_f32(sum, 8);
+    sum = sum + vx_gpu_shuffle_down_f32(sum, 4);
+    sum = sum + vx_gpu_shuffle_down_f32(sum, 2);
+    sum = sum + vx_gpu_shuffle_down_f32(sum, 1);
+    result = sum;
+  }
+  return result;
+}
+
+// Uniform call by every thread, block.x is a multiple of 32 in [32,1024].
+// 33 shared floats: one partial per warp and a separate broadcast slot.
+fn vxk_block_sum(value: f32) -> f32 {
+  let mut result: f32 = 0.0;
+  unsafe {
+    let tid: i32 = vx_gpu_thread_idx_x();
+    let lane: i32 = tid % 32;
+    let warp: i32 = tid / 32;
+    let warps: i32 = vx_gpu_block_dim_x() / 32;
+    let shared: *mut f32 = vx_gpu_shared_f32();
+    let partial: f32 = vxk_warp_sum(value);
+    if lane == 0 { shared[warp] = partial; }
+    vx_gpu_barrier();
+    if warp == 0 {
+      let mut v: f32 = 0.0;
+      if lane < warps { v = shared[lane]; }
+      let total: f32 = vxk_warp_sum(v);
+      if lane == 0 { shared[32] = total; }
+    }
+    vx_gpu_barrier();
+    result = shared[32];
+  }
+  return result;
+}
+
+// One CTA per row. Materialize the residual once, then normalize it.
+fn glm_vx_gpu_residual_rmsnorm(out: *mut f32, residual_out: *mut f32, x: *const f32, residual: *const f32, weight: *const f32, rows: i32, dim: i32, eps: f32) -> void {
+  if rows <= 0 { return; }
+  if dim <= 0 { return; }
+  if eps <= 0.0 { return; }
+  unsafe {
+    let tid: i32 = vx_gpu_thread_idx_x();
+    let row: i32 = vx_gpu_block_idx_x();
+    let block: i32 = vx_gpu_block_dim_x();
+    if row >= rows { return; }
+    if block < 32 { return; }
+    if block > 1024 { return; }
+    if block % 32 != 0 { return; }
+    let base: i32 = row * dim;
+    let mut ss: f32 = 0.0;
+    let mut d: i32 = tid;
+    for iteration in 0..((dim + block - 1) / block) {
+      d = tid + iteration * block;
+      if d < dim {
+        let v: f32 = x[base + d] + residual[base + d];
+        residual_out[base + d] = v;
+        ss = ss + v * v;
+      }
+    }
+    let total: f32 = vxk_block_sum(ss);
+    let inv: f32 = 1.0 / sqrtf(total / (dim as f32) + eps);
+    d = tid;
+    for iteration in 0..((dim + block - 1) / block) {
+      d = tid + iteration * block;
+      if d < dim {
+        out[base + d] = residual_out[base + d] * inv * weight[d];
+      }
+    }
+    return;
+  }
+}
+
+fn glm_vx_gpu_swiglu(out: *mut f32, gate: *const f32, up: *const f32, n: i32) -> void {
+  unsafe {
+    let mut i: i32 = vx_gpu_block_idx_x() * vx_gpu_block_dim_x() + vx_gpu_thread_idx_x();
+    let stride: i32 = vx_gpu_grid_dim_x() * vx_gpu_block_dim_x();
+    for iteration in 0..((n + stride - 1) / stride) {
+      if i < n {
+        let g: f32 = gate[i];
+        let mut sigmoid: f32 = 0.0;
+        if g >= 0.0 { sigmoid = 1.0 / (1.0 + expf(0.0 - g)); }
+        else { let z: f32 = expf(g); sigmoid = z / (1.0 + z); }
+        out[i] = g * sigmoid * up[i];
+      }
+      i = i + stride;
+    }
+    return;
+  }
+}
+
+// GLM interleaved input -> packed [rotated even, rotated odd] per head.
+// cosine/sine contain dim/2 values for the caller's query position.
+fn glm_vx_gpu_rope_glm(out: *mut f32, x: *const f32, cosine: *const f32, sine: *const f32, heads: i32, dim: i32) -> void {
+  if heads <= 0 { return; }
+  if dim <= 0 { return; }
+  if dim % 2 != 0 { return; }
+  unsafe {
+    let pairs: i32 = dim / 2;
+    let mut i: i32 = vx_gpu_block_idx_x() * vx_gpu_block_dim_x() + vx_gpu_thread_idx_x();
+    let stride: i32 = vx_gpu_grid_dim_x() * vx_gpu_block_dim_x();
+    for iteration in 0..((heads * pairs + stride - 1) / stride) {
+      if i < heads * pairs {
+        let h: i32 = i / pairs;
+        let p: i32 = i % pairs;
+        let base: i32 = h * dim;
+        let a: f32 = x[base + p * 2];
+        let b: f32 = x[base + p * 2 + 1];
+        let c: f32 = cosine[p];
+        let s: f32 = sine[p];
+        out[base + p] = a * c - b * s;
+        out[base + pairs + p] = b * c + a * s;
+      }
+      i = i + stride;
+    }
+    return;
+  }
+}
+
+// A warp computes one row; adjacent lanes load adjacent matrix columns.
+fn glm_vx_gpu_matvec(out: *mut f32, weight: *const f32, x: *const f32, rows: i32, cols: i32) -> void {
+  if rows <= 0 { return; }
+  if cols < 0 { return; }
+  unsafe {
+    let tid: i32 = vx_gpu_thread_idx_x();
+    let block: i32 = vx_gpu_block_dim_x();
+    if block < 32 { return; }
+    if block > 1024 { return; }
+    if block % 32 != 0 { return; }
+    let lane: i32 = tid % 32;
+    let row: i32 = vx_gpu_block_idx_x() * (block / 32) + tid / 32;
+    if row >= rows { return; }
+    let mut sum: f32 = 0.0;
+    let mut c: i32 = lane;
+    for iteration in 0..((cols + 31) / 32) {
+      if c < cols {
+        sum = sum + weight[row * cols + c] * x[c];
+      }
+      c = c + 32;
+    }
+    let total: f32 = vxk_warp_sum(sum);
+    if lane == 0 { out[row] = total; }
+    return;
+  }
+}
+
+// Absorbed MLA: dot(q_latent,cache_latent) + dot(q_rope,cache_rope).
+// Cache latent is also the value. One CTA per (head, split), one value/thread.
+// Online softmax keeps O(rank) state without materializing scores/probabilities.
+fn glm_vx_gpu_mla_partial(numerator: *mut f32, stats: *mut f32, q_latent: *const f32, q_rope: *const f32, cache_latent: *const f32, cache_rope: *const f32, selected: *const i32, heads: i32, rank: i32, rope_dim: i32, tokens: i32, count: i32, selection_stride: i32, splits: i32, scale: f32) -> void {
+  if heads <= 0 { return; }
+  if rank <= 0 { return; }
+  if rope_dim < 0 { return; }
+  if tokens < 0 { return; }
+  if count < 0 { return; }
+  if selection_stride < 0 { return; }
+  if splits <= 0 { return; }
+  unsafe {
+    let tid: i32 = vx_gpu_thread_idx_x();
+    let block: i32 = vx_gpu_block_dim_x();
+    let task: i32 = vx_gpu_block_idx_x();
+    if block < 32 { return; }
+    if block > 1024 { return; }
+    if block % 32 != 0 { return; }
+    if block < rank { return; }
+    if task >= heads * splits { return; }
+    let h: i32 = task / splits;
+    let split: i32 = task % splits;
+    let mut m: f32 = 0.0;
+    let mut l: f32 = 0.0;
+    let mut acc: f32 = 0.0;
+    let mut j: i32 = split;
+    for iteration in 0..((count + splits - 1) / splits) {
+      if j < count {
+        let token: i32 = selected[h * selection_stride + j];
+        // Padding/out-of-range IDs are masked uniformly across the CTA.
+        if token >= 0 {
+          if token < tokens {
+            let mut dot: f32 = 0.0;
+            let mut value: f32 = 0.0;
+            if tid < rank {
+              value = cache_latent[token * rank + tid];
+              dot = q_latent[h * rank + tid] * value;
+            }
+            let mut d: i32 = tid;
+            for iteration in 0..((rope_dim + block - 1) / block) {
+              if d < rope_dim {
+                dot = dot + q_rope[h * rope_dim + d] * cache_rope[token * rope_dim + d];
+              }
+              d = d + block;
+            }
+            let score: f32 = vxk_block_sum(dot) * scale;
+            let mut next_m: f32 = score;
+            let mut alpha: f32 = 0.0;
+            let mut beta: f32 = 1.0;
+            if l > 0.0 {
+              if m > score { next_m = m; }
+              alpha = expf(m - next_m);
+              beta = expf(score - next_m);
+            }
+            acc = acc * alpha + beta * value;
+            l = l * alpha + beta;
+            m = next_m;
+          }
+        }
+      }
+      j = j + splits;
+    }
+    if tid < rank { numerator[task * rank + tid] = acc; }
+    if tid == 0 { stats[task * 2] = m; stats[task * 2 + 1] = l; }
+    return;
+  }
+}
+
+// Stable merge of independent online-softmax partitions, one CTA/head.
+fn glm_vx_gpu_mla_merge(out: *mut f32, numerator: *const f32, stats: *const f32, heads: i32, rank: i32, splits: i32) -> void {
+  if heads <= 0 { return; }
+  if rank <= 0 { return; }
+  if splits <= 0 { return; }
+  unsafe {
+    let h: i32 = vx_gpu_block_idx_x();
+    let tid: i32 = vx_gpu_thread_idx_x();
+    let block: i32 = vx_gpu_block_dim_x();
+    if h >= heads { return; }
+    let mut m: f32 = 0.0;
+    let mut seen: i32 = 0;
+    for s in 0..splits {
+      let task: i32 = h * splits + s;
+      if stats[task * 2 + 1] > 0.0 {
+        let v: f32 = stats[task * 2];
+        if seen == 0 { m = v; seen = 1; }
+        else { if v > m { m = v; } }
+      }
+    }
+    let mut d: i32 = tid;
+    for iteration in 0..((rank + block - 1) / block) {
+      d = tid + iteration * block;
+      if d < rank {
+        let mut sum: f32 = 0.0;
+        let mut denominator: f32 = 0.0;
+        for s in 0..splits {
+          let task: i32 = h * splits + s;
+          let l: f32 = stats[task * 2 + 1];
+          if l > 0.0 {
+            let factor: f32 = expf(stats[task * 2] - m);
+            sum = sum + numerator[task * rank + d] * factor;
+            denominator = denominator + l * factor;
+          }
+        }
+        let mut result: f32 = 0.0;
+        if denominator > 0.0 { result = sum / denominator; }
+        out[h * rank + d] = result;
+      }
+    }
+    return;
+  }
+}
+
+fn vxk_sigmoid(x: f32) -> f32 {
+  let mut result: f32 = 0.0;
+  unsafe {
+    if x >= 0.0 { result = 1.0 / (1.0 + expf(0.0 - x)); }
+    else { let z: f32 = expf(x); result = z / (1.0 + z); }
+  }
+  return result;
+}
+
+fn vxk_warp_max(value: f32) -> f32 {
+  let mut result: f32 = value;
+  unsafe {
+    let mut delta: i32 = 16;
+    for step in 0..5 {
+      let other: f32 = vx_gpu_shuffle_down_f32(result, delta);
+      if other > result { result = other; }
+      delta = delta / 2;
+    }
+  }
+  return result;
+}
+
+fn vxk_block_max(value: f32) -> f32 {
+  let mut result: f32 = value;
+  unsafe {
+    let tid: i32 = vx_gpu_thread_idx_x();
+    let lane: i32 = tid % 32;
+    let warp: i32 = tid / 32;
+    let warps: i32 = vx_gpu_block_dim_x() / 32;
+    let shared: *mut f32 = vx_gpu_shared_f32();
+    let partial: f32 = vxk_warp_max(value);
+    if lane == 0 { shared[warp] = partial; }
+    vx_gpu_barrier();
+    if warp == 0 {
+      let mut v: f32 = shared[0];
+      if lane < warps { v = shared[lane]; }
+      let total: f32 = vxk_warp_max(v);
+      if lane == 0 { shared[32] = total; }
+    }
+    vx_gpu_barrier();
+    result = shared[32];
+  }
+  return result;
+}
+
+// Standalone batched-row forms for compatibility with existing model operators.
+fn vxk_rmsnorm_rows(out: *mut f32, x: *const f32, weight: *const f32, rows: i32, dim: i32, eps: f32) -> void {
+  if rows <= 0 { return; }
+  if dim <= 0 { return; }
+  if eps <= 0.0 { return; }
+  unsafe {
+    let tid: i32 = vx_gpu_thread_idx_x();
+    let block: i32 = vx_gpu_block_dim_x();
+    let row: i32 = vx_gpu_block_idx_x();
+    if row >= rows { return; }
+    let base: i32 = row * dim;
+    if block < 32 { return; }
+    if block > 1024 { return; }
+    if block % 32 != 0 { return; }
+    let mut ss: f32 = 0.0;
+    for iteration in 0..((dim + block - 1) / block) {
+      let d: i32 = tid + iteration * block;
+      if d < dim { ss = ss + x[base + d] * x[base + d]; }
+    }
+    let total: f32 = vxk_block_sum(ss);
+    let inv: f32 = 1.0 / sqrtf(total / (dim as f32) + eps);
+    for iteration in 0..((dim + block - 1) / block) {
+      let d: i32 = tid + iteration * block;
+      if d < dim { out[base + d] = x[base + d] * inv * weight[d]; }
+    }
+    return;
+  }
+}
+
+fn vxk_softmax_rows(out: *mut f32, x: *const f32, rows: i32, dim: i32) -> void {
+  if rows <= 0 { return; }
+  if dim <= 0 { return; }
+  unsafe {
+    let tid: i32 = vx_gpu_thread_idx_x();
+    let block: i32 = vx_gpu_block_dim_x();
+    let row: i32 = vx_gpu_block_idx_x();
+    if row >= rows { return; }
+    let base: i32 = row * dim;
+    if block < 32 { return; }
+    if block > 1024 { return; }
+    if block % 32 != 0 { return; }
+    let mut maximum: f32 = x[base];
+    for iteration in 0..((dim + block - 1) / block) {
+      let d: i32 = tid + iteration * block;
+      if d < dim { if x[base + d] > maximum { maximum = x[base + d]; } }
+    }
+    maximum = vxk_block_max(maximum);
+    let mut sum: f32 = 0.0;
+    for iteration in 0..((dim + block - 1) / block) {
+      let d: i32 = tid + iteration * block;
+      if d < dim {
+        let v: f32 = expf(x[base + d] - maximum);
+        out[base + d] = v;
+        sum = sum + v;
+      }
+    }
+    let denominator: f32 = vxk_block_sum(sum);
+    for iteration in 0..((dim + block - 1) / block) {
+      let d: i32 = tid + iteration * block;
+      if d < dim { out[base + d] = out[base + d] / denominator; }
+    }
+    return;
+  }
+}
+
+// Stable warp argmax; negative index marks an empty lane. IDs <=256 are
+// exactly representable as f32, permitting the same shuffle ABI for the pair.
+fn vxk_warp_argmax(score: f32, index: i32) -> i32 {
+  let mut result: i32 = index;
+  unsafe {
+    let mut best: f32 = score;
+    let mut delta: i32 = 16;
+    for step in 0..5 {
+      let other_score: f32 = vx_gpu_shuffle_down_f32(best, delta);
+      let other_index: i32 = vx_gpu_shuffle_down_f32(result as f32, delta) as i32;
+      let mut replace: i32 = 0;
+      if other_index >= 0 {
+        if result < 0 { replace = 1; }
+        else {
+          if other_score > best { replace = 1; }
+          if other_score == best { if other_index < result { replace = 1; } }
+        }
+      }
+      if replace != 0 { best = other_score; result = other_index; }
+      delta = delta / 2;
+    }
+    result = vx_gpu_shuffle_idx_f32(result as f32, 0) as i32;
+  }
+  return result;
+}
+
+// One full warp, bounded E<=256,K<=8. Selection bias changes IDs only.
+fn glm_vx_gpu_router(indices: *mut i32, weights: *mut f32, logits: *const f32, bias: *const f32, experts: i32, k: i32, scale: f32) -> void {
+  if experts <= 0 { return; }
+  if experts > 256 { return; }
+  if k <= 0 { return; }
+  if k > 8 { return; }
+  if k > experts { return; }
+  unsafe {
+    if vx_gpu_block_idx_x() != 0 { return; }
+    if vx_gpu_block_dim_x() != 32 { return; }
+    let lane: i32 = vx_gpu_thread_idx_x();
+    for slot in 0..k {
+      let mut best_index: i32 = -1;
+      let mut best_score: f32 = 0.0;
+      for chunk in 0..((experts + 31) / 32) {
+        let e: i32 = lane + chunk * 32;
+        if e < experts {
+          let mut used: i32 = 0;
+          for previous in 0..slot { if indices[previous] == e { used = 1; } }
+          if used == 0 {
+            let score: f32 = vxk_sigmoid(logits[e]) + bias[e];
+            if best_index < 0 { best_index = e; best_score = score; }
+            else { if score > best_score { best_index = e; best_score = score; } }
+          }
+        }
+      }
+      let chosen: i32 = vxk_warp_argmax(best_score, best_index);
+      if lane == 0 { indices[slot] = chosen; weights[slot] = vxk_sigmoid(logits[chosen]); }
+      // Makes the chosen global IDs/weights visible before the next selection.
+      vx_gpu_barrier();
+    }
+    let mut value: f32 = 0.0;
+    if lane < k { value = weights[lane]; }
+    let partial: f32 = vxk_warp_sum(value);
+    let total: f32 = vx_gpu_shuffle_idx_f32(partial, 0) + 0.00000000000000000001;
+    if lane < k { weights[lane] = value / total * scale; }
+    return;
+  }
+}
+
+// Keep the original single-vector ABI stable; explicit _rows entries batch it.
+fn glm_vx_gpu_rmsnorm(out: *mut f32, x: *const f32, weight: *const f32, n: i32, eps: f32) -> void {
+  vxk_rmsnorm_rows(out, x, weight, 1, n, eps);
+  return;
+}
+
+fn glm_vx_gpu_rmsnorm_rows(out: *mut f32, x: *const f32, weight: *const f32, rows: i32, dim: i32, eps: f32) -> void {
+  vxk_rmsnorm_rows(out, x, weight, rows, dim, eps);
+  return;
+}
+
+fn glm_vx_gpu_softmax(out: *mut f32, x: *const f32, n: i32) -> void {
+  vxk_softmax_rows(out, x, 1, n);
+  return;
+}
+
+fn glm_vx_gpu_softmax_rows(out: *mut f32, x: *const f32, rows: i32, dim: i32) -> void {
+  vxk_softmax_rows(out, x, rows, dim);
+  return;
+}
