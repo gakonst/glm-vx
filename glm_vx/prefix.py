@@ -61,7 +61,14 @@ class PrefixCache:
     def _namespace(self):
         # Same checkpoint name is insufficient. Bind the actual model, backend,
         # weights owner, complete config and explicitly managed weight revision.
-        config = json.dumps(self.model.config, sort_keys=True, separators=(',', ':'))
+        # The constructor resolves these values outside config. Execution mode
+        # and resolved architecture must not reuse snapshots from another path.
+        resolved = {name: getattr(self.model, name, None) for name in (
+            'n_layers', 'hidden', 'heads', 'rank', 'nope', 'rot', 'value_dim',
+            'index_heads', 'index_dim', 'index_topk', 'eps', 'theta',
+            'indexer_types', 'mlp_types', 'packed_weights')}
+        config = json.dumps(dict(config=self.model.config, resolved=resolved),
+                            sort_keys=True, separators=(',', ':'))
         return (id(self.model), id(getattr(self.model, 'weights', None)),
                 id(getattr(self.model, 'backend', None)), config,
                 str(getattr(self.model, 'prefix_cache_revision', 0)))

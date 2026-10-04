@@ -230,7 +230,8 @@ def model_identity(model, limits=Limits()):
         'n_layers', 'hidden', 'heads', 'rank', 'nope', 'rot', 'value_dim',
         'index_heads', 'index_dim', 'index_topk', 'eps', 'theta')}
     config = dict(config=model.config, indexer_types=model.indexer_types,
-                  mlp_types=model.mlp_types, resolved=resolved)
+                  mlp_types=model.mlp_types, resolved=resolved,
+                  packed_weights=model.packed_weights)
     return dict(model=_file_digest(model_module.__file__),
                 config=hashlib.sha256(_json(config)).hexdigest(),
                 weights=weights, backend=hashlib.sha256(_json(backend)).hexdigest())

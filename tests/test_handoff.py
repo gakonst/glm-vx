@@ -500,3 +500,29 @@ def test_split_gguf_identity_binds_every_shard_and_detects_later_shard_edit(tmp_
             request.transfer('decode')
     with opened(paths[1], config) as checkpoint:
         assert model_identity(GlmMoeDsaModel(config, checkpoint, NumpyBackend())) != identity
+
+
+def test_gguf_packed_execution_mode_is_part_of_handoff_identity(tmp_path):
+    """Same checkpoint/backend bytes do not imply the same arithmetic path."""
+    pytest.importorskip('gguf')
+    from test_gguf_checkpoint import fixture_data, write_fixture, opened
+    config, weights = fixture_data()
+    backend = make_model('vx').backend
+    path = write_fixture(tmp_path / 'model.gguf', config, weights)
+    with opened(path, config) as checkpoint:
+        expanded = GlmMoeDsaModel(config, checkpoint, backend)
+        packed = GlmMoeDsaModel(config, checkpoint, backend, packed_weights=True)
+        assert model_identity(expanded) != model_identity(packed)
+        source = ready(packed)
+        receiver = HandoffReceiver(expanded, 'decode')
+        payload = source.transfer('decode')
+        with pytest.raises(HandoffError, match='identity mismatch'):
+            receiver.claim(payload, request_id='r', source='prefill')
+        matching = HandoffReceiver(packed, 'decode').claim(
+            payload, request_id='r', source='prefill')
+        assert matching.greedy(2) == ready(packed).greedy(2)
+        source = ready(packed)
+        packed.packed_weights = False
+        with pytest.raises(HandoffError, match='changed'):
+            source.transfer('decode')
+        assert source.active

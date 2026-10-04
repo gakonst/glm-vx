@@ -194,3 +194,20 @@ def test_eviction_recomputes_same_seeded_outputs_without_reusing_wrong_prompt():
         assert event['cached_prompt_tokens']==3
         assert scheduler.prefix_cache.status()['evictions']==2
     finally: scheduler.close();reference.close()
+
+
+@pytest.mark.parametrize('attribute,value', [
+    ('packed_weights', True), ('eps', .1), ('theta', 123.), ('index_topk', 3),
+    ('indexer_types', ['full', 'shared', 'full', 'shared']),
+    ('mlp_types', ['dense', 'dense', 'sparse', 'sparse']),
+])
+def test_resolved_execution_changes_invalidate_snapshots(attribute, value):
+    m = model()
+    tokens = [1, 4, 3]
+    cache, logits = snapshot(m, tokens)
+    prefix = PrefixCache(m, 1_000_000)
+    assert prefix.store(tokens, cache, logits)
+    assert getattr(m, attribute) != value
+    setattr(m, attribute, value)
+    assert prefix.lookup(tokens) is None
+    assert prefix.retained_bytes == 0
