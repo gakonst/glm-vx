@@ -1,0 +1,11 @@
+{
+  "status": "complete",
+  "token_ids": [
+    9703,
+    10056
+  ],
+  "library_sha256": "f72dcf7e9182baea987e3973d2ba60d507c3a2326293b9ce4d260575067f242f",
+  "elapsed_seconds": 461.942156419158,
+  "tensor_count": 626,
+  "scope": "Teacher-forced full layer outputs, current-token cache entries, selections and complete logits; other internal stages not yet exported."
+}

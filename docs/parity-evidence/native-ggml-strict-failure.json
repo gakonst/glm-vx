@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "status": "fail",
+  "eligible": false,
+  "scope": "Exploratory full layer outputs and complete logits on two teacher-forced real-weight positions; not a release gate or full internal-state parity.",
+  "files": {
+    "contract": {
+      "path": "build/parity/strict-gate-v2/contract.json",
+      "sha256": "8f0623aa53da4bc911241fdb7c01ace9deef1bb46c54bab27eaef605bac41d52",
+      "bytes": 49910
+    },
+    "reference_manifest": {
+      "path": "build/parity/strict-gate-v2/reference-manifest.json",
+      "sha256": "75286725d5cc1bbf6275be5066c97c7c4d6831f7bfcdbacbb542fcbf22631305",
+      "bytes": 3671
+    },
+    "reference_trace": {
+      "path": "build/parity/strict-gate-v2/reference.npz",
+      "sha256": "f0eea6bd21f8e88df8b1a8aed7ff93c6bf7b5b54f8a6c57b5e3aaafbe3f84a16",
+      "bytes": 5115186
+    },
+    "candidate_manifest": {
+      "path": "build/parity/strict-gate-v2/candidate-manifest.json",
+      "sha256": "500878d10f1c1ca86b8e971351481c86fcde79b7e240afec0c7b5f76f9cdd006",
+      "bytes": 3450
+    },
+    "candidate_trace": {
+      "path": "build/parity/strict-gate-v2/candidate.npz",
+      "sha256": "64ed5b54f4ca00537eb389ecb96b30948e7090bcf5aec6afe58f7dd65ea18b4a",
+      "bytes": 5115186
+    }
+  },
+  "compared_tensors": 0,
+  "comparisons": [],
+  "first_failure": {
+    "code": "numeric",
+    "message": "absolute/relative budget exceeded",
+    "case": "hello-let-teacher-forced-v1",
+    "tensor": "p0.layer.0.output",
+    "operation": "layer_output",
+    "position": 0,
+    "layer": 0,
+    "index": [
+      0
+    ],
+    "metrics": {
+      "max_abs": 0.0009315721690654755,
+      "normalized_l2": 0.01498253011057486
+    }
+  },
+  "limitation": "Finite trace evidence only; no proof of global correctness or producer attestation.",
+  "contract_id": "real-2-position-strict-v1",
+  "pins": {
+    "config_sha256": "3ac72612095574542f7fff847ada8e59d9199dd8af44bdf625d7e02615572e69",
+    "weights_sha256": {
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00001-of-00006.gguf": "ff3adab0853dfb00bdf3889ec3f5556196f56b65783115720d57767bbd760dd9",
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00002-of-00006.gguf": "659d04cf4fc0b6026944f34c0b590a635803bff06c1775361e28490db7b168f8",
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00003-of-00006.gguf": "433302bac0e2d54da64c7c2f28509fa1b235aeccdf5b215a8a446ebaad1b5b27",
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00004-of-00006.gguf": "d0a6f19452d5b5cd498e1eb8fbe856e00aed7da1f80c27c095301eabe81e9bc1",
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00005-of-00006.gguf": "2ea1537ffab40fa8b8584a8647ec10fbaa6199dfed45e4019b822da2b319db37",
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00006-of-00006.gguf": "42a76ef04ffc5e321e1240f4e572b6fa6fc3315da5bea22fb598d7460db210fe"
+    },
+    "tokenizer_sha256": "19e773648cb4e65de8660ea6365e10acca112d42a854923df93db4a6f333a82d",
+    "template_sha256": "3740abcea51c45830cb3ca562084ad5fb2ef53589376f73332e9886f93ade41c",
+    "corpus_sha256": "83fb691ecf7a5ed9f93da204c3403f9c4dc28de6fb0a062c3172b5f880fa5cab",
+    "corpus_version": "hello-let-teacher-forced-v1",
+    "reference_revision": "11fe02151f79c41d0d4af7da708755d73b9c0da6",
+    "numerical_mode": "strict exploratory: GGML native quantized CPU versus Vx dequantized F32",
+    "tie_breaking": "stable-lowest-index"
+  },
+  "producers": {
+    "reference": {
+      "binary_sha256": "332c76aa1cd9766362bdec866a18f82d1b14a96a1d496240fdc061614b28f9e0",
+      "compiler": "GNU C++ 11.4 -O2 helper; upstream Release build",
+      "libraries_sha256": {
+        "libllama.so": "537db67b1a460e7b36e30340a435a72688468bfd29529885bc4ffd80cebb7e00",
+        "libggml.so": "33e802e743d00cf697042ebe10a8e56d9760145bcc498c805f7d620bf9163733",
+        "libggml-base.so": "2df815f3d891046b7126bc8742739acb81beb96c2c77dc4dc4fcf876015c6f49",
+        "libggml-cpu.so": "80a138bb04a4f7550d95de7173b736fa5cd86e1e5c848375f7a6967cf5645fde"
+      },
+      "flags": [
+        "cpu",
+        "threads=4",
+        "n_batch=1",
+        "n_ctx=256",
+        "teacher_forcing"
+      ],
+      "hardware": "x86_64"
+    },
+    "candidate": {
+      "binary_sha256": "f72dcf7e9182baea987e3973d2ba60d507c3a2326293b9ce4d260575067f242f",
+      "compiler": "Vx v0.0.2 -O3, no fast-math flag",
+      "libraries_sha256": {
+        "model.py": "146ba64e1872a517b7056ac9b08f97f0cbd68b525fff565d58bb193034d5ab1a",
+        "export_vx_trace.py": "b5f2ce13810a8e2288853c1f175418f2144463d5928cdb5febb8e94077f84326"
+      },
+      "flags": [
+        "cpu",
+        "GGUF decode_threads=4",
+        "teacher_forcing"
+      ],
+      "hardware": "x86_64"
+    }
+  }
+}

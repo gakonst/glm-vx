@@ -1,0 +1,1741 @@
+{
+  "scope": "Diagnostics only, NOT a passing gate; both frozen strict contracts failed. Same two prescribed input tokens; all78 layeroutputs plus full logits.",
+  "comparisons": {
+    "native_quant": {
+      "tensors": 158,
+      "max_normalized_l2": 0.34747798331847546,
+      "logits": [
+        {
+          "key": "p0.logits",
+          "max_abs": 0.2253880500793457,
+          "normalized_l2": 0.007424650131394993,
+          "reference_top5": [
+            154820,
+            565,
+            59,
+            4102,
+            319
+          ],
+          "candidate_top5": [
+            154820,
+            565,
+            59,
+            4102,
+            319
+          ],
+          "softmax_tv": 0.006169500187550201
+        },
+        {
+          "key": "p1.logits",
+          "max_abs": 1.5885701179504395,
+          "normalized_l2": 0.13096733906764113,
+          "reference_top5": [
+            748,
+            594,
+            12778,
+            752,
+            5428
+          ],
+          "candidate_top5": [
+            594,
+            748,
+            752,
+            12778,
+            42397
+          ],
+          "softmax_tv": 0.12505038729843002
+        }
+      ],
+      "metrics": [
+        {
+          "key": "p0.layer.0.output",
+          "max_abs": 0.0009315721690654755,
+          "normalized_l2": 0.014982530110574866
+        },
+        {
+          "key": "p0.layer.1.output",
+          "max_abs": 0.0005804905667901039,
+          "normalized_l2": 0.0140753847888671
+        },
+        {
+          "key": "p0.layer.2.output",
+          "max_abs": 0.0005096534150652587,
+          "normalized_l2": 0.012855713229341977
+        },
+        {
+          "key": "p0.layer.3.output",
+          "max_abs": 0.0006142966449260712,
+          "normalized_l2": 0.01166573890658271
+        },
+        {
+          "key": "p0.layer.4.output",
+          "max_abs": 0.0006487052887678146,
+          "normalized_l2": 0.012326743182795407
+        },
+        {
+          "key": "p0.layer.5.output",
+          "max_abs": 0.0008496418595314026,
+          "normalized_l2": 0.010600355679389483
+        },
+        {
+          "key": "p0.layer.6.output",
+          "max_abs": 0.007343783974647522,
+          "normalized_l2": 0.00745427961593232
+        },
+        {
+          "key": "p0.layer.7.output",
+          "max_abs": 0.007264614105224609,
+          "normalized_l2": 0.0067582139966569435
+        },
+        {
+          "key": "p0.layer.8.output",
+          "max_abs": 0.057804107666015625,
+          "normalized_l2": 0.01116137638084227
+        },
+        {
+          "key": "p0.layer.9.output",
+          "max_abs": 0.154388427734375,
+          "normalized_l2": 0.0024834265338983777
+        },
+        {
+          "key": "p0.layer.10.output",
+          "max_abs": 0.14739227294921875,
+          "normalized_l2": 0.0024722267773543915
+        },
+        {
+          "key": "p0.layer.11.output",
+          "max_abs": 0.1463470458984375,
+          "normalized_l2": 0.0024715755445962034
+        },
+        {
+          "key": "p0.layer.12.output",
+          "max_abs": 0.14189910888671875,
+          "normalized_l2": 0.0024675852351924497
+        },
+        {
+          "key": "p0.layer.13.output",
+          "max_abs": 0.14179229736328125,
+          "normalized_l2": 0.0024669869793487046
+        },
+        {
+          "key": "p0.layer.14.output",
+          "max_abs": 0.13466644287109375,
+          "normalized_l2": 0.002471360796395848
+        },
+        {
+          "key": "p0.layer.15.output",
+          "max_abs": 0.13350677490234375,
+          "normalized_l2": 0.0024721561840105335
+        },
+        {
+          "key": "p0.layer.16.output",
+          "max_abs": 0.13724517822265625,
+          "normalized_l2": 0.0024715414094915867
+        },
+        {
+          "key": "p0.layer.17.output",
+          "max_abs": 0.141448974609375,
+          "normalized_l2": 0.002470779258932064
+        },
+        {
+          "key": "p0.layer.18.output",
+          "max_abs": 0.14595794677734375,
+          "normalized_l2": 0.0024735232828525557
+        },
+        {
+          "key": "p0.layer.19.output",
+          "max_abs": 0.148590087890625,
+          "normalized_l2": 0.002473204393359604
+        },
+        {
+          "key": "p0.layer.20.output",
+          "max_abs": 0.14897918701171875,
+          "normalized_l2": 0.0024735441968234996
+        },
+        {
+          "key": "p0.layer.21.output",
+          "max_abs": 0.149200439453125,
+          "normalized_l2": 0.0024729330133837295
+        },
+        {
+          "key": "p0.layer.22.output",
+          "max_abs": 0.15795135498046875,
+          "normalized_l2": 0.002479676365350191
+        },
+        {
+          "key": "p0.layer.23.output",
+          "max_abs": 0.1952362060546875,
+          "normalized_l2": 0.0024531752677732946
+        },
+        {
+          "key": "p0.layer.24.output",
+          "max_abs": 0.21807861328125,
+          "normalized_l2": 0.0024191323459480584
+        },
+        {
+          "key": "p0.layer.25.output",
+          "max_abs": 0.1814422607421875,
+          "normalized_l2": 0.0023870435624979247
+        },
+        {
+          "key": "p0.layer.26.output",
+          "max_abs": 0.183685302734375,
+          "normalized_l2": 0.0023866146464989074
+        },
+        {
+          "key": "p0.layer.27.output",
+          "max_abs": 0.17236328125,
+          "normalized_l2": 0.0023861005859486892
+        },
+        {
+          "key": "p0.layer.28.output",
+          "max_abs": 0.204864501953125,
+          "normalized_l2": 0.0024508037649496185
+        },
+        {
+          "key": "p0.layer.29.output",
+          "max_abs": 0.2943878173828125,
+          "normalized_l2": 0.0033209932215697534
+        },
+        {
+          "key": "p0.layer.30.output",
+          "max_abs": 0.370330810546875,
+          "normalized_l2": 0.00330971903519885
+        },
+        {
+          "key": "p0.layer.31.output",
+          "max_abs": 0.3530426025390625,
+          "normalized_l2": 0.0032870220724244563
+        },
+        {
+          "key": "p0.layer.32.output",
+          "max_abs": 0.3517608642578125,
+          "normalized_l2": 0.0032909646736475145
+        },
+        {
+          "key": "p0.layer.33.output",
+          "max_abs": 0.349945068359375,
+          "normalized_l2": 0.0032806579911320083
+        },
+        {
+          "key": "p0.layer.34.output",
+          "max_abs": 0.3661651611328125,
+          "normalized_l2": 0.003278813239237965
+        },
+        {
+          "key": "p0.layer.35.output",
+          "max_abs": 0.373016357421875,
+          "normalized_l2": 0.003267157849428545
+        },
+        {
+          "key": "p0.layer.36.output",
+          "max_abs": 0.39886474609375,
+          "normalized_l2": 0.003261487473371075
+        },
+        {
+          "key": "p0.layer.37.output",
+          "max_abs": 0.376251220703125,
+          "normalized_l2": 0.003258954699657626
+        },
+        {
+          "key": "p0.layer.38.output",
+          "max_abs": 0.3968658447265625,
+          "normalized_l2": 0.0032779388726829105
+        },
+        {
+          "key": "p0.layer.39.output",
+          "max_abs": 0.4245758056640625,
+          "normalized_l2": 0.0032813503655407337
+        },
+        {
+          "key": "p0.layer.40.output",
+          "max_abs": 0.4094390869140625,
+          "normalized_l2": 0.0032782083696326833
+        },
+        {
+          "key": "p0.layer.41.output",
+          "max_abs": 0.4291229248046875,
+          "normalized_l2": 0.0032816182493466176
+        },
+        {
+          "key": "p0.layer.42.output",
+          "max_abs": 0.407989501953125,
+          "normalized_l2": 0.003293275152817384
+        },
+        {
+          "key": "p0.layer.43.output",
+          "max_abs": 0.4079132080078125,
+          "normalized_l2": 0.0032988827284216944
+        },
+        {
+          "key": "p0.layer.44.output",
+          "max_abs": 0.4119873046875,
+          "normalized_l2": 0.0033022989245377133
+        },
+        {
+          "key": "p0.layer.45.output",
+          "max_abs": 0.3922882080078125,
+          "normalized_l2": 0.0033002813883694477
+        },
+        {
+          "key": "p0.layer.46.output",
+          "max_abs": 0.413116455078125,
+          "normalized_l2": 0.0033079330093358406
+        },
+        {
+          "key": "p0.layer.47.output",
+          "max_abs": 0.4066009521484375,
+          "normalized_l2": 0.0033145446484937877
+        },
+        {
+          "key": "p0.layer.48.output",
+          "max_abs": 0.3851318359375,
+          "normalized_l2": 0.003312627378548679
+        },
+        {
+          "key": "p0.layer.49.output",
+          "max_abs": 0.3838043212890625,
+          "normalized_l2": 0.0033058968999097288
+        },
+        {
+          "key": "p0.layer.50.output",
+          "max_abs": 0.389862060546875,
+          "normalized_l2": 0.003318365447787169
+        },
+        {
+          "key": "p0.layer.51.output",
+          "max_abs": 0.3529052734375,
+          "normalized_l2": 0.0033124212645213092
+        },
+        {
+          "key": "p0.layer.52.output",
+          "max_abs": 0.35162353515625,
+          "normalized_l2": 0.003323495181325946
+        },
+        {
+          "key": "p0.layer.53.output",
+          "max_abs": 0.3414459228515625,
+          "normalized_l2": 0.003327844400307235
+        },
+        {
+          "key": "p0.layer.54.output",
+          "max_abs": 0.3477630615234375,
+          "normalized_l2": 0.003340119280465239
+        },
+        {
+          "key": "p0.layer.55.output",
+          "max_abs": 0.323974609375,
+          "normalized_l2": 0.00335372774934374
+        },
+        {
+          "key": "p0.layer.56.output",
+          "max_abs": 0.2971649169921875,
+          "normalized_l2": 0.0033633492829661473
+        },
+        {
+          "key": "p0.layer.57.output",
+          "max_abs": 0.2989654541015625,
+          "normalized_l2": 0.003370827305645226
+        },
+        {
+          "key": "p0.layer.58.output",
+          "max_abs": 0.3143768310546875,
+          "normalized_l2": 0.0033705672698380227
+        },
+        {
+          "key": "p0.layer.59.output",
+          "max_abs": 0.355438232421875,
+          "normalized_l2": 0.0034686273891367868
+        },
+        {
+          "key": "p0.layer.60.output",
+          "max_abs": 0.3578948974609375,
+          "normalized_l2": 0.0034798423481021213
+        },
+        {
+          "key": "p0.layer.61.output",
+          "max_abs": 0.36578369140625,
+          "normalized_l2": 0.003481632638132575
+        },
+        {
+          "key": "p0.layer.62.output",
+          "max_abs": 0.3999481201171875,
+          "normalized_l2": 0.0034602069858117486
+        },
+        {
+          "key": "p0.layer.63.output",
+          "max_abs": 0.409210205078125,
+          "normalized_l2": 0.0034660112770008287
+        },
+        {
+          "key": "p0.layer.64.output",
+          "max_abs": 0.419647216796875,
+          "normalized_l2": 0.003484790359910037
+        },
+        {
+          "key": "p0.layer.65.output",
+          "max_abs": 0.3974761962890625,
+          "normalized_l2": 0.0035142765481900535
+        },
+        {
+          "key": "p0.layer.66.output",
+          "max_abs": 0.4002685546875,
+          "normalized_l2": 0.003539668089149753
+        },
+        {
+          "key": "p0.layer.67.output",
+          "max_abs": 0.383209228515625,
+          "normalized_l2": 0.0035492903562242806
+        },
+        {
+          "key": "p0.layer.68.output",
+          "max_abs": 0.36114501953125,
+          "normalized_l2": 0.0035787478367149098
+        },
+        {
+          "key": "p0.layer.69.output",
+          "max_abs": 0.36630797386169434,
+          "normalized_l2": 0.0068012930262866785
+        },
+        {
+          "key": "p0.layer.70.output",
+          "max_abs": 0.9369583129882812,
+          "normalized_l2": 0.011730052022638862
+        },
+        {
+          "key": "p0.layer.71.output",
+          "max_abs": 1.0343551635742188,
+          "normalized_l2": 0.012700048631970133
+        },
+        {
+          "key": "p0.layer.72.output",
+          "max_abs": 1.1157455444335938,
+          "normalized_l2": 0.01498710106870785
+        },
+        {
+          "key": "p0.layer.73.output",
+          "max_abs": 0.933624267578125,
+          "normalized_l2": 0.01647532563748147
+        },
+        {
+          "key": "p0.layer.74.output",
+          "max_abs": 0.8972396850585938,
+          "normalized_l2": 0.016884607265626406
+        },
+        {
+          "key": "p0.layer.75.output",
+          "max_abs": 3.257781982421875,
+          "normalized_l2": 0.018626723928796864
+        },
+        {
+          "key": "p0.layer.76.output",
+          "max_abs": 2.3849754333496094,
+          "normalized_l2": 0.01809233815892501
+        },
+        {
+          "key": "p0.layer.77.output",
+          "max_abs": 6.1937255859375,
+          "normalized_l2": 0.013591081114771563
+        },
+        {
+          "key": "p0.logits",
+          "max_abs": 0.2253880500793457,
+          "normalized_l2": 0.007424650131394993,
+          "reference_top5": [
+            154820,
+            565,
+            59,
+            4102,
+            319
+          ],
+          "candidate_top5": [
+            154820,
+            565,
+            59,
+            4102,
+            319
+          ],
+          "softmax_tv": 0.006169500187550201
+        },
+        {
+          "key": "p1.layer.0.output",
+          "max_abs": 0.0009251544252038002,
+          "normalized_l2": 0.017414039384283438
+        },
+        {
+          "key": "p1.layer.1.output",
+          "max_abs": 0.0007828581146895885,
+          "normalized_l2": 0.016352437148551474
+        },
+        {
+          "key": "p1.layer.2.output",
+          "max_abs": 0.0006854056846350431,
+          "normalized_l2": 0.014635675985157139
+        },
+        {
+          "key": "p1.layer.3.output",
+          "max_abs": 0.0006430442444980145,
+          "normalized_l2": 0.013900030574714669
+        },
+        {
+          "key": "p1.layer.4.output",
+          "max_abs": 0.0006774677895009518,
+          "normalized_l2": 0.013410808365843626
+        },
+        {
+          "key": "p1.layer.5.output",
+          "max_abs": 0.0006555235013365746,
+          "normalized_l2": 0.012458156822038543
+        },
+        {
+          "key": "p1.layer.6.output",
+          "max_abs": 0.0043698325753211975,
+          "normalized_l2": 0.0785540602676433
+        },
+        {
+          "key": "p1.layer.7.output",
+          "max_abs": 0.0043342881835997105,
+          "normalized_l2": 0.07426951267280847
+        },
+        {
+          "key": "p1.layer.8.output",
+          "max_abs": 0.004986690357327461,
+          "normalized_l2": 0.06940009937639587
+        },
+        {
+          "key": "p1.layer.9.output",
+          "max_abs": 0.013239733874797821,
+          "normalized_l2": 0.06236268349272513
+        },
+        {
+          "key": "p1.layer.10.output",
+          "max_abs": 0.011650756001472473,
+          "normalized_l2": 0.06362309895152954
+        },
+        {
+          "key": "p1.layer.11.output",
+          "max_abs": 0.013125967234373093,
+          "normalized_l2": 0.0610947536167086
+        },
+        {
+          "key": "p1.layer.12.output",
+          "max_abs": 0.013724371790885925,
+          "normalized_l2": 0.058564229678395405
+        },
+        {
+          "key": "p1.layer.13.output",
+          "max_abs": 0.02086062729358673,
+          "normalized_l2": 0.06049825957901501
+        },
+        {
+          "key": "p1.layer.14.output",
+          "max_abs": 0.021726220846176147,
+          "normalized_l2": 0.07434281759333924
+        },
+        {
+          "key": "p1.layer.15.output",
+          "max_abs": 0.02017560601234436,
+          "normalized_l2": 0.10310909372818305
+        },
+        {
+          "key": "p1.layer.16.output",
+          "max_abs": 0.018734455108642578,
+          "normalized_l2": 0.10418517924508652
+        },
+        {
+          "key": "p1.layer.17.output",
+          "max_abs": 0.04266589879989624,
+          "normalized_l2": 0.10956048406563543
+        },
+        {
+          "key": "p1.layer.18.output",
+          "max_abs": 0.04875493049621582,
+          "normalized_l2": 0.12156624784218219
+        },
+        {
+          "key": "p1.layer.19.output",
+          "max_abs": 0.031025229021906853,
+          "normalized_l2": 0.1174430834284652
+        },
+        {
+          "key": "p1.layer.20.output",
+          "max_abs": 0.03179198410362005,
+          "normalized_l2": 0.11647923010283102
+        },
+        {
+          "key": "p1.layer.21.output",
+          "max_abs": 0.07889139652252197,
+          "normalized_l2": 0.11685859866772601
+        },
+        {
+          "key": "p1.layer.22.output",
+          "max_abs": 0.09990096092224121,
+          "normalized_l2": 0.12208974740368506
+        },
+        {
+          "key": "p1.layer.23.output",
+          "max_abs": 0.12914276123046875,
+          "normalized_l2": 0.12251562808052463
+        },
+        {
+          "key": "p1.layer.24.output",
+          "max_abs": 0.14287042617797852,
+          "normalized_l2": 0.12893496792460377
+        },
+        {
+          "key": "p1.layer.25.output",
+          "max_abs": 0.10670351982116699,
+          "normalized_l2": 0.13254718819042408
+        },
+        {
+          "key": "p1.layer.26.output",
+          "max_abs": 0.1090700626373291,
+          "normalized_l2": 0.1322980343932256
+        },
+        {
+          "key": "p1.layer.27.output",
+          "max_abs": 0.14098966121673584,
+          "normalized_l2": 0.13835380180756182
+        },
+        {
+          "key": "p1.layer.28.output",
+          "max_abs": 0.16594529151916504,
+          "normalized_l2": 0.13633201261454106
+        },
+        {
+          "key": "p1.layer.29.output",
+          "max_abs": 0.07498526573181152,
+          "normalized_l2": 0.1401866017300524
+        },
+        {
+          "key": "p1.layer.30.output",
+          "max_abs": 0.09524393081665039,
+          "normalized_l2": 0.14129062909758772
+        },
+        {
+          "key": "p1.layer.31.output",
+          "max_abs": 0.15635299682617188,
+          "normalized_l2": 0.1824803559738832
+        },
+        {
+          "key": "p1.layer.32.output",
+          "max_abs": 0.27843666076660156,
+          "normalized_l2": 0.17765595617472899
+        },
+        {
+          "key": "p1.layer.33.output",
+          "max_abs": 0.3274974822998047,
+          "normalized_l2": 0.16675556851958567
+        },
+        {
+          "key": "p1.layer.34.output",
+          "max_abs": 0.5874419212341309,
+          "normalized_l2": 0.17271867897911666
+        },
+        {
+          "key": "p1.layer.35.output",
+          "max_abs": 0.8655233383178711,
+          "normalized_l2": 0.17151902290338608
+        },
+        {
+          "key": "p1.layer.36.output",
+          "max_abs": 0.8543300628662109,
+          "normalized_l2": 0.1722086313448471
+        },
+        {
+          "key": "p1.layer.37.output",
+          "max_abs": 0.869206428527832,
+          "normalized_l2": 0.17847960045603503
+        },
+        {
+          "key": "p1.layer.38.output",
+          "max_abs": 0.7919473648071289,
+          "normalized_l2": 0.16240730082904462
+        },
+        {
+          "key": "p1.layer.39.output",
+          "max_abs": 1.0956850051879883,
+          "normalized_l2": 0.17111027193171846
+        },
+        {
+          "key": "p1.layer.40.output",
+          "max_abs": 0.9118366241455078,
+          "normalized_l2": 0.17283398534111458
+        },
+        {
+          "key": "p1.layer.41.output",
+          "max_abs": 1.43096923828125,
+          "normalized_l2": 0.1705956434580375
+        },
+        {
+          "key": "p1.layer.42.output",
+          "max_abs": 1.745865821838379,
+          "normalized_l2": 0.17458800922715528
+        },
+        {
+          "key": "p1.layer.43.output",
+          "max_abs": 2.1016483306884766,
+          "normalized_l2": 0.1672320709643766
+        },
+        {
+          "key": "p1.layer.44.output",
+          "max_abs": 2.319199562072754,
+          "normalized_l2": 0.1765177428285858
+        },
+        {
+          "key": "p1.layer.45.output",
+          "max_abs": 2.5195226669311523,
+          "normalized_l2": 0.18608035907368783
+        },
+        {
+          "key": "p1.layer.46.output",
+          "max_abs": 1.8213768005371094,
+          "normalized_l2": 0.1637755231747728
+        },
+        {
+          "key": "p1.layer.47.output",
+          "max_abs": 0.9723110198974609,
+          "normalized_l2": 0.16111027486329757
+        },
+        {
+          "key": "p1.layer.48.output",
+          "max_abs": 1.2789325714111328,
+          "normalized_l2": 0.1606911165821958
+        },
+        {
+          "key": "p1.layer.49.output",
+          "max_abs": 0.9351997375488281,
+          "normalized_l2": 0.16516824815398834
+        },
+        {
+          "key": "p1.layer.50.output",
+          "max_abs": 0.5447578430175781,
+          "normalized_l2": 0.15723658664678547
+        },
+        {
+          "key": "p1.layer.51.output",
+          "max_abs": 0.3509243242442608,
+          "normalized_l2": 0.15525534497239324
+        },
+        {
+          "key": "p1.layer.52.output",
+          "max_abs": 1.1785163879394531,
+          "normalized_l2": 0.1642305772160802
+        },
+        {
+          "key": "p1.layer.53.output",
+          "max_abs": 0.8911266326904297,
+          "normalized_l2": 0.16018687359671838
+        },
+        {
+          "key": "p1.layer.54.output",
+          "max_abs": 2.1937599182128906,
+          "normalized_l2": 0.16459397817201596
+        },
+        {
+          "key": "p1.layer.55.output",
+          "max_abs": 3.362232208251953,
+          "normalized_l2": 0.1776332671407201
+        },
+        {
+          "key": "p1.layer.56.output",
+          "max_abs": 4.251161575317383,
+          "normalized_l2": 0.19650314752740541
+        },
+        {
+          "key": "p1.layer.57.output",
+          "max_abs": 4.425752639770508,
+          "normalized_l2": 0.21256410369996748
+        },
+        {
+          "key": "p1.layer.58.output",
+          "max_abs": 3.8846168518066406,
+          "normalized_l2": 0.21234985348866578
+        },
+        {
+          "key": "p1.layer.59.output",
+          "max_abs": 5.050670623779297,
+          "normalized_l2": 0.23133212419903335
+        },
+        {
+          "key": "p1.layer.60.output",
+          "max_abs": 3.5697669982910156,
+          "normalized_l2": 0.21486761833697174
+        },
+        {
+          "key": "p1.layer.61.output",
+          "max_abs": 4.5399627685546875,
+          "normalized_l2": 0.20770148262764876
+        },
+        {
+          "key": "p1.layer.62.output",
+          "max_abs": 5.969005584716797,
+          "normalized_l2": 0.229402734266282
+        },
+        {
+          "key": "p1.layer.63.output",
+          "max_abs": 6.575374603271484,
+          "normalized_l2": 0.23639135756955282
+        },
+        {
+          "key": "p1.layer.64.output",
+          "max_abs": 5.166141510009766,
+          "normalized_l2": 0.23861637850142103
+        },
+        {
+          "key": "p1.layer.65.output",
+          "max_abs": 7.545494079589844,
+          "normalized_l2": 0.2616171024533441
+        },
+        {
+          "key": "p1.layer.66.output",
+          "max_abs": 8.037481307983398,
+          "normalized_l2": 0.2876442408515135
+        },
+        {
+          "key": "p1.layer.67.output",
+          "max_abs": 10.004323959350586,
+          "normalized_l2": 0.29299452629402073
+        },
+        {
+          "key": "p1.layer.68.output",
+          "max_abs": 9.029577255249023,
+          "normalized_l2": 0.30959962417684767
+        },
+        {
+          "key": "p1.layer.69.output",
+          "max_abs": 9.21766471862793,
+          "normalized_l2": 0.30777591966198364
+        },
+        {
+          "key": "p1.layer.70.output",
+          "max_abs": 9.373039245605469,
+          "normalized_l2": 0.3271753362615983
+        },
+        {
+          "key": "p1.layer.71.output",
+          "max_abs": 9.062255859375,
+          "normalized_l2": 0.3316691782638743
+        },
+        {
+          "key": "p1.layer.72.output",
+          "max_abs": 9.42132568359375,
+          "normalized_l2": 0.3294539559649748
+        },
+        {
+          "key": "p1.layer.73.output",
+          "max_abs": 7.989575386047363,
+          "normalized_l2": 0.34747798331847546
+        },
+        {
+          "key": "p1.layer.74.output",
+          "max_abs": 8.39518928527832,
+          "normalized_l2": 0.32959973952820565
+        },
+        {
+          "key": "p1.layer.75.output",
+          "max_abs": 6.385845184326172,
+          "normalized_l2": 0.12391553649411505
+        },
+        {
+          "key": "p1.layer.76.output",
+          "max_abs": 3.9886322021484375,
+          "normalized_l2": 0.11129138909135344
+        },
+        {
+          "key": "p1.layer.77.output",
+          "max_abs": 5.105083465576172,
+          "normalized_l2": 0.1794410717215326
+        },
+        {
+          "key": "p1.logits",
+          "max_abs": 1.5885701179504395,
+          "normalized_l2": 0.13096733906764113,
+          "reference_top5": [
+            748,
+            594,
+            12778,
+            752,
+            5428
+          ],
+          "candidate_top5": [
+            594,
+            748,
+            752,
+            12778,
+            42397
+          ],
+          "softmax_tv": 0.12505038729843002
+        }
+      ]
+    },
+    "expanded_f32": {
+      "tensors": 158,
+      "max_normalized_l2": 8.676319948521457e-06,
+      "logits": [
+        {
+          "key": "p0.logits",
+          "max_abs": 6.4849853515625e-05,
+          "normalized_l2": 2.2405014185442236e-06,
+          "reference_top5": [
+            154820,
+            565,
+            59,
+            4102,
+            319
+          ],
+          "candidate_top5": [
+            154820,
+            565,
+            59,
+            4102,
+            319
+          ],
+          "softmax_tv": 3.7388149611552027e-06
+        },
+        {
+          "key": "p1.logits",
+          "max_abs": 7.033348083496094e-05,
+          "normalized_l2": 3.918561980702507e-06,
+          "reference_top5": [
+            594,
+            748,
+            752,
+            12778,
+            42397
+          ],
+          "candidate_top5": [
+            594,
+            748,
+            752,
+            12778,
+            42397
+          ],
+          "softmax_tv": 4.462895985959591e-06
+        }
+      ],
+      "metrics": [
+        {
+          "key": "p0.layer.0.output",
+          "max_abs": 1.2293457984924316e-07,
+          "normalized_l2": 1.4824204400497833e-06
+        },
+        {
+          "key": "p1.layer.0.output",
+          "max_abs": 2.0116567611694336e-07,
+          "normalized_l2": 2.033428359142364e-06
+        },
+        {
+          "key": "p0.layer.1.output",
+          "max_abs": 1.1920928955078125e-07,
+          "normalized_l2": 1.5804581199963633e-06
+        },
+        {
+          "key": "p1.layer.1.output",
+          "max_abs": 1.4435499906539917e-07,
+          "normalized_l2": 2.0829988196083173e-06
+        },
+        {
+          "key": "p0.layer.2.output",
+          "max_abs": 1.9371509552001953e-07,
+          "normalized_l2": 1.4770014578798278e-06
+        },
+        {
+          "key": "p1.layer.2.output",
+          "max_abs": 1.341104507446289e-07,
+          "normalized_l2": 1.989973558833116e-06
+        },
+        {
+          "key": "p0.layer.3.output",
+          "max_abs": 1.1920928955078125e-07,
+          "normalized_l2": 1.3308978213853871e-06
+        },
+        {
+          "key": "p1.layer.3.output",
+          "max_abs": 1.2479722499847412e-07,
+          "normalized_l2": 1.8783285756652087e-06
+        },
+        {
+          "key": "p0.layer.4.output",
+          "max_abs": 1.1362135410308838e-07,
+          "normalized_l2": 1.6858407912677766e-06
+        },
+        {
+          "key": "p1.layer.4.output",
+          "max_abs": 1.3969838619232178e-07,
+          "normalized_l2": 2.120494540119735e-06
+        },
+        {
+          "key": "p0.layer.5.output",
+          "max_abs": 3.5762786865234375e-07,
+          "normalized_l2": 1.4333608815556432e-06
+        },
+        {
+          "key": "p1.layer.5.output",
+          "max_abs": 1.3224780559539795e-07,
+          "normalized_l2": 1.9499508258960315e-06
+        },
+        {
+          "key": "p0.layer.6.output",
+          "max_abs": 4.291534423828125e-06,
+          "normalized_l2": 1.3671864549162182e-06
+        },
+        {
+          "key": "p1.layer.6.output",
+          "max_abs": 1.825392246246338e-07,
+          "normalized_l2": 2.2120085424477154e-06
+        },
+        {
+          "key": "p0.layer.7.output",
+          "max_abs": 2.86102294921875e-06,
+          "normalized_l2": 1.0971203134589751e-06
+        },
+        {
+          "key": "p1.layer.7.output",
+          "max_abs": 2.384185791015625e-07,
+          "normalized_l2": 2.212751532206249e-06
+        },
+        {
+          "key": "p0.layer.8.output",
+          "max_abs": 9.5367431640625e-06,
+          "normalized_l2": 6.306156687381604e-07
+        },
+        {
+          "key": "p1.layer.8.output",
+          "max_abs": 1.862645149230957e-07,
+          "normalized_l2": 2.1108483666881873e-06
+        },
+        {
+          "key": "p0.layer.9.output",
+          "max_abs": 0.0001068115234375,
+          "normalized_l2": 1.6521141722310911e-06
+        },
+        {
+          "key": "p1.layer.9.output",
+          "max_abs": 2.384185791015625e-07,
+          "normalized_l2": 2.06969088139926e-06
+        },
+        {
+          "key": "p0.layer.10.output",
+          "max_abs": 0.00011444091796875,
+          "normalized_l2": 1.6480892382914563e-06
+        },
+        {
+          "key": "p1.layer.10.output",
+          "max_abs": 2.5331974029541016e-07,
+          "normalized_l2": 2.2603240407809175e-06
+        },
+        {
+          "key": "p0.layer.11.output",
+          "max_abs": 0.00011444091796875,
+          "normalized_l2": 1.6478695726270823e-06
+        },
+        {
+          "key": "p1.layer.11.output",
+          "max_abs": 2.9243528842926025e-07,
+          "normalized_l2": 2.491174926747077e-06
+        },
+        {
+          "key": "p0.layer.12.output",
+          "max_abs": 0.0001068115234375,
+          "normalized_l2": 1.6441631324599895e-06
+        },
+        {
+          "key": "p1.layer.12.output",
+          "max_abs": 3.46451997756958e-07,
+          "normalized_l2": 2.5565731139493795e-06
+        },
+        {
+          "key": "p0.layer.13.output",
+          "max_abs": 0.0001068115234375,
+          "normalized_l2": 1.6435272556809659e-06
+        },
+        {
+          "key": "p1.layer.13.output",
+          "max_abs": 4.3213367462158203e-07,
+          "normalized_l2": 2.593775821612494e-06
+        },
+        {
+          "key": "p0.layer.14.output",
+          "max_abs": 0.0001220703125,
+          "normalized_l2": 1.6440583551483122e-06
+        },
+        {
+          "key": "p1.layer.14.output",
+          "max_abs": 5.662441253662109e-07,
+          "normalized_l2": 2.8064314265570993e-06
+        },
+        {
+          "key": "p0.layer.15.output",
+          "max_abs": 0.0001220703125,
+          "normalized_l2": 1.6437313701657691e-06
+        },
+        {
+          "key": "p1.layer.15.output",
+          "max_abs": 7.897615432739258e-07,
+          "normalized_l2": 2.876536301767918e-06
+        },
+        {
+          "key": "p0.layer.16.output",
+          "max_abs": 0.0001220703125,
+          "normalized_l2": 1.6423819838357586e-06
+        },
+        {
+          "key": "p1.layer.16.output",
+          "max_abs": 5.364418029785156e-07,
+          "normalized_l2": 3.2235203719240147e-06
+        },
+        {
+          "key": "p0.layer.17.output",
+          "max_abs": 0.0001220703125,
+          "normalized_l2": 1.6420635967017037e-06
+        },
+        {
+          "key": "p1.layer.17.output",
+          "max_abs": 7.152557373046875e-07,
+          "normalized_l2": 3.1743121762218387e-06
+        },
+        {
+          "key": "p0.layer.18.output",
+          "max_abs": 0.0001220703125,
+          "normalized_l2": 1.6446273676303684e-06
+        },
+        {
+          "key": "p1.layer.18.output",
+          "max_abs": 9.5367431640625e-07,
+          "normalized_l2": 3.1940422777613274e-06
+        },
+        {
+          "key": "p0.layer.19.output",
+          "max_abs": 0.0001220703125,
+          "normalized_l2": 1.6444002076418808e-06
+        },
+        {
+          "key": "p1.layer.19.output",
+          "max_abs": 2.384185791015625e-06,
+          "normalized_l2": 3.279184833506316e-06
+        },
+        {
+          "key": "p0.layer.20.output",
+          "max_abs": 0.0001220703125,
+          "normalized_l2": 1.6440468028526223e-06
+        },
+        {
+          "key": "p1.layer.20.output",
+          "max_abs": 8.344650268554688e-07,
+          "normalized_l2": 3.1932483806724967e-06
+        },
+        {
+          "key": "p0.layer.21.output",
+          "max_abs": 0.0001220703125,
+          "normalized_l2": 1.6439282453347564e-06
+        },
+        {
+          "key": "p1.layer.21.output",
+          "max_abs": 2.5033950805664062e-06,
+          "normalized_l2": 3.1975381929419637e-06
+        },
+        {
+          "key": "p0.layer.22.output",
+          "max_abs": 0.000152587890625,
+          "normalized_l2": 1.648726711495712e-06
+        },
+        {
+          "key": "p1.layer.22.output",
+          "max_abs": 1.080334186553955e-06,
+          "normalized_l2": 3.218619091755517e-06
+        },
+        {
+          "key": "p0.layer.23.output",
+          "max_abs": 0.00018310546875,
+          "normalized_l2": 1.6140480210676654e-06
+        },
+        {
+          "key": "p1.layer.23.output",
+          "max_abs": 2.6226043701171875e-06,
+          "normalized_l2": 3.2940456669591043e-06
+        },
+        {
+          "key": "p0.layer.24.output",
+          "max_abs": 0.00018310546875,
+          "normalized_l2": 1.5667247555501941e-06
+        },
+        {
+          "key": "p1.layer.24.output",
+          "max_abs": 1.9073486328125e-06,
+          "normalized_l2": 3.5003033006630378e-06
+        },
+        {
+          "key": "p0.layer.25.output",
+          "max_abs": 0.00018310546875,
+          "normalized_l2": 1.5343900168079713e-06
+        },
+        {
+          "key": "p1.layer.25.output",
+          "max_abs": 2.6226043701171875e-06,
+          "normalized_l2": 3.755704366294749e-06
+        },
+        {
+          "key": "p0.layer.26.output",
+          "max_abs": 0.00018310546875,
+          "normalized_l2": 1.5310652122093868e-06
+        },
+        {
+          "key": "p1.layer.26.output",
+          "max_abs": 1.564621925354004e-06,
+          "normalized_l2": 3.7349076330814804e-06
+        },
+        {
+          "key": "p0.layer.27.output",
+          "max_abs": 0.0001678466796875,
+          "normalized_l2": 1.5260044225774745e-06
+        },
+        {
+          "key": "p1.layer.27.output",
+          "max_abs": 6.198883056640625e-06,
+          "normalized_l2": 4.122421873861334e-06
+        },
+        {
+          "key": "p0.layer.28.output",
+          "max_abs": 0.0001678466796875,
+          "normalized_l2": 1.4658619249071212e-06
+        },
+        {
+          "key": "p1.layer.28.output",
+          "max_abs": 4.0531158447265625e-06,
+          "normalized_l2": 4.139405594119163e-06
+        },
+        {
+          "key": "p0.layer.29.output",
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.676185580545964e-06
+        },
+        {
+          "key": "p1.layer.29.output",
+          "max_abs": 6.794929504394531e-06,
+          "normalized_l2": 4.470380437565406e-06
+        },
+        {
+          "key": "p0.layer.30.output",
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.6123575813710464e-06
+        },
+        {
+          "key": "p1.layer.30.output",
+          "max_abs": 5.7220458984375e-06,
+          "normalized_l2": 4.2798933272084145e-06
+        },
+        {
+          "key": "p0.layer.31.output",
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.595620887416038e-06
+        },
+        {
+          "key": "p1.layer.31.output",
+          "max_abs": 9.059906005859375e-06,
+          "normalized_l2": 4.412503857102199e-06
+        },
+        {
+          "key": "p0.layer.32.output",
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.5656965666353962e-06
+        },
+        {
+          "key": "p1.layer.32.output",
+          "max_abs": 1.9073486328125e-05,
+          "normalized_l2": 4.6260405902202e-06
+        },
+        {
+          "key": "p0.layer.33.output",
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.569141759852989e-06
+        },
+        {
+          "key": "p1.layer.33.output",
+          "max_abs": 1.811981201171875e-05,
+          "normalized_l2": 4.670299014753813e-06
+        },
+        {
+          "key": "p0.layer.34.output",
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.5625405991922012e-06
+        },
+        {
+          "key": "p1.layer.34.output",
+          "max_abs": 1.811981201171875e-05,
+          "normalized_l2": 4.743219258720968e-06
+        },
+        {
+          "key": "p0.layer.35.output",
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.538090678803759e-06
+        },
+        {
+          "key": "p1.layer.35.output",
+          "max_abs": 2.002716064453125e-05,
+          "normalized_l2": 4.702495402897109e-06
+        },
+        {
+          "key": "p0.layer.36.output",
+          "max_abs": 0.000213623046875,
+          "normalized_l2": 1.5209851996962525e-06
+        },
+        {
+          "key": "p1.layer.36.output",
+          "max_abs": 2.09808349609375e-05,
+          "normalized_l2": 4.671457356712286e-06
+        },
+        {
+          "key": "p0.layer.37.output",
+          "max_abs": 0.0001983642578125,
+          "normalized_l2": 1.512543242308532e-06
+        },
+        {
+          "key": "p1.layer.37.output",
+          "max_abs": 2.288818359375e-05,
+          "normalized_l2": 4.65791096372265e-06
+        },
+        {
+          "key": "p0.layer.38.output",
+          "max_abs": 0.000213623046875,
+          "normalized_l2": 1.5131940040978707e-06
+        },
+        {
+          "key": "p1.layer.38.output",
+          "max_abs": 2.956390380859375e-05,
+          "normalized_l2": 4.4304687135292834e-06
+        },
+        {
+          "key": "p0.layer.39.output",
+          "max_abs": 0.000213623046875,
+          "normalized_l2": 1.5082239304897483e-06
+        },
+        {
+          "key": "p1.layer.39.output",
+          "max_abs": 2.956390380859375e-05,
+          "normalized_l2": 4.710102424081456e-06
+        },
+        {
+          "key": "p0.layer.40.output",
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.508208714743465e-06
+        },
+        {
+          "key": "p1.layer.40.output",
+          "max_abs": 2.574920654296875e-05,
+          "normalized_l2": 4.740801851177715e-06
+        },
+        {
+          "key": "p0.layer.41.output",
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.5058181885893066e-06
+        },
+        {
+          "key": "p1.layer.41.output",
+          "max_abs": 3.4332275390625e-05,
+          "normalized_l2": 4.541036995080479e-06
+        },
+        {
+          "key": "p0.layer.42.output",
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.503598812459197e-06
+        },
+        {
+          "key": "p1.layer.42.output",
+          "max_abs": 5.53131103515625e-05,
+          "normalized_l2": 4.735574169138266e-06
+        },
+        {
+          "key": "p0.layer.43.output",
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.5038406631318842e-06
+        },
+        {
+          "key": "p1.layer.43.output",
+          "max_abs": 5.91278076171875e-05,
+          "normalized_l2": 4.485828075108126e-06
+        },
+        {
+          "key": "p0.layer.44.output",
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.5028714957522333e-06
+        },
+        {
+          "key": "p1.layer.44.output",
+          "max_abs": 6.866455078125e-05,
+          "normalized_l2": 4.81278818448865e-06
+        },
+        {
+          "key": "p0.layer.45.output",
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.5019669591255975e-06
+        },
+        {
+          "key": "p1.layer.45.output",
+          "max_abs": 7.05718994140625e-05,
+          "normalized_l2": 4.981490228822401e-06
+        },
+        {
+          "key": "p0.layer.46.output",
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.5037810808395455e-06
+        },
+        {
+          "key": "p1.layer.46.output",
+          "max_abs": 4.38690185546875e-05,
+          "normalized_l2": 4.211838031619107e-06
+        },
+        {
+          "key": "p0.layer.47.output",
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.5036885854417754e-06
+        },
+        {
+          "key": "p1.layer.47.output",
+          "max_abs": 2.86102294921875e-05,
+          "normalized_l2": 4.2606723964994334e-06
+        },
+        {
+          "key": "p0.layer.48.output",
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.5018816784594777e-06
+        },
+        {
+          "key": "p1.layer.48.output",
+          "max_abs": 3.0517578125e-05,
+          "normalized_l2": 4.137110705050773e-06
+        },
+        {
+          "key": "p0.layer.49.output",
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.5049698856418152e-06
+        },
+        {
+          "key": "p1.layer.49.output",
+          "max_abs": 1.52587890625e-05,
+          "normalized_l2": 4.1708473267219735e-06
+        },
+        {
+          "key": "p0.layer.50.output",
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.5059171692771574e-06
+        },
+        {
+          "key": "p1.layer.50.output",
+          "max_abs": 2.86102294921875e-05,
+          "normalized_l2": 4.112334577718112e-06
+        },
+        {
+          "key": "p0.layer.51.output",
+          "max_abs": 0.0002593994140625,
+          "normalized_l2": 1.5007704132777864e-06
+        },
+        {
+          "key": "p1.layer.51.output",
+          "max_abs": 1.9073486328125e-05,
+          "normalized_l2": 4.140217086976299e-06
+        },
+        {
+          "key": "p0.layer.52.output",
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.4962474539664183e-06
+        },
+        {
+          "key": "p1.layer.52.output",
+          "max_abs": 9.5367431640625e-06,
+          "normalized_l2": 4.279326212299164e-06
+        },
+        {
+          "key": "p0.layer.53.output",
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.4936500544773792e-06
+        },
+        {
+          "key": "p1.layer.53.output",
+          "max_abs": 1.33514404296875e-05,
+          "normalized_l2": 4.136618217161468e-06
+        },
+        {
+          "key": "p0.layer.54.output",
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.4965015655358829e-06
+        },
+        {
+          "key": "p1.layer.54.output",
+          "max_abs": 1.52587890625e-05,
+          "normalized_l2": 4.191701189343824e-06
+        },
+        {
+          "key": "p0.layer.55.output",
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.4930374590160424e-06
+        },
+        {
+          "key": "p1.layer.55.output",
+          "max_abs": 2.6702880859375e-05,
+          "normalized_l2": 4.599385637520431e-06
+        },
+        {
+          "key": "p0.layer.56.output",
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.5017420026587302e-06
+        },
+        {
+          "key": "p1.layer.56.output",
+          "max_abs": 2.86102294921875e-05,
+          "normalized_l2": 4.7192618839754675e-06
+        },
+        {
+          "key": "p0.layer.57.output",
+          "max_abs": 0.000213623046875,
+          "normalized_l2": 1.5008139067982643e-06
+        },
+        {
+          "key": "p1.layer.57.output",
+          "max_abs": 1.6689300537109375e-05,
+          "normalized_l2": 5.141597301799254e-06
+        },
+        {
+          "key": "p0.layer.58.output",
+          "max_abs": 0.000213623046875,
+          "normalized_l2": 1.5013366614078045e-06
+        },
+        {
+          "key": "p1.layer.58.output",
+          "max_abs": 6.103515625e-05,
+          "normalized_l2": 5.527528111582499e-06
+        },
+        {
+          "key": "p0.layer.59.output",
+          "max_abs": 0.000213623046875,
+          "normalized_l2": 1.502793434362381e-06
+        },
+        {
+          "key": "p1.layer.59.output",
+          "max_abs": 7.43865966796875e-05,
+          "normalized_l2": 5.884494064706102e-06
+        },
+        {
+          "key": "p0.layer.60.output",
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.5088735612318293e-06
+        },
+        {
+          "key": "p1.layer.60.output",
+          "max_abs": 5.340576171875e-05,
+          "normalized_l2": 5.505073650177985e-06
+        },
+        {
+          "key": "p0.layer.61.output",
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.5075373173566258e-06
+        },
+        {
+          "key": "p1.layer.61.output",
+          "max_abs": 0.000148773193359375,
+          "normalized_l2": 5.6528182589593295e-06
+        },
+        {
+          "key": "p0.layer.62.output",
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.5477006862253349e-06
+        },
+        {
+          "key": "p1.layer.62.output",
+          "max_abs": 0.00016021728515625,
+          "normalized_l2": 6.200702923614188e-06
+        },
+        {
+          "key": "p0.layer.63.output",
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.549770311153403e-06
+        },
+        {
+          "key": "p1.layer.63.output",
+          "max_abs": 0.00017547607421875,
+          "normalized_l2": 6.451048449813627e-06
+        },
+        {
+          "key": "p0.layer.64.output",
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.5567490110156742e-06
+        },
+        {
+          "key": "p1.layer.64.output",
+          "max_abs": 0.00016021728515625,
+          "normalized_l2": 6.457684488883001e-06
+        },
+        {
+          "key": "p0.layer.65.output",
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.5716242272269316e-06
+        },
+        {
+          "key": "p1.layer.65.output",
+          "max_abs": 0.0001735687255859375,
+          "normalized_l2": 6.941210226489492e-06
+        },
+        {
+          "key": "p0.layer.66.output",
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.580690614013249e-06
+        },
+        {
+          "key": "p1.layer.66.output",
+          "max_abs": 0.0001697540283203125,
+          "normalized_l2": 7.455359654114078e-06
+        },
+        {
+          "key": "p0.layer.67.output",
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.5866738993169302e-06
+        },
+        {
+          "key": "p1.layer.67.output",
+          "max_abs": 0.0001354217529296875,
+          "normalized_l2": 7.347985407726473e-06
+        },
+        {
+          "key": "p0.layer.68.output",
+          "max_abs": 0.0002593994140625,
+          "normalized_l2": 1.6028367856959213e-06
+        },
+        {
+          "key": "p1.layer.68.output",
+          "max_abs": 0.0001773834228515625,
+          "normalized_l2": 7.93741398696747e-06
+        },
+        {
+          "key": "p0.layer.69.output",
+          "max_abs": 0.0003662109375,
+          "normalized_l2": 2.6032646209673643e-06
+        },
+        {
+          "key": "p1.layer.69.output",
+          "max_abs": 0.0001811981201171875,
+          "normalized_l2": 7.763304933696085e-06
+        },
+        {
+          "key": "p0.layer.70.output",
+          "max_abs": 0.00017547607421875,
+          "normalized_l2": 2.3740283499082864e-06
+        },
+        {
+          "key": "p1.layer.70.output",
+          "max_abs": 0.0001697540283203125,
+          "normalized_l2": 8.097649215905153e-06
+        },
+        {
+          "key": "p0.layer.71.output",
+          "max_abs": 0.000156402587890625,
+          "normalized_l2": 2.5023616438323173e-06
+        },
+        {
+          "key": "p1.layer.71.output",
+          "max_abs": 8.7738037109375e-05,
+          "normalized_l2": 8.055041600677698e-06
+        },
+        {
+          "key": "p0.layer.72.output",
+          "max_abs": 0.00019073486328125,
+          "normalized_l2": 2.9843378191090534e-06
+        },
+        {
+          "key": "p1.layer.72.output",
+          "max_abs": 8.58306884765625e-05,
+          "normalized_l2": 8.282934538619821e-06
+        },
+        {
+          "key": "p0.layer.73.output",
+          "max_abs": 0.00017547607421875,
+          "normalized_l2": 3.1894214051086662e-06
+        },
+        {
+          "key": "p1.layer.73.output",
+          "max_abs": 7.152557373046875e-05,
+          "normalized_l2": 8.676319948521457e-06
+        },
+        {
+          "key": "p0.layer.74.output",
+          "max_abs": 0.00017547607421875,
+          "normalized_l2": 3.345018708264817e-06
+        },
+        {
+          "key": "p1.layer.74.output",
+          "max_abs": 7.43865966796875e-05,
+          "normalized_l2": 8.416523848141266e-06
+        },
+        {
+          "key": "p0.layer.75.output",
+          "max_abs": 0.0009918212890625,
+          "normalized_l2": 5.113514426636938e-06
+        },
+        {
+          "key": "p1.layer.75.output",
+          "max_abs": 6.4849853515625e-05,
+          "normalized_l2": 3.2473418773517143e-06
+        },
+        {
+          "key": "p0.layer.76.output",
+          "max_abs": 0.0010528564453125,
+          "normalized_l2": 4.999949096702578e-06
+        },
+        {
+          "key": "p1.layer.76.output",
+          "max_abs": 8.392333984375e-05,
+          "normalized_l2": 3.0108695868894386e-06
+        },
+        {
+          "key": "p0.layer.77.output",
+          "max_abs": 0.00244140625,
+          "normalized_l2": 3.4640385059541733e-06
+        },
+        {
+          "key": "p1.layer.77.output",
+          "max_abs": 0.000244140625,
+          "normalized_l2": 5.577207903015342e-06
+        },
+        {
+          "key": "p0.logits",
+          "max_abs": 6.4849853515625e-05,
+          "normalized_l2": 2.2405014185442236e-06,
+          "reference_top5": [
+            154820,
+            565,
+            59,
+            4102,
+            319
+          ],
+          "candidate_top5": [
+            154820,
+            565,
+            59,
+            4102,
+            319
+          ],
+          "softmax_tv": 3.7388149611552027e-06
+        },
+        {
+          "key": "p1.logits",
+          "max_abs": 7.033348083496094e-05,
+          "normalized_l2": 3.918561980702507e-06,
+          "reference_top5": [
+            594,
+            748,
+            752,
+            12778,
+            42397
+          ],
+          "candidate_top5": [
+            594,
+            748,
+            752,
+            12778,
+            42397
+          ],
+          "softmax_tv": 4.462895985959591e-06
+        }
+      ]
+    }
+  }
+}

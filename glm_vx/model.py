@@ -42,7 +42,8 @@ class GlmMoeDsaModel:
     correction bias for selection only, and normalized selected probabilities.
     """
 
-    def __init__(self, config, weights, backend):
+    def __init__(self, config, weights, backend, *, trace=None):
+        self.trace = trace
         self.config = dict(config)
         self.weights, self.backend = weights, backend
         c = self.config
@@ -91,6 +92,11 @@ class GlmMoeDsaModel:
             raise ValueError('DSA layers must be full/shared and start with a full indexer')
         if any(t not in ('dense', 'sparse') for t in self.mlp_types):
             raise ValueError('MLP layer type must be dense or sparse')
+
+    def _trace(self, position, name, value):
+        """Optional validation observer receives an owning copy, never live state."""
+        if self.trace is not None:
+            self.trace(position, name, np.array(value, copy=True))
 
     def _weight(self, name):
         return self.weights(name) if callable(self.weights) else self.weights[name]
@@ -270,11 +276,16 @@ class GlmMoeDsaModel:
                 attended, selected = self._attention(layer, self._norm(prefix + '.input_layernorm', x, self.eps), position, state, selected)
                 x = x + attended
                 x = x + self._feed_forward(layer, self._norm(prefix + '.post_attention_layernorm', x, self.eps))
+                self._trace(position, f'layer.{layer}.output', x)
+                self._trace(position, f'layer.{layer}.selected', state.selected_indices)
+                self._trace(position, f'layer.{layer}.latent', state.latents[-1])
+                self._trace(position, f'layer.{layer}.rope_key', state.rope_keys[-1])
             logits = None
             if output_logits:
                 x = self._norm('model.norm', x, self.eps)
                 head = 'model.embed_tokens' if self.config.get('tie_word_embeddings', False) else 'lm_head'
                 logits = self._linear(head, x)
+                self._trace(position, "logits", logits)
         except Exception:
             # A missing shard/backend failure must not poison the request cache.
             for state, old_selection in zip(cache.layers, old_selections):

@@ -64,6 +64,10 @@ performance evidence.
 
 [Correctness gates and Vx performance audit](docs/CORRECTNESS-AND-PERFORMANCE.md)
 records the remaining parity work and an isolated compiler optimization experiment.
+The [implemented trace gate and current failures](docs/PARITY-PROGRESS.md) now
+include full trained-weight layer/logit comparisons and independent codec checks.
+[CPU prefill/decode handoff](docs/DISAGGREGATION.md) runs distinct worker processes
+with validated cache transfer; it is not yet an HTTP worker pool or GPU speedup.
 
 ## GPU implementation
 

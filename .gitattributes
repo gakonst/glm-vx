@@ -6,3 +6,6 @@ gpu/evidence/** linguist-generated
 benchmarks/evidence/** linguist-generated
 benchmarks/cpu-validation/*.json linguist-generated
 benchmarks/cpu-validation/*.txt linguist-generated
+
+# Machine-generated validation receipts.
+docs/parity-evidence/** linguist-generated

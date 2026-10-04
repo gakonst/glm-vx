@@ -1,0 +1,9 @@
+{
+  "status": "complete",
+  "token_ids": [
+    9703,
+    10056
+  ],
+  "elapsed_seconds": 273.93343545496464,
+  "scope": "independent expanded-KV F32 equations; shared GGUF decoder separately checked against native GGML; not official Transformers execution"
+}
