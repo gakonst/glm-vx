@@ -51,13 +51,19 @@ def _buffers(raw, kind, shape):
     block, size, suffix = (1, 4, 'f32') if int(kind) == 0 else LAYOUTS[int(kind)]
     if rows < 0 or cols <= 0 or cols % block:
         raise ValueError('packed matrix must have nonnegative rows and positive block-aligned cols')
-    if rows > _MAX or cols > _MAX or rows*cols > _MAX or rows*(cols//block)*size > _MAX:
+    # Quantized kernels index bytes; the F32 route delegates to matvec and
+    # indexes float elements. A valid >2 GiB F32 matrix must not be rejected
+    # solely for its byte size (the full GLM vocabulary projection is 3.8 GB).
+    if (rows > _MAX or cols > _MAX or rows*cols > _MAX or
+            (int(kind) != 0 and rows*(cols//block)*size > _MAX)):
         raise ValueError('packed matrix exceeds Vx int32 indexing capacity')
     # Reject strided/wrongly typed buffers instead of allocating an unseen copy.
     if not isinstance(raw, np.ndarray) or raw.dtype != np.uint8 or not raw.flags.c_contiguous:
         raise ValueError('packed bytes must be a contiguous uint8 array')
     if raw.nbytes != rows*(cols//block)*size:
         raise ValueError('packed byte count does not match shape/format')
+    if int(kind) == 0 and raw.ctypes.data % np.dtype(np.float32).alignment:
+        raise ValueError('F32 packed bytes must be aligned for float loads')
     return rows, cols, suffix
 
 

@@ -1,0 +1,3196 @@
+{
+  "status": "fail",
+  "release_eligible": false,
+  "scope": "Two prescribed trained GGUF positions, all78 layer outputs and full logits. Corrected F32 oracle and ascending expert reduction; no long-context, official trained runtime or release parity.",
+  "budgets_unchanged_from": "e5daccfed587d2db1e0adb6aa4f064016333df78c100d1cedf8743d062019ebd",
+  "candidate_receipt": {
+    "status": "complete",
+    "token_ids": [
+      9703,
+      10056
+    ],
+    "packed_weights": true,
+    "source_sha256": {
+      "glm_vx/model.py": "70d2849060c3786c5263cffaa3d2c215eee1896325580e77b9b47b34d96ad525",
+      "glm_vx/gguf_checkpoint.py": "ad69d8c6ac226c914833be1d492d8561bf11c451aa7e3928309822c19badfe1c",
+      "glm_vx/gguf_reader.py": "ac44eb337fc45fa3853fefa7087b7e88049fdc01d368b345aaf1f2bb088edc31",
+      "kernels/backend.py": "cf486a8ce85a294d8644234ddcb120d07663b42d03da292dc4024cb63e814f70",
+      "kernels/packed.py": "13bdc4d8fdc626ae10ffd16bf2de5f2c838b18591c271952ac9b19b68a203532",
+      "validation/export_vx_trace.py": "80da55354655c29fd945bf39e0e993a12d4a01471386f00e39b66e283a8e5c96"
+    },
+    "numerical_mode": "f32-official-expert-order-v2",
+    "library_sha256": "cff6023afc49cd7c03b8d30b4f91937494c06cfc1f68c5014bab75dda45d3441",
+    "elapsed_seconds": 189.11004139855504,
+    "tensor_count": 31172,
+    "scope": "Teacher-forced layer outputs, cache entries, selections, logits and per-operation CPU attention/indexer/MLP stages and expert reductions; fused backends expose only observable outputs."
+  },
+  "reference_receipt": {
+    "status": "complete",
+    "numerical_mode": "f32-v2",
+    "token_ids": [
+      9703,
+      10056
+    ],
+    "elapsed_seconds": 274.28383262082934,
+    "scope": "independent expanded-KV equations with explicit numerical_mode; shared GGUF decoder separately checked against native GGML; not official Transformers execution"
+  },
+  "reference_source_sha256": {
+    "validation/expanded_reference.py": "707ac41b65e2a8d00605d8baa1e4afbb2abe716ad405aaa0a5b33b5299b24aa5",
+    "validation/export_expanded_trace.py": "0354ace9d8853aeee8727ba0201f014793e827675c2b38158a00399dbe4d1e02",
+    "glm_vx/gguf_checkpoint.py": "ad69d8c6ac226c914833be1d492d8561bf11c451aa7e3928309822c19badfe1c",
+    "glm_vx/gguf_reader.py": "ac44eb337fc45fa3853fefa7087b7e88049fdc01d368b345aaf1f2bb088edc31"
+  },
+  "raw_trace_sha256": {
+    "reference": "7769e4f0e04c50bc7d6180a649624055a9cd462e13b51e4d26f77646d0906276",
+    "candidate": "40ee459b6dfc3e62348c823de7ef483da82b8e0ba1bf4d966e0d9f0c5012c3f1"
+  },
+  "first_gate_failure": {
+    "code": "numeric",
+    "message": "absolute/relative budget exceeded",
+    "case": "hello-let-teacher-forced-v1",
+    "tensor": "p0.layer.9.output",
+    "operation": "layer_output",
+    "position": 0,
+    "layer": 9,
+    "index": [
+      136
+    ],
+    "metrics": {
+      "max_abs": 0.00012969970703125,
+      "normalized_l2": 1.8320104979010646e-06
+    }
+  },
+  "stage_diagnostics": {
+    "scope": "diagnostic, not gate eligibility; inherited layer-output budget is not a calibrated stage budget",
+    "first_nonidentical": {
+      "key": "p0.layer.0.input_norm",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 4.76837158203125e-07,
+      "normalized_l2": 9.076877090197084e-07,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    "first_outside_inherited_budget": {
+      "key": "p0.layer.0.indexer.query_projection",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.0.indexer.query_projection",
+        "index": [
+          6,
+          119
+        ],
+        "metrics": {
+          "max_abs": 3.0517578125e-05,
+          "normalized_l2": 9.508829102316145e-07
+        }
+      },
+      "max_abs": 3.0517578125e-05,
+      "normalized_l2": 9.508829102316146e-07,
+      "outside_elementwise_budget": 2
+    },
+    "missing_reference": [],
+    "missing_candidate": []
+  },
+  "stage_count": 31172,
+  "stages_outside_inherited_budget": 2355,
+  "discrete_stage_count": 456,
+  "discrete_mismatch_count": 0,
+  "logits": [
+    {
+      "position": 0,
+      "max_abs": 6.961822509765625e-05,
+      "normalized_l2": 2.30507738693742e-06,
+      "softmax_tv": 4.0837194627304635e-06,
+      "reference_top5": [
+        154820,
+        565,
+        59,
+        4102,
+        319
+      ],
+      "candidate_top5": [
+        154820,
+        565,
+        59,
+        4102,
+        319
+      ],
+      "margin_difference": 5.0067901611328125e-06
+    },
+    {
+      "position": 1,
+      "max_abs": 0.00010779500007629395,
+      "normalized_l2": 5.801992813932369e-06,
+      "softmax_tv": 5.720971795760431e-06,
+      "reference_top5": [
+        594,
+        748,
+        752,
+        12778,
+        42397
+      ],
+      "candidate_top5": [
+        594,
+        748,
+        752,
+        12778,
+        42397
+      ],
+      "margin_difference": 3.910064697265625e-05
+    }
+  ],
+  "layer_outputs": [
+    {
+      "key": "p0.layer.0.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.2293457984924316e-07,
+      "normalized_l2": 1.4824204400497833e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p0.layer.1.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.1920928955078125e-07,
+      "normalized_l2": 1.5804581199963633e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p0.layer.2.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.9371509552001953e-07,
+      "normalized_l2": 1.4770014578798278e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p0.layer.3.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.1920928955078125e-07,
+      "normalized_l2": 1.3296797154880656e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p0.layer.4.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.1920928955078125e-07,
+      "normalized_l2": 1.69985874843579e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p0.layer.5.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 3.5762786865234375e-07,
+      "normalized_l2": 1.4355578011954499e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p0.layer.6.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 3.337860107421875e-06,
+      "normalized_l2": 1.194401195099604e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p0.layer.7.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 2.6226043701171875e-06,
+      "normalized_l2": 9.877784039959932e-07,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p0.layer.8.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 9.5367431640625e-06,
+      "normalized_l2": 6.275524467437771e-07,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p0.layer.9.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.9.output",
+        "index": [
+          136
+        ],
+        "metrics": {
+          "max_abs": 0.00012969970703125,
+          "normalized_l2": 1.8320104979010646e-06
+        }
+      },
+      "max_abs": 0.00012969970703125,
+      "normalized_l2": 1.8320104979010652e-06,
+      "outside_elementwise_budget": 34
+    },
+    {
+      "key": "p0.layer.10.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.10.output",
+        "index": [
+          136
+        ],
+        "metrics": {
+          "max_abs": 0.0001373291015625,
+          "normalized_l2": 1.8280942151779635e-06
+        }
+      },
+      "max_abs": 0.0001373291015625,
+      "normalized_l2": 1.8280942151779642e-06,
+      "outside_elementwise_budget": 34
+    },
+    {
+      "key": "p0.layer.11.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.11.output",
+        "index": [
+          136
+        ],
+        "metrics": {
+          "max_abs": 0.0001373291015625,
+          "normalized_l2": 1.8278503025166111e-06
+        }
+      },
+      "max_abs": 0.0001373291015625,
+      "normalized_l2": 1.8278503025166114e-06,
+      "outside_elementwise_budget": 34
+    },
+    {
+      "key": "p0.layer.12.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.12.output",
+        "index": [
+          136
+        ],
+        "metrics": {
+          "max_abs": 0.00012969970703125,
+          "normalized_l2": 1.824195135163972e-06
+        }
+      },
+      "max_abs": 0.00012969970703125,
+      "normalized_l2": 1.8241951351639723e-06,
+      "outside_elementwise_budget": 34
+    },
+    {
+      "key": "p0.layer.13.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.13.output",
+        "index": [
+          136
+        ],
+        "metrics": {
+          "max_abs": 0.00012969970703125,
+          "normalized_l2": 1.8238626292644995e-06
+        }
+      },
+      "max_abs": 0.00012969970703125,
+      "normalized_l2": 1.8238626292644995e-06,
+      "outside_elementwise_budget": 35
+    },
+    {
+      "key": "p0.layer.14.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.14.output",
+        "index": [
+          469
+        ],
+        "metrics": {
+          "max_abs": 0.00014495849609375,
+          "normalized_l2": 1.8230014566837097e-06
+        }
+      },
+      "max_abs": 0.00014495849609375,
+      "normalized_l2": 1.8230014566837103e-06,
+      "outside_elementwise_budget": 34
+    },
+    {
+      "key": "p0.layer.15.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.15.output",
+        "index": [
+          469
+        ],
+        "metrics": {
+          "max_abs": 0.00014495849609375,
+          "normalized_l2": 1.8226975419879579e-06
+        }
+      },
+      "max_abs": 0.00014495849609375,
+      "normalized_l2": 1.8226975419879585e-06,
+      "outside_elementwise_budget": 34
+    },
+    {
+      "key": "p0.layer.16.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.16.output",
+        "index": [
+          469
+        ],
+        "metrics": {
+          "max_abs": 0.00014495849609375,
+          "normalized_l2": 1.821151487252819e-06
+        }
+      },
+      "max_abs": 0.00014495849609375,
+      "normalized_l2": 1.8211514872528196e-06,
+      "outside_elementwise_budget": 34
+    },
+    {
+      "key": "p0.layer.17.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.17.output",
+        "index": [
+          469
+        ],
+        "metrics": {
+          "max_abs": 0.00014495849609375,
+          "normalized_l2": 1.8203906958311987e-06
+        }
+      },
+      "max_abs": 0.00014495849609375,
+      "normalized_l2": 1.8203906958311994e-06,
+      "outside_elementwise_budget": 32
+    },
+    {
+      "key": "p0.layer.18.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.18.output",
+        "index": [
+          469
+        ],
+        "metrics": {
+          "max_abs": 0.00014495849609375,
+          "normalized_l2": 1.8232002786490019e-06
+        }
+      },
+      "max_abs": 0.00014495849609375,
+      "normalized_l2": 1.8232002786490023e-06,
+      "outside_elementwise_budget": 32
+    },
+    {
+      "key": "p0.layer.19.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.19.output",
+        "index": [
+          469
+        ],
+        "metrics": {
+          "max_abs": 0.00014495849609375,
+          "normalized_l2": 1.8231155849768644e-06
+        }
+      },
+      "max_abs": 0.00014495849609375,
+      "normalized_l2": 1.8231155849768646e-06,
+      "outside_elementwise_budget": 32
+    },
+    {
+      "key": "p0.layer.20.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.20.output",
+        "index": [
+          469
+        ],
+        "metrics": {
+          "max_abs": 0.00014495849609375,
+          "normalized_l2": 1.822997052367943e-06
+        }
+      },
+      "max_abs": 0.00014495849609375,
+      "normalized_l2": 1.8229970523679431e-06,
+      "outside_elementwise_budget": 31
+    },
+    {
+      "key": "p0.layer.21.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.21.output",
+        "index": [
+          469
+        ],
+        "metrics": {
+          "max_abs": 0.00014495849609375,
+          "normalized_l2": 1.8227263494916123e-06
+        }
+      },
+      "max_abs": 0.00014495849609375,
+      "normalized_l2": 1.8227263494916127e-06,
+      "outside_elementwise_budget": 33
+    },
+    {
+      "key": "p0.layer.22.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.22.output",
+        "index": [
+          235
+        ],
+        "metrics": {
+          "max_abs": 0.00018310546875,
+          "normalized_l2": 1.8298357246873266e-06
+        }
+      },
+      "max_abs": 0.00018310546875,
+      "normalized_l2": 1.829835724687327e-06,
+      "outside_elementwise_budget": 38
+    },
+    {
+      "key": "p0.layer.23.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.23.output",
+        "index": [
+          136
+        ],
+        "metrics": {
+          "max_abs": 0.000213623046875,
+          "normalized_l2": 1.7630509646415568e-06
+        }
+      },
+      "max_abs": 0.000213623046875,
+      "normalized_l2": 1.7630509646415573e-06,
+      "outside_elementwise_budget": 31
+    },
+    {
+      "key": "p0.layer.24.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.24.output",
+        "index": [
+          252
+        ],
+        "metrics": {
+          "max_abs": 0.000213623046875,
+          "normalized_l2": 1.7121265547318249e-06
+        }
+      },
+      "max_abs": 0.000213623046875,
+      "normalized_l2": 1.7121265547318255e-06,
+      "outside_elementwise_budget": 26
+    },
+    {
+      "key": "p0.layer.25.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.25.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.000213623046875,
+          "normalized_l2": 1.6738785839859371e-06
+        }
+      },
+      "max_abs": 0.000213623046875,
+      "normalized_l2": 1.6738785839859376e-06,
+      "outside_elementwise_budget": 42
+    },
+    {
+      "key": "p0.layer.26.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.26.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.000213623046875,
+          "normalized_l2": 1.6702537604861077e-06
+        }
+      },
+      "max_abs": 0.000213623046875,
+      "normalized_l2": 1.6702537604861079e-06,
+      "outside_elementwise_budget": 45
+    },
+    {
+      "key": "p0.layer.27.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.27.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.000213623046875,
+          "normalized_l2": 1.6666650916290246e-06
+        }
+      },
+      "max_abs": 0.000213623046875,
+      "normalized_l2": 1.666665091629025e-06,
+      "outside_elementwise_budget": 41
+    },
+    {
+      "key": "p0.layer.28.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.28.output",
+        "index": [
+          62
+        ],
+        "metrics": {
+          "max_abs": 0.000213623046875,
+          "normalized_l2": 1.6008107992774879e-06
+        }
+      },
+      "max_abs": 0.000213623046875,
+      "normalized_l2": 1.6008107992774883e-06,
+      "outside_elementwise_budget": 42
+    },
+    {
+      "key": "p0.layer.29.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.29.output",
+        "index": [
+          11
+        ],
+        "metrics": {
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.6186589740383607e-06
+        }
+      },
+      "max_abs": 0.000244140625,
+      "normalized_l2": 1.6186589740383612e-06,
+      "outside_elementwise_budget": 34
+    },
+    {
+      "key": "p0.layer.30.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.30.output",
+        "index": [
+          11
+        ],
+        "metrics": {
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.5549513569592516e-06
+        }
+      },
+      "max_abs": 0.000244140625,
+      "normalized_l2": 1.5549513569592522e-06,
+      "outside_elementwise_budget": 33
+    },
+    {
+      "key": "p0.layer.31.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.31.output",
+        "index": [
+          11
+        ],
+        "metrics": {
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.539915797404487e-06
+        }
+      },
+      "max_abs": 0.000244140625,
+      "normalized_l2": 1.5399157974044875e-06,
+      "outside_elementwise_budget": 29
+    },
+    {
+      "key": "p0.layer.32.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.32.output",
+        "index": [
+          11
+        ],
+        "metrics": {
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.5119356445323395e-06
+        }
+      },
+      "max_abs": 0.000244140625,
+      "normalized_l2": 1.51193564453234e-06,
+      "outside_elementwise_budget": 29
+    },
+    {
+      "key": "p0.layer.33.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.33.output",
+        "index": [
+          11
+        ],
+        "metrics": {
+          "max_abs": 0.0002593994140625,
+          "normalized_l2": 1.5143053943983597e-06
+        }
+      },
+      "max_abs": 0.0002593994140625,
+      "normalized_l2": 1.5143053943983606e-06,
+      "outside_elementwise_budget": 25
+    },
+    {
+      "key": "p0.layer.34.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.34.output",
+        "index": [
+          11
+        ],
+        "metrics": {
+          "max_abs": 0.000274658203125,
+          "normalized_l2": 1.5105212399164677e-06
+        }
+      },
+      "max_abs": 0.000274658203125,
+      "normalized_l2": 1.5105212399164683e-06,
+      "outside_elementwise_budget": 26
+    },
+    {
+      "key": "p0.layer.35.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.35.output",
+        "index": [
+          11
+        ],
+        "metrics": {
+          "max_abs": 0.0002593994140625,
+          "normalized_l2": 1.488452959696931e-06
+        }
+      },
+      "max_abs": 0.0002593994140625,
+      "normalized_l2": 1.4884529596969315e-06,
+      "outside_elementwise_budget": 32
+    },
+    {
+      "key": "p0.layer.36.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.36.output",
+        "index": [
+          167
+        ],
+        "metrics": {
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.4710293202874246e-06
+        }
+      },
+      "max_abs": 0.000244140625,
+      "normalized_l2": 1.471029320287425e-06,
+      "outside_elementwise_budget": 32
+    },
+    {
+      "key": "p0.layer.37.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.37.output",
+        "index": [
+          167
+        ],
+        "metrics": {
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.4610861371483086e-06
+        }
+      },
+      "max_abs": 0.0002288818359375,
+      "normalized_l2": 1.461086137148309e-06,
+      "outside_elementwise_budget": 36
+    },
+    {
+      "key": "p0.layer.38.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.38.output",
+        "index": [
+          167
+        ],
+        "metrics": {
+          "max_abs": 0.000244140625,
+          "normalized_l2": 1.4615283890147645e-06
+        }
+      },
+      "max_abs": 0.000244140625,
+      "normalized_l2": 1.4615283890147647e-06,
+      "outside_elementwise_budget": 39
+    },
+    {
+      "key": "p0.layer.39.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.39.output",
+        "index": [
+          167
+        ],
+        "metrics": {
+          "max_abs": 0.0002593994140625,
+          "normalized_l2": 1.4582655554471957e-06
+        }
+      },
+      "max_abs": 0.0002593994140625,
+      "normalized_l2": 1.4582655554471965e-06,
+      "outside_elementwise_budget": 39
+    },
+    {
+      "key": "p0.layer.40.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.40.output",
+        "index": [
+          167
+        ],
+        "metrics": {
+          "max_abs": 0.000274658203125,
+          "normalized_l2": 1.457180996211787e-06
+        }
+      },
+      "max_abs": 0.000274658203125,
+      "normalized_l2": 1.4571809962117876e-06,
+      "outside_elementwise_budget": 37
+    },
+    {
+      "key": "p0.layer.41.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.41.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.000274658203125,
+          "normalized_l2": 1.4545986021608653e-06
+        }
+      },
+      "max_abs": 0.000274658203125,
+      "normalized_l2": 1.454598602160866e-06,
+      "outside_elementwise_budget": 32
+    },
+    {
+      "key": "p0.layer.42.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.42.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.000274658203125,
+          "normalized_l2": 1.4537491744266497e-06
+        }
+      },
+      "max_abs": 0.000274658203125,
+      "normalized_l2": 1.4537491744266503e-06,
+      "outside_elementwise_budget": 36
+    },
+    {
+      "key": "p0.layer.43.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.43.output",
+        "index": [
+          117
+        ],
+        "metrics": {
+          "max_abs": 0.000274658203125,
+          "normalized_l2": 1.45432637444252e-06
+        }
+      },
+      "max_abs": 0.000274658203125,
+      "normalized_l2": 1.4543263744425202e-06,
+      "outside_elementwise_budget": 31
+    },
+    {
+      "key": "p0.layer.44.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.44.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.000274658203125,
+          "normalized_l2": 1.4523968050799263e-06
+        }
+      },
+      "max_abs": 0.000274658203125,
+      "normalized_l2": 1.4523968050799267e-06,
+      "outside_elementwise_budget": 36
+    },
+    {
+      "key": "p0.layer.45.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.45.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0002899169921875,
+          "normalized_l2": 1.4524096966786588e-06
+        }
+      },
+      "max_abs": 0.0002899169921875,
+      "normalized_l2": 1.4524096966786592e-06,
+      "outside_elementwise_budget": 37
+    },
+    {
+      "key": "p0.layer.46.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.46.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0002899169921875,
+          "normalized_l2": 1.4534260265815983e-06
+        }
+      },
+      "max_abs": 0.0002899169921875,
+      "normalized_l2": 1.4534260265815988e-06,
+      "outside_elementwise_budget": 41
+    },
+    {
+      "key": "p0.layer.47.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.47.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0002899169921875,
+          "normalized_l2": 1.4544645428426554e-06
+        }
+      },
+      "max_abs": 0.0002899169921875,
+      "normalized_l2": 1.4544645428426558e-06,
+      "outside_elementwise_budget": 37
+    },
+    {
+      "key": "p0.layer.48.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.48.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0002899169921875,
+          "normalized_l2": 1.4528142690487458e-06
+        }
+      },
+      "max_abs": 0.0002899169921875,
+      "normalized_l2": 1.4528142690487462e-06,
+      "outside_elementwise_budget": 42
+    },
+    {
+      "key": "p0.layer.49.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.49.output",
+        "index": [
+          116
+        ],
+        "metrics": {
+          "max_abs": 0.0002899169921875,
+          "normalized_l2": 1.4551780528528244e-06
+        }
+      },
+      "max_abs": 0.0002899169921875,
+      "normalized_l2": 1.4551780528528246e-06,
+      "outside_elementwise_budget": 34
+    },
+    {
+      "key": "p0.layer.50.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.50.output",
+        "index": [
+          43
+        ],
+        "metrics": {
+          "max_abs": 0.0002899169921875,
+          "normalized_l2": 1.455879941096162e-06
+        }
+      },
+      "max_abs": 0.0002899169921875,
+      "normalized_l2": 1.4558799410961627e-06,
+      "outside_elementwise_budget": 34
+    },
+    {
+      "key": "p0.layer.51.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.51.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.00030517578125,
+          "normalized_l2": 1.4521566787616457e-06
+        }
+      },
+      "max_abs": 0.00030517578125,
+      "normalized_l2": 1.4521566787616461e-06,
+      "outside_elementwise_budget": 39
+    },
+    {
+      "key": "p0.layer.52.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.52.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0002899169921875,
+          "normalized_l2": 1.4474480432271973e-06
+        }
+      },
+      "max_abs": 0.0002899169921875,
+      "normalized_l2": 1.4474480432271977e-06,
+      "outside_elementwise_budget": 40
+    },
+    {
+      "key": "p0.layer.53.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.53.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.000274658203125,
+          "normalized_l2": 1.445233597622088e-06
+        }
+      },
+      "max_abs": 0.000274658203125,
+      "normalized_l2": 1.4452335976220885e-06,
+      "outside_elementwise_budget": 42
+    },
+    {
+      "key": "p0.layer.54.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.54.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.000274658203125,
+          "normalized_l2": 1.446363439223615e-06
+        }
+      },
+      "max_abs": 0.000274658203125,
+      "normalized_l2": 1.4463634392236155e-06,
+      "outside_elementwise_budget": 48
+    },
+    {
+      "key": "p0.layer.55.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.55.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.000274658203125,
+          "normalized_l2": 1.4433509269318069e-06
+        }
+      },
+      "max_abs": 0.000274658203125,
+      "normalized_l2": 1.4433509269318073e-06,
+      "outside_elementwise_budget": 40
+    },
+    {
+      "key": "p0.layer.56.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.56.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.000274658203125,
+          "normalized_l2": 1.4526679133126986e-06
+        }
+      },
+      "max_abs": 0.000274658203125,
+      "normalized_l2": 1.452667913312699e-06,
+      "outside_elementwise_budget": 43
+    },
+    {
+      "key": "p0.layer.57.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.57.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.000274658203125,
+          "normalized_l2": 1.4533661464499201e-06
+        }
+      },
+      "max_abs": 0.000274658203125,
+      "normalized_l2": 1.4533661464499205e-06,
+      "outside_elementwise_budget": 41
+    },
+    {
+      "key": "p0.layer.58.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.58.output",
+        "index": [
+          236
+        ],
+        "metrics": {
+          "max_abs": 0.000274658203125,
+          "normalized_l2": 1.4530359068241107e-06
+        }
+      },
+      "max_abs": 0.000274658203125,
+      "normalized_l2": 1.453035906824111e-06,
+      "outside_elementwise_budget": 50
+    },
+    {
+      "key": "p0.layer.59.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.59.output",
+        "index": [
+          236
+        ],
+        "metrics": {
+          "max_abs": 0.000274658203125,
+          "normalized_l2": 1.4542999206588156e-06
+        }
+      },
+      "max_abs": 0.000274658203125,
+      "normalized_l2": 1.4542999206588162e-06,
+      "outside_elementwise_budget": 47
+    },
+    {
+      "key": "p0.layer.60.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.60.output",
+        "index": [
+          236
+        ],
+        "metrics": {
+          "max_abs": 0.000274658203125,
+          "normalized_l2": 1.4589457051817125e-06
+        }
+      },
+      "max_abs": 0.000274658203125,
+      "normalized_l2": 1.4589457051817131e-06,
+      "outside_elementwise_budget": 44
+    },
+    {
+      "key": "p0.layer.61.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.61.output",
+        "index": [
+          236
+        ],
+        "metrics": {
+          "max_abs": 0.0002899169921875,
+          "normalized_l2": 1.460377087133688e-06
+        }
+      },
+      "max_abs": 0.0002899169921875,
+      "normalized_l2": 1.4603770871336883e-06,
+      "outside_elementwise_budget": 43
+    },
+    {
+      "key": "p0.layer.62.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.62.output",
+        "index": [
+          236
+        ],
+        "metrics": {
+          "max_abs": 0.00030517578125,
+          "normalized_l2": 1.504922477207889e-06
+        }
+      },
+      "max_abs": 0.00030517578125,
+      "normalized_l2": 1.5049224772078895e-06,
+      "outside_elementwise_budget": 47
+    },
+    {
+      "key": "p0.layer.63.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.63.output",
+        "index": [
+          236
+        ],
+        "metrics": {
+          "max_abs": 0.00030517578125,
+          "normalized_l2": 1.5063400492610841e-06
+        }
+      },
+      "max_abs": 0.00030517578125,
+      "normalized_l2": 1.5063400492610843e-06,
+      "outside_elementwise_budget": 49
+    },
+    {
+      "key": "p0.layer.64.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.64.output",
+        "index": [
+          236
+        ],
+        "metrics": {
+          "max_abs": 0.00030517578125,
+          "normalized_l2": 1.5145163048970686e-06
+        }
+      },
+      "max_abs": 0.00030517578125,
+      "normalized_l2": 1.5145163048970694e-06,
+      "outside_elementwise_budget": 44
+    },
+    {
+      "key": "p0.layer.65.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.65.output",
+        "index": [
+          236
+        ],
+        "metrics": {
+          "max_abs": 0.00030517578125,
+          "normalized_l2": 1.5287769712736417e-06
+        }
+      },
+      "max_abs": 0.00030517578125,
+      "normalized_l2": 1.5287769712736417e-06,
+      "outside_elementwise_budget": 41
+    },
+    {
+      "key": "p0.layer.66.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.66.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.00030517578125,
+          "normalized_l2": 1.537632679354184e-06
+        }
+      },
+      "max_abs": 0.00030517578125,
+      "normalized_l2": 1.537632679354184e-06,
+      "outside_elementwise_budget": 44
+    },
+    {
+      "key": "p0.layer.67.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.67.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.00030517578125,
+          "normalized_l2": 1.5442956331554366e-06
+        }
+      },
+      "max_abs": 0.00030517578125,
+      "normalized_l2": 1.544295633155437e-06,
+      "outside_elementwise_budget": 48
+    },
+    {
+      "key": "p0.layer.68.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.68.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.5613263689411893e-06
+        }
+      },
+      "max_abs": 0.0003204345703125,
+      "normalized_l2": 1.5613263689411901e-06,
+      "outside_elementwise_budget": 58
+    },
+    {
+      "key": "p0.layer.69.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.69.output",
+        "index": [
+          11
+        ],
+        "metrics": {
+          "max_abs": 0.00042724609375,
+          "normalized_l2": 2.4796034203781473e-06
+        }
+      },
+      "max_abs": 0.00042724609375,
+      "normalized_l2": 2.4796034203781478e-06,
+      "outside_elementwise_budget": 103
+    },
+    {
+      "key": "p0.layer.70.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.70.output",
+        "index": [
+          11
+        ],
+        "metrics": {
+          "max_abs": 0.00029754638671875,
+          "normalized_l2": 2.280984771871862e-06
+        }
+      },
+      "max_abs": 0.00029754638671875,
+      "normalized_l2": 2.280984771871863e-06,
+      "outside_elementwise_budget": 135
+    },
+    {
+      "key": "p0.layer.71.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.71.output",
+        "index": [
+          32
+        ],
+        "metrics": {
+          "max_abs": 0.000244140625,
+          "normalized_l2": 2.392713049565674e-06
+        }
+      },
+      "max_abs": 0.000244140625,
+      "normalized_l2": 2.3927130495656746e-06,
+      "outside_elementwise_budget": 151
+    },
+    {
+      "key": "p0.layer.72.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.72.output",
+        "index": [
+          13
+        ],
+        "metrics": {
+          "max_abs": 0.0002899169921875,
+          "normalized_l2": 2.8730354565882908e-06
+        }
+      },
+      "max_abs": 0.0002899169921875,
+      "normalized_l2": 2.8730354565882908e-06,
+      "outside_elementwise_budget": 142
+    },
+    {
+      "key": "p0.layer.73.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.73.output",
+        "index": [
+          13
+        ],
+        "metrics": {
+          "max_abs": 0.00026702880859375,
+          "normalized_l2": 3.0391361243613388e-06
+        }
+      },
+      "max_abs": 0.00026702880859375,
+      "normalized_l2": 3.0391361243613396e-06,
+      "outside_elementwise_budget": 162
+    },
+    {
+      "key": "p0.layer.74.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.74.output",
+        "index": [
+          27
+        ],
+        "metrics": {
+          "max_abs": 0.00026702880859375,
+          "normalized_l2": 3.181064514562689e-06
+        }
+      },
+      "max_abs": 0.00026702880859375,
+      "normalized_l2": 3.1810645145626896e-06,
+      "outside_elementwise_budget": 173
+    },
+    {
+      "key": "p0.layer.75.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.75.output",
+        "index": [
+          12
+        ],
+        "metrics": {
+          "max_abs": 0.000946044921875,
+          "normalized_l2": 4.9667925073741705e-06
+        }
+      },
+      "max_abs": 0.000946044921875,
+      "normalized_l2": 4.966792507374173e-06,
+      "outside_elementwise_budget": 199
+    },
+    {
+      "key": "p0.layer.76.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.76.output",
+        "index": [
+          13
+        ],
+        "metrics": {
+          "max_abs": 0.001007080078125,
+          "normalized_l2": 4.895307640246303e-06
+        }
+      },
+      "max_abs": 0.001007080078125,
+      "normalized_l2": 4.895307640246304e-06,
+      "outside_elementwise_budget": 191
+    },
+    {
+      "key": "p0.layer.77.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.77.output",
+        "index": [
+          12
+        ],
+        "metrics": {
+          "max_abs": 0.0028076171875,
+          "normalized_l2": 3.531248584787184e-06
+        }
+      },
+      "max_abs": 0.0028076171875,
+      "normalized_l2": 3.5312485847871844e-06,
+      "outside_elementwise_budget": 233
+    },
+    {
+      "key": "p0.logits",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 6.961822509765625e-05,
+      "normalized_l2": 2.30507738693742e-06,
+      "softmax_tv": 4.0837194627304635e-06,
+      "reference_top_k_margin": 0.5737117528915405,
+      "candidate_top_k_margin": 0.5737167596817017,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.0.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 2.0489096641540527e-07,
+      "normalized_l2": 2.0303266743461314e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.1.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.4528632164001465e-07,
+      "normalized_l2": 2.078885664198561e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.2.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.3783574104309082e-07,
+      "normalized_l2": 1.9891306038248723e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.3.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.2665987014770508e-07,
+      "normalized_l2": 1.8762936514862845e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.4.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.648440957069397e-07,
+      "normalized_l2": 2.1428500666619264e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.5.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.3224780559539795e-07,
+      "normalized_l2": 1.9623719692642115e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.6.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.825392246246338e-07,
+      "normalized_l2": 2.229121114190372e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.7.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.9371509552001953e-07,
+      "normalized_l2": 2.205587095751856e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.8.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.8998980522155762e-07,
+      "normalized_l2": 2.1029935753606807e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.9.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 2.2724270820617676e-07,
+      "normalized_l2": 2.057596512146085e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.10.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 2.942979335784912e-07,
+      "normalized_l2": 2.2972145810473407e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.11.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 3.3527612686157227e-07,
+      "normalized_l2": 2.521631406741889e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.12.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 3.8743019104003906e-07,
+      "normalized_l2": 2.6704313417289544e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.13.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 4.731118679046631e-07,
+      "normalized_l2": 2.7399565433273194e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.14.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.1622905731201172e-06,
+      "normalized_l2": 2.937199277151851e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.15.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.3262033462524414e-06,
+      "normalized_l2": 2.9697421817955034e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.16.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 5.252659320831299e-07,
+      "normalized_l2": 3.276726876467782e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.17.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 5.811452865600586e-07,
+      "normalized_l2": 3.242308480039452e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.18.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 6.798654794692993e-07,
+      "normalized_l2": 3.3113982138051255e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.19.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 9.5367431640625e-07,
+      "normalized_l2": 3.32871684565354e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.20.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 8.274801075458527e-07,
+      "normalized_l2": 3.250246821566501e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.21.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 3.5762786865234375e-06,
+      "normalized_l2": 3.3346571871127357e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.22.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 4.0531158447265625e-06,
+      "normalized_l2": 3.414087950574012e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.23.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 6.4373016357421875e-06,
+      "normalized_l2": 3.5750206506533633e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.24.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 6.198883056640625e-06,
+      "normalized_l2": 3.7429422628800405e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.25.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 6.198883056640625e-06,
+      "normalized_l2": 3.982481596286955e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.26.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 5.4836273193359375e-06,
+      "normalized_l2": 3.951887409916026e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.27.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 2.2649765014648438e-06,
+      "normalized_l2": 4.241364620306325e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.28.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 2.212822437286377e-06,
+      "normalized_l2": 4.322747474625317e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.29.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 4.76837158203125e-06,
+      "normalized_l2": 4.549168757134275e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.30.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 8.821487426757812e-06,
+      "normalized_l2": 4.743221792557567e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.31.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 8.821487426757812e-06,
+      "normalized_l2": 4.933098691972317e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.32.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.9073486328125e-05,
+      "normalized_l2": 5.204865643466836e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.33.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.4781951904296875e-05,
+      "normalized_l2": 5.4954196273780555e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.34.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.34.output",
+        "index": [
+          4129
+        ],
+        "metrics": {
+          "max_abs": 1.430511474609375e-05,
+          "normalized_l2": 5.615335767082979e-06
+        }
+      },
+      "max_abs": 1.430511474609375e-05,
+      "normalized_l2": 5.6153357670829805e-06,
+      "outside_elementwise_budget": 1
+    },
+    {
+      "key": "p1.layer.35.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 1.52587890625e-05,
+      "normalized_l2": 5.540974577820677e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.36.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 2.193450927734375e-05,
+      "normalized_l2": 5.538711531521633e-06,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    {
+      "key": "p1.layer.37.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.37.output",
+        "index": [
+          1578
+        ],
+        "metrics": {
+          "max_abs": 2.288818359375e-05,
+          "normalized_l2": 5.518318101226256e-06
+        }
+      },
+      "max_abs": 2.288818359375e-05,
+      "normalized_l2": 5.5183181012262566e-06,
+      "outside_elementwise_budget": 2
+    },
+    {
+      "key": "p1.layer.38.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.38.output",
+        "index": [
+          984
+        ],
+        "metrics": {
+          "max_abs": 3.24249267578125e-05,
+          "normalized_l2": 5.265353029071653e-06
+        }
+      },
+      "max_abs": 3.24249267578125e-05,
+      "normalized_l2": 5.265353029071653e-06,
+      "outside_elementwise_budget": 1
+    },
+    {
+      "key": "p1.layer.39.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.39.output",
+        "index": [
+          2133
+        ],
+        "metrics": {
+          "max_abs": 3.719329833984375e-05,
+          "normalized_l2": 5.613235554543193e-06
+        }
+      },
+      "max_abs": 3.719329833984375e-05,
+      "normalized_l2": 5.613235554543195e-06,
+      "outside_elementwise_budget": 3
+    },
+    {
+      "key": "p1.layer.40.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.40.output",
+        "index": [
+          415
+        ],
+        "metrics": {
+          "max_abs": 3.62396240234375e-05,
+          "normalized_l2": 5.680672781032004e-06
+        }
+      },
+      "max_abs": 3.62396240234375e-05,
+      "normalized_l2": 5.680672781032005e-06,
+      "outside_elementwise_budget": 5
+    },
+    {
+      "key": "p1.layer.41.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.41.output",
+        "index": [
+          136
+        ],
+        "metrics": {
+          "max_abs": 5.14984130859375e-05,
+          "normalized_l2": 5.485172335826282e-06
+        }
+      },
+      "max_abs": 5.14984130859375e-05,
+      "normalized_l2": 5.485172335826283e-06,
+      "outside_elementwise_budget": 10
+    },
+    {
+      "key": "p1.layer.42.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.42.output",
+        "index": [
+          136
+        ],
+        "metrics": {
+          "max_abs": 7.05718994140625e-05,
+          "normalized_l2": 5.691497195307428e-06
+        }
+      },
+      "max_abs": 7.05718994140625e-05,
+      "normalized_l2": 5.6914971953074295e-06,
+      "outside_elementwise_budget": 14
+    },
+    {
+      "key": "p1.layer.43.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.43.output",
+        "index": [
+          264
+        ],
+        "metrics": {
+          "max_abs": 8.0108642578125e-05,
+          "normalized_l2": 5.4706888332410855e-06
+        }
+      },
+      "max_abs": 8.0108642578125e-05,
+      "normalized_l2": 5.470688833241088e-06,
+      "outside_elementwise_budget": 14
+    },
+    {
+      "key": "p1.layer.44.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.44.output",
+        "index": [
+          236
+        ],
+        "metrics": {
+          "max_abs": 9.1552734375e-05,
+          "normalized_l2": 5.852791953148166e-06
+        }
+      },
+      "max_abs": 9.1552734375e-05,
+      "normalized_l2": 5.852791953148166e-06,
+      "outside_elementwise_budget": 16
+    },
+    {
+      "key": "p1.layer.45.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.45.output",
+        "index": [
+          98
+        ],
+        "metrics": {
+          "max_abs": 8.392333984375e-05,
+          "normalized_l2": 5.89772841828721e-06
+        }
+      },
+      "max_abs": 8.392333984375e-05,
+      "normalized_l2": 5.897728418287212e-06,
+      "outside_elementwise_budget": 25
+    },
+    {
+      "key": "p1.layer.46.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.46.output",
+        "index": [
+          111
+        ],
+        "metrics": {
+          "max_abs": 7.43865966796875e-05,
+          "normalized_l2": 5.133358013449279e-06
+        }
+      },
+      "max_abs": 7.43865966796875e-05,
+      "normalized_l2": 5.13335801344928e-06,
+      "outside_elementwise_budget": 27
+    },
+    {
+      "key": "p1.layer.47.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.47.output",
+        "index": [
+          415
+        ],
+        "metrics": {
+          "max_abs": 4.76837158203125e-05,
+          "normalized_l2": 5.063362862248504e-06
+        }
+      },
+      "max_abs": 4.76837158203125e-05,
+      "normalized_l2": 5.063362862248505e-06,
+      "outside_elementwise_budget": 35
+    },
+    {
+      "key": "p1.layer.48.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.48.output",
+        "index": [
+          112
+        ],
+        "metrics": {
+          "max_abs": 4.00543212890625e-05,
+          "normalized_l2": 4.875242177479578e-06
+        }
+      },
+      "max_abs": 4.00543212890625e-05,
+      "normalized_l2": 4.875242177479579e-06,
+      "outside_elementwise_budget": 47
+    },
+    {
+      "key": "p1.layer.49.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.49.output",
+        "index": [
+          98
+        ],
+        "metrics": {
+          "max_abs": 2.47955322265625e-05,
+          "normalized_l2": 4.910960169266868e-06
+        }
+      },
+      "max_abs": 2.47955322265625e-05,
+      "normalized_l2": 4.910960169266869e-06,
+      "outside_elementwise_budget": 50
+    },
+    {
+      "key": "p1.layer.50.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.50.output",
+        "index": [
+          98
+        ],
+        "metrics": {
+          "max_abs": 4.57763671875e-05,
+          "normalized_l2": 4.852269827081811e-06
+        }
+      },
+      "max_abs": 4.57763671875e-05,
+      "normalized_l2": 4.852269827081812e-06,
+      "outside_elementwise_budget": 72
+    },
+    {
+      "key": "p1.layer.51.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.51.output",
+        "index": [
+          246
+        ],
+        "metrics": {
+          "max_abs": 2.47955322265625e-05,
+          "normalized_l2": 4.81155713598924e-06
+        }
+      },
+      "max_abs": 2.47955322265625e-05,
+      "normalized_l2": 4.811557135989242e-06,
+      "outside_elementwise_budget": 73
+    },
+    {
+      "key": "p1.layer.52.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.52.output",
+        "index": [
+          98
+        ],
+        "metrics": {
+          "max_abs": 1.1324882507324219e-05,
+          "normalized_l2": 4.917421865337042e-06
+        }
+      },
+      "max_abs": 1.1324882507324219e-05,
+      "normalized_l2": 4.9174218653370434e-06,
+      "outside_elementwise_budget": 73
+    },
+    {
+      "key": "p1.layer.53.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.53.output",
+        "index": [
+          10
+        ],
+        "metrics": {
+          "max_abs": 1.2442469596862793e-05,
+          "normalized_l2": 4.695740536973205e-06
+        }
+      },
+      "max_abs": 1.2442469596862793e-05,
+      "normalized_l2": 4.695740536973205e-06,
+      "outside_elementwise_budget": 71
+    },
+    {
+      "key": "p1.layer.54.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.54.output",
+        "index": [
+          26
+        ],
+        "metrics": {
+          "max_abs": 2.288818359375e-05,
+          "normalized_l2": 4.730309166138749e-06
+        }
+      },
+      "max_abs": 2.288818359375e-05,
+      "normalized_l2": 4.730309166138749e-06,
+      "outside_elementwise_budget": 67
+    },
+    {
+      "key": "p1.layer.55.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.55.output",
+        "index": [
+          26
+        ],
+        "metrics": {
+          "max_abs": 3.814697265625e-05,
+          "normalized_l2": 5.028817260621143e-06
+        }
+      },
+      "max_abs": 3.814697265625e-05,
+      "normalized_l2": 5.028817260621144e-06,
+      "outside_elementwise_budget": 95
+    },
+    {
+      "key": "p1.layer.56.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.56.output",
+        "index": [
+          26
+        ],
+        "metrics": {
+          "max_abs": 3.62396240234375e-05,
+          "normalized_l2": 5.210210922779242e-06
+        }
+      },
+      "max_abs": 3.62396240234375e-05,
+      "normalized_l2": 5.210210922779242e-06,
+      "outside_elementwise_budget": 117
+    },
+    {
+      "key": "p1.layer.57.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.57.output",
+        "index": [
+          3
+        ],
+        "metrics": {
+          "max_abs": 3.62396240234375e-05,
+          "normalized_l2": 5.624357492459918e-06
+        }
+      },
+      "max_abs": 3.62396240234375e-05,
+      "normalized_l2": 5.62435749245992e-06,
+      "outside_elementwise_budget": 126
+    },
+    {
+      "key": "p1.layer.58.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.58.output",
+        "index": [
+          3
+        ],
+        "metrics": {
+          "max_abs": 7.43865966796875e-05,
+          "normalized_l2": 6.020946352063505e-06
+        }
+      },
+      "max_abs": 7.43865966796875e-05,
+      "normalized_l2": 6.020946352063506e-06,
+      "outside_elementwise_budget": 168
+    },
+    {
+      "key": "p1.layer.59.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.59.output",
+        "index": [
+          26
+        ],
+        "metrics": {
+          "max_abs": 8.96453857421875e-05,
+          "normalized_l2": 6.39373348751966e-06
+        }
+      },
+      "max_abs": 8.96453857421875e-05,
+      "normalized_l2": 6.393733487519661e-06,
+      "outside_elementwise_budget": 189
+    },
+    {
+      "key": "p1.layer.60.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.60.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 6.4849853515625e-05,
+          "normalized_l2": 5.935174155081695e-06
+        }
+      },
+      "max_abs": 6.4849853515625e-05,
+      "normalized_l2": 5.935174155081695e-06,
+      "outside_elementwise_budget": 202
+    },
+    {
+      "key": "p1.layer.61.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.61.output",
+        "index": [
+          226
+        ],
+        "metrics": {
+          "max_abs": 0.000133514404296875,
+          "normalized_l2": 5.943071284152115e-06
+        }
+      },
+      "max_abs": 0.000133514404296875,
+      "normalized_l2": 5.9430712841521164e-06,
+      "outside_elementwise_budget": 208
+    },
+    {
+      "key": "p1.layer.62.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.62.output",
+        "index": [
+          3
+        ],
+        "metrics": {
+          "max_abs": 0.000148773193359375,
+          "normalized_l2": 6.5297797525432666e-06
+        }
+      },
+      "max_abs": 0.000148773193359375,
+      "normalized_l2": 6.529779752543268e-06,
+      "outside_elementwise_budget": 222
+    },
+    {
+      "key": "p1.layer.63.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.63.output",
+        "index": [
+          23
+        ],
+        "metrics": {
+          "max_abs": 0.00016021728515625,
+          "normalized_l2": 6.765773149163155e-06
+        }
+      },
+      "max_abs": 0.00016021728515625,
+      "normalized_l2": 6.765773149163155e-06,
+      "outside_elementwise_budget": 277
+    },
+    {
+      "key": "p1.layer.64.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.64.output",
+        "index": [
+          25
+        ],
+        "metrics": {
+          "max_abs": 0.000133514404296875,
+          "normalized_l2": 6.738838692102208e-06
+        }
+      },
+      "max_abs": 0.000133514404296875,
+      "normalized_l2": 6.73883869210221e-06,
+      "outside_elementwise_budget": 276
+    },
+    {
+      "key": "p1.layer.65.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.65.output",
+        "index": [
+          2
+        ],
+        "metrics": {
+          "max_abs": 0.0001773834228515625,
+          "normalized_l2": 7.361629026246242e-06
+        }
+      },
+      "max_abs": 0.0001773834228515625,
+      "normalized_l2": 7.3616290262462435e-06,
+      "outside_elementwise_budget": 273
+    },
+    {
+      "key": "p1.layer.66.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.66.output",
+        "index": [
+          2
+        ],
+        "metrics": {
+          "max_abs": 0.0001983642578125,
+          "normalized_l2": 7.890137642019483e-06
+        }
+      },
+      "max_abs": 0.0001983642578125,
+      "normalized_l2": 7.890137642019485e-06,
+      "outside_elementwise_budget": 314
+    },
+    {
+      "key": "p1.layer.67.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.67.output",
+        "index": [
+          2
+        ],
+        "metrics": {
+          "max_abs": 0.0001621246337890625,
+          "normalized_l2": 7.787052788293634e-06
+        }
+      },
+      "max_abs": 0.0001621246337890625,
+      "normalized_l2": 7.787052788293636e-06,
+      "outside_elementwise_budget": 358
+    },
+    {
+      "key": "p1.layer.68.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.68.output",
+        "index": [
+          2
+        ],
+        "metrics": {
+          "max_abs": 0.000232696533203125,
+          "normalized_l2": 8.622815512728334e-06
+        }
+      },
+      "max_abs": 0.000232696533203125,
+      "normalized_l2": 8.622815512728338e-06,
+      "outside_elementwise_budget": 360
+    },
+    {
+      "key": "p1.layer.69.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.69.output",
+        "index": [
+          25
+        ],
+        "metrics": {
+          "max_abs": 0.0002193450927734375,
+          "normalized_l2": 8.3656842320801e-06
+        }
+      },
+      "max_abs": 0.0002193450927734375,
+      "normalized_l2": 8.365684232080104e-06,
+      "outside_elementwise_budget": 418
+    },
+    {
+      "key": "p1.layer.70.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.70.output",
+        "index": [
+          3
+        ],
+        "metrics": {
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 8.84975473010598e-06
+        }
+      },
+      "max_abs": 0.0002288818359375,
+      "normalized_l2": 8.849754730105982e-06,
+      "outside_elementwise_budget": 446
+    },
+    {
+      "key": "p1.layer.71.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.71.output",
+        "index": [
+          2
+        ],
+        "metrics": {
+          "max_abs": 0.000240325927734375,
+          "normalized_l2": 9.009426963928712e-06
+        }
+      },
+      "max_abs": 0.000240325927734375,
+      "normalized_l2": 9.009426963928715e-06,
+      "outside_elementwise_budget": 478
+    },
+    {
+      "key": "p1.layer.72.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.72.output",
+        "index": [
+          7
+        ],
+        "metrics": {
+          "max_abs": 0.000244140625,
+          "normalized_l2": 8.971895118406025e-06
+        }
+      },
+      "max_abs": 0.000244140625,
+      "normalized_l2": 8.97189511840603e-06,
+      "outside_elementwise_budget": 489
+    },
+    {
+      "key": "p1.layer.73.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.73.output",
+        "index": [
+          4
+        ],
+        "metrics": {
+          "max_abs": 0.00017833709716796875,
+          "normalized_l2": 9.243545180823667e-06
+        }
+      },
+      "max_abs": 0.00017833709716796875,
+      "normalized_l2": 9.243545180823674e-06,
+      "outside_elementwise_budget": 499
+    },
+    {
+      "key": "p1.layer.74.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.74.output",
+        "index": [
+          4
+        ],
+        "metrics": {
+          "max_abs": 0.0002155303955078125,
+          "normalized_l2": 8.978216333672489e-06
+        }
+      },
+      "max_abs": 0.0002155303955078125,
+      "normalized_l2": 8.978216333672492e-06,
+      "outside_elementwise_budget": 542
+    },
+    {
+      "key": "p1.layer.75.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.75.output",
+        "index": [
+          35
+        ],
+        "metrics": {
+          "max_abs": 0.000202178955078125,
+          "normalized_l2": 4.231027873261558e-06
+        }
+      },
+      "max_abs": 0.000202178955078125,
+      "normalized_l2": 4.23102787326156e-06,
+      "outside_elementwise_budget": 229
+    },
+    {
+      "key": "p1.layer.76.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.76.output",
+        "index": [
+          57
+        ],
+        "metrics": {
+          "max_abs": 0.00019073486328125,
+          "normalized_l2": 3.7942255342411877e-06
+        }
+      },
+      "max_abs": 0.00019073486328125,
+      "normalized_l2": 3.7942255342411898e-06,
+      "outside_elementwise_budget": 183
+    },
+    {
+      "key": "p1.layer.77.output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.77.output",
+        "index": [
+          7
+        ],
+        "metrics": {
+          "max_abs": 0.0003509521484375,
+          "normalized_l2": 7.257674468219547e-06
+        }
+      },
+      "max_abs": 0.0003509521484375,
+      "normalized_l2": 7.257674468219551e-06,
+      "outside_elementwise_budget": 503
+    },
+    {
+      "key": "p1.logits",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.logits",
+        "index": [
+          15
+        ],
+        "metrics": {
+          "max_abs": 0.00010779500007629395,
+          "normalized_l2": 5.801992813932388e-06
+        }
+      },
+      "max_abs": 0.00010779500007629395,
+      "normalized_l2": 5.801992813932369e-06,
+      "outside_elementwise_budget": 5593
+    }
+  ],
+  "limitations": [
+    "Two teacher-forced positions do not exercise long-context DSA selection or held-out prompts.",
+    "Shared GGUF codec has separate native GGML checks; this oracle is not official Transformers execution.",
+    "Per-stage comparisons inherit an uncalibrated layer budget solely for localization."
+  ]
+}

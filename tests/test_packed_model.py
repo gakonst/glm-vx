@@ -71,3 +71,23 @@ def test_explicit_mode_requires_compatible_checkpoint_backend():
         Model(c,w,VxBackend(),packed_weights=True)
     with pytest.raises(ValueError, match='compatible'):
         Model(c,w,NumpyBackend(),packed_weights=True)
+
+
+def test_packed_mlp_does_not_dispatch_to_expanded_resident_interface(tmp_path, monkeypatch):
+    c, w = fixture_data()
+    path = tmp_path/'mixed.gguf'
+    write_mixed_fixture(path, c, w)
+    cp = GGUFCheckpoint(path, c)
+    class DualBackend(VxBackend):
+        def mlp(self, *args):
+            pytest.fail('packed mode dispatched to expanded resident MLP')
+    try:
+        baseline = Model(c, cp, VxBackend(), packed_weights=True)
+        dual = Model(c, cp, DualBackend(), packed_weights=True)
+        ca, cb = baseline.new_cache(), dual.new_cache()
+        # Includes dense, shared and routed expert paths, not just _expert.
+        for token in (1, 7):
+            np.testing.assert_array_equal(baseline.forward(token, ca), dual.forward(token, cb))
+            compare_cache(ca, cb)
+    finally:
+        cp.close()

@@ -253,7 +253,9 @@ class GlmMoeDsaModel:
     def _mlp(self, prefix, x, position=0):
         stage = prefix.replace('model.layers.', 'layer.').replace('.shared_experts', '.shared').replace('.experts.', '.expert.')
         resident_mlp = getattr(self.backend, 'mlp', None)
-        if callable(resident_mlp):
+        # A resident expanded-weight MLP is not a packed-aware contract. Honor
+        # the explicit packed mode even when a backend exposes both interfaces.
+        if callable(resident_mlp) and not self.packed_weights:
             return resident_mlp(self._weight(prefix + '.gate_proj.weight'),
                                 self._weight(prefix + '.up_proj.weight'),
                                 self._weight(prefix + '.down_proj.weight'), x)

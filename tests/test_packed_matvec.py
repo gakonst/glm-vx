@@ -210,3 +210,19 @@ def test_backend_without_packed_symbols_has_explicit_fallback():
     assert supports(OldLibrary(),0)
     assert not supports(OldLibrary(),19)
     assert not supports(OldLibrary(),999)
+
+
+def test_f32_capacity_counts_elements_and_rejects_unaligned_bytes(backend):
+    from kernels.packed import _buffers
+    # No giant allocation is needed to distinguish a valid element count from
+    # an invalid byte-size limit: this must reach byte-count validation.
+    with pytest.raises(ValueError, match='byte count'):
+        _buffers(np.empty(0, np.uint8), 0, (154880, 6144))
+    with pytest.raises(ValueError, match='int32'):
+        _buffers(np.empty(0, np.uint8), 0, (2**30, 2))
+    # Non-F32 kernels still require byte addressing to fit their int32 ABI.
+    with pytest.raises(ValueError, match='int32'):
+        _buffers(np.empty(0, np.uint8), 1, (2**30, 1))
+    raw = np.zeros(17, np.uint8)[1:]
+    with pytest.raises(ValueError, match='aligned'):
+        backend.packed_matvec(raw, 0, (1, 4), np.ones(4, np.float32))
