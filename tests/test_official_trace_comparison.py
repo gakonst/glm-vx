@@ -223,3 +223,18 @@ def test_candidate_pins_bind_imported_sources_independent_of_cwd(tmp_path,monkey
     for key,path in before['source_paths'].items():
         assert Path(path).is_absolute() and sha_file(path)==before['source_sha256'][key]
     assert 'gguf' in before['dependencies']['versions']
+
+
+@pytest.mark.parametrize('dtype',[np.int32,np.int64])
+def test_official_short_context_and_topk_index_dtypes_are_both_valid(evidence,dtype):
+    r=copy.deepcopy(evidence['r'])
+    for k in r:
+        if k.endswith('.official_selected'):r[k]=r[k].astype(dtype)
+    report=evidence['write'](ref_arrays=r)
+    assert report['status']=='pass',report
+
+
+@pytest.mark.parametrize('dtype',[np.float32,np.uint32,np.int16])
+def test_official_raw_index_other_dtypes_fail(evidence,dtype):
+    r=copy.deepcopy(evidence['r']);r['p0.layer.0.official_selected']=r['p0.layer.0.official_selected'].astype(dtype)
+    assert evidence['write'](ref_arrays=r)['status']=='fail'

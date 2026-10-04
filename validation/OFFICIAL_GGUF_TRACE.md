@@ -70,7 +70,7 @@ Existing output directories are rejected.
 For each position/layer, NPZ captures:
 
 - `pN.layer.L.output`: official hidden output.
-- `pN.layer.L.official_selected`: raw official top-k slots, including masked
+- `pN.layer.L.official_selected`: raw official slots (int32 in the short-context shortcut, int64 for top-k), including masked
   future slots that eager batch can return before enough causal tokens exist.
 - `pN.layer.L.selected`: sorted **causal membership** used by the official mask.
   This ordering is not the engine's score-sorted selection ordering. Compare

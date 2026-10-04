@@ -40,8 +40,8 @@ def archive(path, receipt):
     return result
 
 
-def integer_ids(value, count, upper, label):
-    require(value.dtype == np.dtype('int64') and value.shape == (count,), label+' must be int64 IDs with required shape')
+def integer_ids(value, count, upper, label, *, dtypes=("int64",)):
+    require(value.dtype in tuple(np.dtype(t) for t in dtypes) and value.shape == (count,), label+' must be integral IDs with required dtype/shape')
     require(len(np.unique(value)) == count and np.all(value >= 0) and np.all(value < upper), label+' has invalid/duplicate IDs')
     return np.argsort(value, kind='stable')
 
@@ -128,7 +128,7 @@ def compare(contract_path, config_path, reference_dir, candidate_dir, library):
                     prefix = f'p{pos}.layer.{layer}'; key = prefix+'.selected'
                     require(key in r and key in a and prefix+'.official_selected' in r, 'missing selection: '+prefix)
                     ri, ai, raw = r[key], a[key], r[prefix+'.official_selected']
-                    integer_ids(raw, min(cfg['index_topk'], len(tokens)), len(tokens), 'raw official selection')
+                    integer_ids(raw, min(cfg['index_topk'], len(tokens)), len(tokens), 'raw official selection', dtypes=('int32','int64'))
                     integer_ids(ri, len(ri), pos+1, key); integer_ids(ai, len(ai), pos+1, key)
                     require(np.array_equal(ri, np.sort(raw[raw <= pos])), 'official causal-membership trace contradicts raw slots')
                     require(len(ri) == len(ai) == min(cfg['index_topk'], pos+1), 'incomplete causal selection')
