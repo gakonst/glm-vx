@@ -52,7 +52,7 @@ OPENBLAS_NUM_THREADS=1 .venv/bin/python -m pytest \
   tests kernels/test_backend.py gpu -q -rs
 ```
 
-**131 passed, 13 skipped, 37 subtests passed.** All 13 skips are explicitly
+**133 passed, 13 skipped, 37 subtests passed.** All 13 skips are explicitly
 real-device tests: eight FP8 hardware cases and five resident/model hardware
 cases. The loader could not find `libcuda.so.1`; there is no GPU timing result.
 

@@ -218,3 +218,21 @@ in-place outputs. A fourth excess block verified row bounds guards. RNG seed was
 920 and tolerances were again 2e-5; maximum absolute error was 9.53674e-7 for
 RMSNorm and 5.96047e-8 for softmax. This brings the ad-hoc development comparisons
 to 70, including checks made before extraction into shared internal helpers.
+
+### Final compiler and assembler verification
+
+The final 11-entry source SHA-256 is
+`85463e38228f811ec2357d4eafb629eabf9ac74bfcdf081801d448979fd79e05`.
+It was compiled through the Vx/LLVM adapter and NVIDIA CUDA 12.9.86 `ptxas`
+for both sm80 and sm90. All 11 entries assembled successfully with zero register
+spills and zero stack use. Reported register counts were 22–40 on sm80 and
+24–32 on sm90. The two explicit `_rows` entries each used 30 registers on sm80,
+32 on sm90, and 1024 bytes of static shared storage under the adapter's default
+allocation. Twelve compiler regression tests passed, covering all 11 entry
+names. Final provenance and assembler reports are under [evidence](evidence/).
+
+These are compiler/assembler resource reports, not measured GPU performance or
+proof of device-side numerical correctness. Runtime wrappers were independently
+inspected to confirm original vector argument counts, separate `_rows` symbols,
+and a 32-thread router launch. Mock-runtime tests validate launch contracts;
+they do not execute on a GPU.
