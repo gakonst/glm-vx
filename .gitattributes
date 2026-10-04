@@ -1,0 +1,4 @@
+# GitHub Linguist has no Vx grammar yet. Its Rust-like syntax uses Rust's lexer.
+*.vx linguist-language=Rust
+# Upstream model/compiler references are not this project's implementation.
+metadata/** linguist-vendored
