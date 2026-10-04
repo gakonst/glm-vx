@@ -1,0 +1,271 @@
+// From-scratch GLM numerical kernels. C ABI: kernels.h.
+// Storage and arithmetic are f32; no allocation, tensors, or framework calls.
+extern "C" {
+  fn expf(x: f32) -> f32;
+  fn sqrtf(x: f32) -> f32;
+}
+
+fn glm_vx_sigmoid_scalar(x: f32) -> f32 {
+  let mut result: f32 = 0.0;
+  unsafe {
+    if x >= 0.0 { result = 1.0 / (1.0 + expf(0.0 - x)); }
+    else { let z: f32 = expf(x); result = z / (1.0 + z); }
+  }
+  return result;
+}
+
+fn glm_vx_rmsnorm(out: *mut f32, x: *const f32, weight: *const f32, n: i32, eps: f32) -> i32 {
+  if n <= 0 { return -1; }
+  if eps <= 0.0 { return -1; }
+  unsafe {
+    let mut ss: f32 = 0.0;
+    for i in 0..n { ss = ss + x[i] * x[i]; }
+    let inv: f32 = 1.0 / sqrtf(ss / (n as f32) + eps);
+    for i in 0..n { out[i] = x[i] * inv * weight[i]; }
+  }
+  return 0;
+}
+
+fn glm_vx_layernorm(out: *mut f32, x: *const f32, weight: *const f32, bias: *const f32, n: i32, eps: f32) -> i32 {
+  if n <= 0 { return -1; }
+  if eps <= 0.0 { return -1; }
+  unsafe {
+    let mut mean: f32 = 0.0;
+    for i in 0..n { mean = mean + x[i]; }
+    mean = mean / (n as f32);
+    let mut variance: f32 = 0.0;
+    for i in 0..n { let d: f32 = x[i] - mean; variance = variance + d * d; }
+    let inv: f32 = 1.0 / sqrtf(variance / (n as f32) + eps);
+    for i in 0..n { out[i] = (x[i] - mean) * inv * weight[i] + bias[i]; }
+  }
+  return 0;
+}
+
+fn glm_vx_softmax(out: *mut f32, x: *const f32, n: i32) -> i32 {
+  if n <= 0 { return -1; }
+  unsafe {
+    let mut maximum: f32 = x[0];
+    for i in 1..n { if x[i] > maximum { maximum = x[i]; } }
+    let mut sum: f32 = 0.0;
+    for i in 0..n { let v: f32 = expf(x[i] - maximum); out[i] = v; sum = sum + v; }
+    for i in 0..n { out[i] = out[i] / sum; }
+  }
+  return 0;
+}
+
+fn glm_vx_swiglu(out: *mut f32, gate: *const f32, up: *const f32, n: i32) -> i32 {
+  if n < 0 { return -1; }
+  unsafe { for i in 0..n { out[i] = gate[i] * glm_vx_sigmoid_scalar(gate[i]) * up[i]; } }
+  return 0;
+}
+
+fn glm_vx_add(out: *mut f32, a: *const f32, b: *const f32, n: i32) -> i32 {
+  if n < 0 { return -1; }
+  unsafe { for i in 0..n { out[i] = a[i] + b[i]; } }
+  return 0;
+}
+
+fn glm_vx_axpy(out: *mut f32, x: *const f32, alpha: f32, n: i32) -> i32 {
+  if n < 0 { return -1; }
+  unsafe { for i in 0..n { out[i] = out[i] + alpha * x[i]; } }
+  return 0;
+}
+
+fn glm_vx_matvec(out: *mut f32, weight: *const f32, x: *const f32, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols < 0 { return -1; }
+  unsafe {
+    for r in 0..rows {
+      let mut sum: f32 = 0.0;
+      for c in 0..cols { sum = sum + weight[r * cols + c] * x[c]; }
+      out[r] = sum;
+    }
+  }
+  return 0;
+}
+
+// C = A[M,K] @ B[N,K]^T. Useful for Q/K score products and dense batches.
+fn glm_vx_matmul_nt(out: *mut f32, a: *const f32, b: *const f32, m: i32, n: i32, k: i32) -> i32 {
+  if m < 0 { return -1; }
+  if n < 0 { return -1; }
+  if k < 0 { return -1; }
+  unsafe {
+    for r in 0..m {
+      for c in 0..n {
+        let mut sum: f32 = 0.0;
+        for j in 0..k { sum = sum + a[r * k + j] * b[c * k + j]; }
+        out[r * n + c] = sum;
+      }
+    }
+  }
+  return 0;
+}
+
+// Rotate adjacent pairs in the LAST rope_dim elements of each head.
+// cos/sin hold one coefficient per pair, computed for the caller's position.
+fn glm_vx_rope(out: *mut f32, x: *const f32, cosine: *const f32, sine: *const f32, heads: i32, head_dim: i32, rope_dim: i32) -> i32 {
+  return glm_vx_rope_offset(out, x, cosine, sine, heads, head_dim, rope_dim, head_dim - rope_dim);
+}
+
+fn glm_vx_rope_offset(out: *mut f32, x: *const f32, cosine: *const f32, sine: *const f32, heads: i32, head_dim: i32, rope_dim: i32, offset: i32) -> i32 {
+  if heads < 0 { return -1; }
+  if rope_dim < 0 { return -1; }
+  if offset < 0 { return -1; }
+  if head_dim < rope_dim { return -1; }
+  if offset > head_dim - rope_dim { return -1; }
+  if rope_dim % 2 != 0 { return -1; }
+  unsafe {
+    for h in 0..heads {
+      let base: i32 = h * head_dim;
+      for d in 0..offset { out[base + d] = x[base + d]; }
+      for d in (offset + rope_dim)..head_dim { out[base + d] = x[base + d]; }
+      for p in 0..(rope_dim / 2) {
+        let i: i32 = base + offset + p * 2;
+        let a: f32 = x[i];
+        let b: f32 = x[i + 1];
+        out[i] = a * cosine[p] - b * sine[p];
+        out[i + 1] = a * sine[p] + b * cosine[p];
+      }
+    }
+  }
+  return 0;
+}
+
+// Stable ties choose the smaller expert index. Bias affects choice, never weight.
+// GLM5.3 n_group=topk_group=1; no grouped restriction is needed for this model.
+fn glm_vx_router(indices: *mut i32, weights: *mut f32, logits: *const f32, bias: *const f32, experts: i32, k: i32, scale: f32) -> i32 {
+  if k <= 0 { return -1; }
+  if experts < k { return -1; }
+  unsafe {
+    let mut total: f32 = 0.0;
+    for slot in 0..k {
+      let mut best: i32 = -1;
+      let mut best_score: f32 = 0.0;
+      for e in 0..experts {
+        let mut used: i32 = 0;
+        for previous in 0..slot { if indices[previous] == e { used = 1; } }
+        if used == 0 {
+          let score: f32 = glm_vx_sigmoid_scalar(logits[e]) + bias[e];
+          if best < 0 { best = e; best_score = score; }
+          else { if score > best_score { best = e; best_score = score; } }
+        }
+      }
+      indices[slot] = best;
+      let prob: f32 = glm_vx_sigmoid_scalar(logits[best]);
+      weights[slot] = prob;
+      total = total + prob;
+    }
+    // Reference GLM adds 1e-20 to handle underflowed sigmoid.
+    total = total + 0.00000000000000000001;
+    for slot in 0..k { weights[slot] = weights[slot] / total * scale; }
+  }
+  return 0;
+}
+
+// Top-k of finite arbitrary scores, useful for DSA index selection.
+fn glm_vx_topk(indices: *mut i32, scores: *const f32, n: i32, k: i32) -> i32 {
+  if k < 0 { return -1; }
+  if n < k { return -1; }
+  unsafe {
+    for slot in 0..k {
+      let mut best: i32 = -1;
+      let mut best_score: f32 = 0.0;
+      for e in 0..n {
+        let mut used: i32 = 0;
+        for previous in 0..slot { if indices[previous] == e { used = 1; } }
+        if used == 0 {
+          if best < 0 { best = e; best_score = scores[e]; }
+          else { if scores[e] > best_score { best = e; best_score = scores[e]; } }
+        }
+      }
+      indices[slot] = best;
+    }
+  }
+  return 0;
+}
+
+// One query/head; K[T,D], V[T,DV]. Caller supplies eligible (causal) tokens.
+fn glm_vx_attention(out: *mut f32, scratch: *mut f32, q: *const f32, keys: *const f32, values: *const f32, tokens: i32, dim: i32, value_dim: i32, scale: f32) -> i32 {
+  if tokens <= 0 { return -1; }
+  if dim <= 0 { return -1; }
+  if value_dim <= 0 { return -1; }
+  unsafe {
+    for t in 0..tokens {
+      let mut score: f32 = 0.0;
+      for d in 0..dim { score = score + q[d] * keys[t * dim + d]; }
+      scratch[t] = score * scale;
+    }
+    glm_vx_softmax(scratch, scratch, tokens);
+    for d in 0..value_dim {
+      let mut sum: f32 = 0.0;
+      for t in 0..tokens { sum = sum + scratch[t] * values[t * value_dim + d]; }
+      out[d] = sum;
+    }
+  }
+  return 0;
+}
+
+// Same computation restricted to selected token IDs. Checks IDs before writing.
+fn glm_vx_sparse_attention(out: *mut f32, scratch: *mut f32, q: *const f32, keys: *const f32, values: *const f32, selected: *const i32, count: i32, tokens: i32, dim: i32, value_dim: i32, scale: f32) -> i32 {
+  if count <= 0 { return -1; }
+  if tokens <= 0 { return -1; }
+  if dim <= 0 { return -1; }
+  if value_dim <= 0 { return -1; }
+  unsafe {
+    for j in 0..count { if selected[j] < 0 { return -1; } if selected[j] >= tokens { return -1; } }
+    for j in 0..count {
+      let t: i32 = selected[j];
+      let mut score: f32 = 0.0;
+      for d in 0..dim { score = score + q[d] * keys[t * dim + d]; }
+      scratch[j] = score * scale;
+    }
+    glm_vx_softmax(scratch, scratch, count);
+    for d in 0..value_dim {
+      let mut sum: f32 = 0.0;
+      for j in 0..count { sum = sum + scratch[j] * values[selected[j] * value_dim + d]; }
+      out[d] = sum;
+    }
+  }
+  return 0;
+}
+
+// DSA one-query token scores. q[heads,dim], keys[tokens,dim].
+// weights are already scaled by heads^-0.5, qk_scale = dim^-0.5.
+fn glm_vx_index_scores(out: *mut f32, q: *const f32, keys: *const f32, weights: *const f32, tokens: i32, heads: i32, dim: i32, qk_scale: f32) -> i32 {
+  if tokens < 0 { return -1; }
+  if heads <= 0 { return -1; }
+  if dim <= 0 { return -1; }
+  unsafe {
+    for t in 0..tokens {
+      let mut total: f32 = 0.0;
+      for h in 0..heads {
+        let mut dot: f32 = 0.0;
+        for d in 0..dim { dot = dot + q[h * dim + d] * keys[t * dim + d]; }
+        let score: f32 = dot * qk_scale;
+        if score > 0.0 { total = total + weights[h] * score; }
+      }
+      out[t] = total;
+    }
+  }
+  return 0;
+}
+
+// Official GLM interleaved-input RoPE returns [rotated-even, rotated-odd].
+// Unlike glm_vx_rope, out must NOT alias x because output permutes positions.
+fn glm_vx_rope_glm(out: *mut f32, x: *const f32, cosine: *const f32, sine: *const f32, heads: i32, dim: i32) -> i32 {
+  if heads < 0 { return -1; }
+  if dim <= 0 { return -1; }
+  if dim % 2 != 0 { return -1; }
+  unsafe {
+    for h in 0..heads {
+      let base: i32 = h * dim;
+      for p in 0..(dim / 2) {
+        let a: f32 = x[base + 2 * p];
+        let b: f32 = x[base + 2 * p + 1];
+        out[base + p] = a * cosine[p] - b * sine[p];
+        out[base + dim / 2 + p] = b * cosine[p] + a * sine[p];
+      }
+    }
+  }
+  return 0;
+}

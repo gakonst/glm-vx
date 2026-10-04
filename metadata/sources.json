@@ -1,0 +1,27 @@
+{
+  "model": "zai-org/GLM-5.3",
+  "revision": "aca966e4e02791568aa6a4ced368624b3d897f42",
+  "transformers_revision": "469230357aab0f2b303b0d638c1f8d06edb14184",
+  "sources": {
+    "config.json": {
+      "url": "https://huggingface.co/zai-org/GLM-5.3/resolve/aca966e4e02791568aa6a4ced368624b3d897f42/config.json",
+      "sha256": "3ac72612095574542f7fff847ada8e59d9199dd8af44bdf625d7e02615572e69"
+    },
+    "model.safetensors.index.json": {
+      "url": "https://huggingface.co/zai-org/GLM-5.3/resolve/aca966e4e02791568aa6a4ced368624b3d897f42/model.safetensors.index.json",
+      "sha256": "e0fe7f28c1f853d4824e4d796374e3dacf1fe470988773952c79b063768134bf"
+    },
+    "modeling_glm_moe_dsa.py": {
+      "url": "https://raw.githubusercontent.com/huggingface/transformers/469230357aab0f2b303b0d638c1f8d06edb14184/src/transformers/models/glm_moe_dsa/modeling_glm_moe_dsa.py",
+      "sha256": "039993e90e650395e65ecfd6f803a7200799967b88535f5742c490fe2346f1d8"
+    },
+    "configuration_glm_moe_dsa.py": {
+      "url": "https://raw.githubusercontent.com/huggingface/transformers/469230357aab0f2b303b0d638c1f8d06edb14184/src/transformers/models/glm_moe_dsa/configuration_glm_moe_dsa.py",
+      "sha256": "1afa39ac6d0b6b374c973ef32c3c318d10c6c957916531e15a286eb5713acaae"
+    },
+    "finegrained_fp8.py": {
+      "url": "https://raw.githubusercontent.com/huggingface/transformers/469230357aab0f2b303b0d638c1f8d06edb14184/src/transformers/integrations/finegrained_fp8.py",
+      "sha256": "e86cb993a148ba7e1baffb2f8c892fa5afb31504e81992a27da75a505c914624"
+    }
+  }
+}

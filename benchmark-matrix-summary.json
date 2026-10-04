@@ -1,0 +1,146 @@
+[
+  {
+    "requests": 1,
+    "prompt": 8,
+    "medians": {
+      "numpy-reference": {
+        "elapsed_seconds": 0.015445224940776825,
+        "output_tokens_per_second": 1035.9188721012742,
+        "ttft_median_seconds": 0.0063789039850234985,
+        "ttft_max_seconds": 0.0063789039850234985
+      },
+      "vx-cpu-f32": {
+        "elapsed_seconds": 0.042552459985017776,
+        "output_tokens_per_second": 376.0064636834959,
+        "ttft_median_seconds": 0.014048013836145401,
+        "ttft_max_seconds": 0.014048013836145401
+      }
+    }
+  },
+  {
+    "requests": 1,
+    "prompt": 32,
+    "medians": {
+      "numpy-reference": {
+        "elapsed_seconds": 0.028183713555336,
+        "output_tokens_per_second": 567.7037544603746,
+        "ttft_median_seconds": 0.019232630729675293,
+        "ttft_max_seconds": 0.019232630729675293
+      },
+      "vx-cpu-f32": {
+        "elapsed_seconds": 0.08017156273126602,
+        "output_tokens_per_second": 199.5720110088384,
+        "ttft_median_seconds": 0.05118493363261223,
+        "ttft_max_seconds": 0.05118493363261223
+      }
+    }
+  },
+  {
+    "requests": 2,
+    "prompt": 8,
+    "medians": {
+      "numpy-reference": {
+        "elapsed_seconds": 0.028829757124185562,
+        "output_tokens_per_second": 1109.9642588787156,
+        "ttft_median_seconds": 0.009570237249135971,
+        "ttft_max_seconds": 0.010690990835428238
+      },
+      "vx-cpu-f32": {
+        "elapsed_seconds": 0.07694651931524277,
+        "output_tokens_per_second": 415.873262166661,
+        "ttft_median_seconds": 0.02304387278854847,
+        "ttft_max_seconds": 0.026211261749267578
+      }
+    }
+  },
+  {
+    "requests": 2,
+    "prompt": 32,
+    "medians": {
+      "numpy-reference": {
+        "elapsed_seconds": 0.056154489517211914,
+        "output_tokens_per_second": 569.8564847640843,
+        "ttft_median_seconds": 0.03607131540775299,
+        "ttft_max_seconds": 0.037323128432035446
+      },
+      "vx-cpu-f32": {
+        "elapsed_seconds": 0.14980895817279816,
+        "output_tokens_per_second": 213.605383752081,
+        "ttft_median_seconds": 0.09556198678910732,
+        "ttft_max_seconds": 0.09878168627619743
+      }
+    }
+  },
+  {
+    "requests": 4,
+    "prompt": 8,
+    "medians": {
+      "numpy-reference": {
+        "elapsed_seconds": 0.0601942241191864,
+        "output_tokens_per_second": 1063.2249345598018,
+        "ttft_median_seconds": 0.01516629010438919,
+        "ttft_max_seconds": 0.01987290009856224
+      },
+      "vx-cpu-f32": {
+        "elapsed_seconds": 0.15022769942879677,
+        "output_tokens_per_second": 426.0199699745385,
+        "ttft_median_seconds": 0.044964248314499855,
+        "ttft_max_seconds": 0.0540827140212059
+      }
+    }
+  },
+  {
+    "requests": 4,
+    "prompt": 32,
+    "medians": {
+      "numpy-reference": {
+        "elapsed_seconds": 0.10868746787309647,
+        "output_tokens_per_second": 588.8443373685587,
+        "ttft_median_seconds": 0.06845845654606819,
+        "ttft_max_seconds": 0.07215167209506035
+      },
+      "vx-cpu-f32": {
+        "elapsed_seconds": 0.29564910382032394,
+        "output_tokens_per_second": 216.47283611891137,
+        "ttft_median_seconds": 0.1895272172987461,
+        "ttft_max_seconds": 0.19892697036266327
+      }
+    }
+  },
+  {
+    "requests": 8,
+    "prompt": 8,
+    "medians": {
+      "numpy-reference": {
+        "elapsed_seconds": 0.10816456004977226,
+        "output_tokens_per_second": 1183.3820610105602,
+        "ttft_median_seconds": 0.027896244078874588,
+        "ttft_max_seconds": 0.03548607602715492
+      },
+      "vx-cpu-f32": {
+        "elapsed_seconds": 0.2925908751785755,
+        "output_tokens_per_second": 437.4709222284475,
+        "ttft_median_seconds": 0.0783895906060934,
+        "ttft_max_seconds": 0.10236956179141998
+      }
+    }
+  },
+  {
+    "requests": 8,
+    "prompt": 32,
+    "medians": {
+      "numpy-reference": {
+        "elapsed_seconds": 0.2162880040705204,
+        "output_tokens_per_second": 591.8035100932633,
+        "ttft_median_seconds": 0.13498601131141186,
+        "ttft_max_seconds": 0.1428438313305378
+      },
+      "vx-cpu-f32": {
+        "elapsed_seconds": 0.5911609120666981,
+        "output_tokens_per_second": 216.52311136829414,
+        "ttft_median_seconds": 0.37445987574756145,
+        "ttft_max_seconds": 0.39643076807260513
+      }
+    }
+  }
+]

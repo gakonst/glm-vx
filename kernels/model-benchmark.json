@@ -1,0 +1,74 @@
+{
+  "scope": "tiny random GLM-shaped CPU model; no GPU or trained full-model claim",
+  "platform": "Linux-5.15.0-164-generic-x86_64-with-glibc2.35",
+  "python": "3.10.12",
+  "numpy": "2.2.6",
+  "blas_threads": "1",
+  "results": [
+    {
+      "backend": "numpy-reference",
+      "requests": 2,
+      "prompt_tokens_each": 8,
+      "generated_tokens_each": 8,
+      "elapsed_seconds": 0.018299706280231476,
+      "output_tokens_per_second": 874.330973130658,
+      "ttft_median_seconds": 0.00863676518201828,
+      "ttft_max_seconds": 0.00974220409989357,
+      "outputs": [
+        [
+          255,
+          243,
+          158,
+          210,
+          37,
+          242,
+          32,
+          161
+        ],
+        [
+          255,
+          243,
+          158,
+          210,
+          37,
+          242,
+          32,
+          161
+        ]
+      ]
+    },
+    {
+      "backend": "vx-cpu-f32",
+      "requests": 2,
+      "prompt_tokens_each": 8,
+      "generated_tokens_each": 8,
+      "elapsed_seconds": 0.0520135797560215,
+      "output_tokens_per_second": 307.6119750851741,
+      "ttft_median_seconds": 0.021741921082139015,
+      "ttft_max_seconds": 0.028854142874479294,
+      "outputs": [
+        [
+          255,
+          243,
+          158,
+          210,
+          37,
+          242,
+          32,
+          161
+        ],
+        [
+          255,
+          243,
+          158,
+          210,
+          37,
+          242,
+          32,
+          161
+        ]
+      ]
+    }
+  ],
+  "greedy_outputs_match": true
+}

@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "glm-vx"
+version = "0.1.0"
+description = "Experimental GLM MoE DSA serving with from-scratch Vx kernels"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24", "tokenizers>=0.20"]
+[project.optional-dependencies]
+test = ["pytest>=8"]
+[project.scripts]
+glm-vx = "glm_vx.server:main"
+[tool.setuptools.packages.find]
+include = ["glm_vx*", "kernels*"]

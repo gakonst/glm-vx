@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.egg-info/
+build/
+*.so
+*.o
+*.ll
+*.log
+get-pip.py
+upstream_model_reference.py

@@ -1,0 +1,23 @@
+{
+  "compiler": "official Vx v0.0.2 Linux release",
+  "compiler_wrapper": "/srv/nanocodex/workspace/vx-toolchain/bin/vxc",
+  "build_command": "VXC=/srv/nanocodex/workspace/vx-toolchain/bin/vxc kernels/build.sh",
+  "test_command": ".venv/bin/python kernels/test_kernels.py",
+  "sha256": {
+    "kernels/kernels.vx": "1ecfb7a7496d8be58b59c100097de8c7dd8c074fe3a8f0f4fb111f1f3f20a424",
+    "kernels/kernels.h": "4ebca25e720962ca7169ff360482ceaedc9f7d0eac0dbe4aa1197863ebfc5b6b",
+    "kernels/backend.py": "cbb9739d2cdb6a7e53fdf84bf21c7af697578164f18e533877610c61d347b32a",
+    "kernels/build/libglm_vx.so": "8ab282ede08bda26aa678fee30d87cc6abf57cdaea95902cb93446a10e7efbbe"
+  },
+  "backend_test_command": ".venv/bin/python -m unittest kernels.test_backend -v",
+  "final_validation": {
+    "direct_kernel_checks": 50,
+    "backend_unittests": 7,
+    "model_unittests": 11
+  },
+  "final_test_counts": {
+    "pytest": 41,
+    "pytest_subtests": 37,
+    "native_kernel_checks": 50
+  }
+}

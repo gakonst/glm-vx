@@ -1,0 +1,705 @@
+{
+  "scope": "tiny random GLM-shaped CPU model; no full-checkpoint or GPU execution",
+  "platform": "Linux-5.15.0-164-generic-x86_64-with-glibc2.35",
+  "blas_threads": "1",
+  "repeats": 3,
+  "all_greedy_outputs_match": true,
+  "results": [
+    {
+      "requests": 1,
+      "prompt_tokens_each": 8,
+      "output_tokens_each": 16,
+      "trials": [
+        {
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 1,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.019212108105421066,
+            "output_tokens_per_second": 832.8081391279123,
+            "ttft_median_seconds": 0.007841136306524277,
+            "ttft_max_seconds": 0.007841136306524277
+          },
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 1,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.04239508509635925,
+            "output_tokens_per_second": 377.4022381045775,
+            "ttft_median_seconds": 0.014048013836145401,
+            "ttft_max_seconds": 0.014048013836145401
+          }
+        },
+        {
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 1,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.042552459985017776,
+            "output_tokens_per_second": 376.0064636834959,
+            "ttft_median_seconds": 0.013546887785196304,
+            "ttft_max_seconds": 0.013546887785196304
+          },
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 1,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.015082377940416336,
+            "output_tokens_per_second": 1060.8406753370573,
+            "ttft_median_seconds": 0.005635153502225876,
+            "ttft_max_seconds": 0.005635153502225876
+          }
+        },
+        {
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 1,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.015445224940776825,
+            "output_tokens_per_second": 1035.9188721012742,
+            "ttft_median_seconds": 0.0063789039850234985,
+            "ttft_max_seconds": 0.0063789039850234985
+          },
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 1,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.054740890860557556,
+            "output_tokens_per_second": 292.2860725952942,
+            "ttft_median_seconds": 0.021900832653045654,
+            "ttft_max_seconds": 0.021900832653045654
+          }
+        }
+      ],
+      "medians": {
+        "numpy-reference": {
+          "elapsed_seconds": 0.015445224940776825,
+          "output_tokens_per_second": 1035.9188721012742,
+          "ttft_median_seconds": 0.0063789039850234985,
+          "ttft_max_seconds": 0.0063789039850234985
+        },
+        "vx-cpu-f32": {
+          "elapsed_seconds": 0.042552459985017776,
+          "output_tokens_per_second": 376.0064636834959,
+          "ttft_median_seconds": 0.014048013836145401,
+          "ttft_max_seconds": 0.014048013836145401
+        }
+      }
+    },
+    {
+      "requests": 1,
+      "prompt_tokens_each": 32,
+      "output_tokens_each": 16,
+      "trials": [
+        {
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 1,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.04398755729198456,
+            "output_tokens_per_second": 363.73922502206165,
+            "ttft_median_seconds": 0.026233207434415817,
+            "ttft_max_seconds": 0.026233207434415817
+          },
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 1,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.08017156273126602,
+            "output_tokens_per_second": 199.5720110088384,
+            "ttft_median_seconds": 0.05118493363261223,
+            "ttft_max_seconds": 0.05118493363261223
+          }
+        },
+        {
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 1,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.0765436552464962,
+            "output_tokens_per_second": 209.0310418084248,
+            "ttft_median_seconds": 0.05009165033698082,
+            "ttft_max_seconds": 0.05009165033698082
+          },
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 1,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.027650192379951477,
+            "output_tokens_per_second": 578.6578183666178,
+            "ttft_median_seconds": 0.018668673932552338,
+            "ttft_max_seconds": 0.018668673932552338
+          }
+        },
+        {
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 1,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.028183713555336,
+            "output_tokens_per_second": 567.7037544603746,
+            "ttft_median_seconds": 0.019232630729675293,
+            "ttft_max_seconds": 0.019232630729675293
+          },
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 1,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.08230887725949287,
+            "output_tokens_per_second": 194.38972481130136,
+            "ttft_median_seconds": 0.05317583307623863,
+            "ttft_max_seconds": 0.05317583307623863
+          }
+        }
+      ],
+      "medians": {
+        "numpy-reference": {
+          "elapsed_seconds": 0.028183713555336,
+          "output_tokens_per_second": 567.7037544603746,
+          "ttft_median_seconds": 0.019232630729675293,
+          "ttft_max_seconds": 0.019232630729675293
+        },
+        "vx-cpu-f32": {
+          "elapsed_seconds": 0.08017156273126602,
+          "output_tokens_per_second": 199.5720110088384,
+          "ttft_median_seconds": 0.05118493363261223,
+          "ttft_max_seconds": 0.05118493363261223
+        }
+      }
+    },
+    {
+      "requests": 2,
+      "prompt_tokens_each": 8,
+      "output_tokens_each": 16,
+      "trials": [
+        {
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 2,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.026824306696653366,
+            "output_tokens_per_second": 1192.9478872232087,
+            "ttft_median_seconds": 0.008120736107230186,
+            "ttft_max_seconds": 0.009195800870656967
+          },
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 2,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.07668377459049225,
+            "output_tokens_per_second": 417.29818557950284,
+            "ttft_median_seconds": 0.02304387278854847,
+            "ttft_max_seconds": 0.026211261749267578
+          }
+        },
+        {
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 2,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.07694651931524277,
+            "output_tokens_per_second": 415.873262166661,
+            "ttft_median_seconds": 0.022839318960905075,
+            "ttft_max_seconds": 0.025857456028461456
+          },
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 2,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.028829757124185562,
+            "output_tokens_per_second": 1109.9642588787156,
+            "ttft_median_seconds": 0.009570237249135971,
+            "ttft_max_seconds": 0.010690990835428238
+          }
+        },
+        {
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 2,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.02981054037809372,
+            "output_tokens_per_second": 1073.4458213147725,
+            "ttft_median_seconds": 0.009611116722226143,
+            "ttft_max_seconds": 0.010802045464515686
+          },
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 2,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.07868576794862747,
+            "output_tokens_per_second": 406.68091364237847,
+            "ttft_median_seconds": 0.024363761767745018,
+            "ttft_max_seconds": 0.02754272148013115
+          }
+        }
+      ],
+      "medians": {
+        "numpy-reference": {
+          "elapsed_seconds": 0.028829757124185562,
+          "output_tokens_per_second": 1109.9642588787156,
+          "ttft_median_seconds": 0.009570237249135971,
+          "ttft_max_seconds": 0.010690990835428238
+        },
+        "vx-cpu-f32": {
+          "elapsed_seconds": 0.07694651931524277,
+          "output_tokens_per_second": 415.873262166661,
+          "ttft_median_seconds": 0.02304387278854847,
+          "ttft_max_seconds": 0.026211261749267578
+        }
+      }
+    },
+    {
+      "requests": 2,
+      "prompt_tokens_each": 32,
+      "output_tokens_each": 16,
+      "trials": [
+        {
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 2,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.056154489517211914,
+            "output_tokens_per_second": 569.8564847640843,
+            "ttft_median_seconds": 0.03607131540775299,
+            "ttft_max_seconds": 0.037323128432035446
+          },
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 2,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.14764529839158058,
+            "output_tokens_per_second": 216.7356519212046,
+            "ttft_median_seconds": 0.09431362524628639,
+            "ttft_max_seconds": 0.09738826751708984
+          }
+        },
+        {
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 2,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.14980895817279816,
+            "output_tokens_per_second": 213.605383752081,
+            "ttft_median_seconds": 0.09556198678910732,
+            "ttft_max_seconds": 0.09878168627619743
+          },
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 2,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.059227269142866135,
+            "output_tokens_per_second": 540.2916673873756,
+            "ttft_median_seconds": 0.03883462771773338,
+            "ttft_max_seconds": 0.040004074573516846
+          }
+        },
+        {
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 2,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.05533231422305107,
+            "output_tokens_per_second": 578.3239043826043,
+            "ttft_median_seconds": 0.0352703295648098,
+            "ttft_max_seconds": 0.036379702389240265
+          },
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 2,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.16982771083712578,
+            "output_tokens_per_second": 188.42625765997505,
+            "ttft_median_seconds": 0.11289909482002258,
+            "ttft_max_seconds": 0.11673284322023392
+          }
+        }
+      ],
+      "medians": {
+        "numpy-reference": {
+          "elapsed_seconds": 0.056154489517211914,
+          "output_tokens_per_second": 569.8564847640843,
+          "ttft_median_seconds": 0.03607131540775299,
+          "ttft_max_seconds": 0.037323128432035446
+        },
+        "vx-cpu-f32": {
+          "elapsed_seconds": 0.14980895817279816,
+          "output_tokens_per_second": 213.605383752081,
+          "ttft_median_seconds": 0.09556198678910732,
+          "ttft_max_seconds": 0.09878168627619743
+        }
+      }
+    },
+    {
+      "requests": 4,
+      "prompt_tokens_each": 8,
+      "output_tokens_each": 16,
+      "trials": [
+        {
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 4,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.0638202428817749,
+            "output_tokens_per_second": 1002.8166160156753,
+            "ttft_median_seconds": 0.017579810693860054,
+            "ttft_max_seconds": 0.022033195942640305
+          },
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 4,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.1498173512518406,
+            "output_tokens_per_second": 427.186834270064,
+            "ttft_median_seconds": 0.0418413020670414,
+            "ttft_max_seconds": 0.05090373754501343
+          }
+        },
+        {
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 4,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.17040934413671494,
+            "output_tokens_per_second": 375.5662597272511,
+            "ttft_median_seconds": 0.047021012753248215,
+            "ttft_max_seconds": 0.05673019587993622
+          },
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 4,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.0601942241191864,
+            "output_tokens_per_second": 1063.2249345598018,
+            "ttft_median_seconds": 0.01516629010438919,
+            "ttft_max_seconds": 0.01987290009856224
+          }
+        },
+        {
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 4,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.05328729376196861,
+            "output_tokens_per_second": 1201.0367853523292,
+            "ttft_median_seconds": 0.014784308150410652,
+            "ttft_max_seconds": 0.01802476868033409
+          },
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 4,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.15022769942879677,
+            "output_tokens_per_second": 426.0199699745385,
+            "ttft_median_seconds": 0.044964248314499855,
+            "ttft_max_seconds": 0.0540827140212059
+          }
+        }
+      ],
+      "medians": {
+        "numpy-reference": {
+          "elapsed_seconds": 0.0601942241191864,
+          "output_tokens_per_second": 1063.2249345598018,
+          "ttft_median_seconds": 0.01516629010438919,
+          "ttft_max_seconds": 0.01987290009856224
+        },
+        "vx-cpu-f32": {
+          "elapsed_seconds": 0.15022769942879677,
+          "output_tokens_per_second": 426.0199699745385,
+          "ttft_median_seconds": 0.044964248314499855,
+          "ttft_max_seconds": 0.0540827140212059
+        }
+      }
+    },
+    {
+      "requests": 4,
+      "prompt_tokens_each": 32,
+      "output_tokens_each": 16,
+      "trials": [
+        {
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 4,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.1115904413163662,
+            "output_tokens_per_second": 573.5258257340861,
+            "ttft_median_seconds": 0.07065647840499878,
+            "ttft_max_seconds": 0.0739716924726963
+          },
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 4,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.32667627558112144,
+            "output_tokens_per_second": 195.9126045690064,
+            "ttft_median_seconds": 0.21951867826282978,
+            "ttft_max_seconds": 0.2287878543138504
+          }
+        },
+        {
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 4,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.2933863177895546,
+            "output_tokens_per_second": 218.14241537298636,
+            "ttft_median_seconds": 0.18657398968935013,
+            "ttft_max_seconds": 0.1958189718425274
+          },
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 4,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.10803505405783653,
+            "output_tokens_per_second": 592.4003144917909,
+            "ttft_median_seconds": 0.06831604056060314,
+            "ttft_max_seconds": 0.07164192944765091
+          }
+        },
+        {
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 4,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.10868746787309647,
+            "output_tokens_per_second": 588.8443373685587,
+            "ttft_median_seconds": 0.06845845654606819,
+            "ttft_max_seconds": 0.07215167209506035
+          },
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 4,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.29564910382032394,
+            "output_tokens_per_second": 216.47283611891137,
+            "ttft_median_seconds": 0.1895272172987461,
+            "ttft_max_seconds": 0.19892697036266327
+          }
+        }
+      ],
+      "medians": {
+        "numpy-reference": {
+          "elapsed_seconds": 0.10868746787309647,
+          "output_tokens_per_second": 588.8443373685587,
+          "ttft_median_seconds": 0.06845845654606819,
+          "ttft_max_seconds": 0.07215167209506035
+        },
+        "vx-cpu-f32": {
+          "elapsed_seconds": 0.29564910382032394,
+          "output_tokens_per_second": 216.47283611891137,
+          "ttft_median_seconds": 0.1895272172987461,
+          "ttft_max_seconds": 0.19892697036266327
+        }
+      }
+    },
+    {
+      "requests": 8,
+      "prompt_tokens_each": 8,
+      "output_tokens_each": 16,
+      "trials": [
+        {
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 8,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.10816456004977226,
+            "output_tokens_per_second": 1183.3820610105602,
+            "ttft_median_seconds": 0.027896244078874588,
+            "ttft_max_seconds": 0.03548607602715492
+          },
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 8,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.2900177985429764,
+            "output_tokens_per_second": 441.3522226672315,
+            "ttft_median_seconds": 0.07827477529644966,
+            "ttft_max_seconds": 0.09956630319356918
+          }
+        },
+        {
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 8,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.31277280300855637,
+            "output_tokens_per_second": 409.24274351468586,
+            "ttft_median_seconds": 0.0783895906060934,
+            "ttft_max_seconds": 0.10384879261255264
+          },
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 8,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.10449407994747162,
+            "output_tokens_per_second": 1224.9497776749135,
+            "ttft_median_seconds": 0.027855919674038887,
+            "ttft_max_seconds": 0.035363174974918365
+          }
+        },
+        {
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 8,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.11499397829174995,
+            "output_tokens_per_second": 1113.1017632527905,
+            "ttft_median_seconds": 0.02837374620139599,
+            "ttft_max_seconds": 0.036527737975120544
+          },
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 8,
+            "prompt_tokens_each": 8,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.2925908751785755,
+            "output_tokens_per_second": 437.4709222284475,
+            "ttft_median_seconds": 0.08117356337606907,
+            "ttft_max_seconds": 0.10236956179141998
+          }
+        }
+      ],
+      "medians": {
+        "numpy-reference": {
+          "elapsed_seconds": 0.10816456004977226,
+          "output_tokens_per_second": 1183.3820610105602,
+          "ttft_median_seconds": 0.027896244078874588,
+          "ttft_max_seconds": 0.03548607602715492
+        },
+        "vx-cpu-f32": {
+          "elapsed_seconds": 0.2925908751785755,
+          "output_tokens_per_second": 437.4709222284475,
+          "ttft_median_seconds": 0.0783895906060934,
+          "ttft_max_seconds": 0.10236956179141998
+        }
+      }
+    },
+    {
+      "requests": 8,
+      "prompt_tokens_each": 32,
+      "output_tokens_each": 16,
+      "trials": [
+        {
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 8,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.2162880040705204,
+            "output_tokens_per_second": 591.8035100932633,
+            "ttft_median_seconds": 0.13498601131141186,
+            "ttft_max_seconds": 0.1428438313305378
+          },
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 8,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.5911609120666981,
+            "output_tokens_per_second": 216.52311136829414,
+            "ttft_median_seconds": 0.3744357656687498,
+            "ttft_max_seconds": 0.3963037542998791
+          }
+        },
+        {
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 8,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.590876080095768,
+            "output_tokens_per_second": 216.62748639148504,
+            "ttft_median_seconds": 0.37445987574756145,
+            "ttft_max_seconds": 0.39643076807260513
+          },
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 8,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.21484488621354103,
+            "output_tokens_per_second": 595.7786673720351,
+            "ttft_median_seconds": 0.13366448320448399,
+            "ttft_max_seconds": 0.1417582593858242
+          }
+        },
+        {
+          "numpy-reference": {
+            "backend": "numpy-reference",
+            "requests": 8,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.27512526512145996,
+            "output_tokens_per_second": 465.2426230048035,
+            "ttft_median_seconds": 0.17295812629163265,
+            "ttft_max_seconds": 0.18426482379436493
+          },
+          "vx-cpu-f32": {
+            "backend": "vx-cpu-f32",
+            "requests": 8,
+            "prompt_tokens_each": 32,
+            "generated_tokens_each": 16,
+            "elapsed_seconds": 0.6673029847443104,
+            "output_tokens_per_second": 191.8169151439441,
+            "ttft_median_seconds": 0.39886334352195263,
+            "ttft_max_seconds": 0.42541129514575005
+          }
+        }
+      ],
+      "medians": {
+        "numpy-reference": {
+          "elapsed_seconds": 0.2162880040705204,
+          "output_tokens_per_second": 591.8035100932633,
+          "ttft_median_seconds": 0.13498601131141186,
+          "ttft_max_seconds": 0.1428438313305378
+        },
+        "vx-cpu-f32": {
+          "elapsed_seconds": 0.5911609120666981,
+          "output_tokens_per_second": 216.52311136829414,
+          "ttft_median_seconds": 0.37445987574756145,
+          "ttft_max_seconds": 0.39643076807260513
+        }
+      }
+    }
+  ]
+}

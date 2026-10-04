@@ -1,0 +1,7 @@
+{
+  "vx_release": "v0.0.2",
+  "vx_upstream_inspected_commit": "48da4a1aea4cda37599648865531e5b62b82ae29",
+  "llvm": "22.1.8",
+  "target": "x86_64-unknown-linux-gnu",
+  "gpu_verified": false
+}
