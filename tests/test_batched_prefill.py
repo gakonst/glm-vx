@@ -116,3 +116,52 @@ def test_tiled_linear_batch_keeps_scalar_reduction_order(rows):
     expected = np.stack([backend.matvec(w, row) for row in x]) if rows else np.empty((0, 33), np.float32)
     np.testing.assert_array_equal(result, expected)
     np.testing.assert_allclose(result, x.astype(np.float64) @ w.astype(np.float64).T, atol=.12, rtol=2e-5)
+
+
+def test_nonfinal_chunk_skips_vocabulary_projection():
+    a, b = models()
+    cache = b.new_cache()
+    original = b._weight
+    reads = []
+    def read(name):
+        reads.append(name)
+        return original(name)
+    b._weight = read
+    assert b.prefill_chunk([1, 7, 8], cache, output_logits=False) is None
+    assert 'lm_head.weight' not in reads
+    np.testing.assert_array_equal(b.prefill_chunk([3, 4], cache), a.prefill([1, 7, 8, 3, 4])[-1])
+
+
+def test_batched_serving_prefix_reuse_and_seed_equivalence():
+    from glm_vx.scheduler import Scheduler
+    a, b = models()
+    kwargs = dict(max_sequences=8, token_budget=4096, prefill_chunk=8)
+    sa = Scheduler(a, **kwargs)
+    sb = Scheduler(b, **kwargs, batched_prefill=True, prefix_cache_bytes=2**20)
+    def collect(req):
+        tokens = []
+        while True:
+            event = req.events.get(timeout=10)
+            if event['type'] == 'token': tokens.append(event['token_id'])
+            else:
+                assert event['reason'] in ('length', 'stop'), event
+                return tokens, event
+    prompt = [1, 2, 5, 17, 19, 23, 2, 1, 7, 8, 11, 18]
+    try:
+        # Prime immutable prompt snapshot independently of sampling history.
+        base = collect(sa.submit(prompt, 5, temperature=.8, seed=23))
+        primed = collect(sb.submit(prompt, 5, temperature=.8, seed=23))
+        assert base[0] == primed[0]
+        requests = []
+        for suffix, seed in [([], 0), ([19, 17, 1], 6), ([], 23), ([23], 29)]:
+            tokens = prompt + suffix
+            requests.append((sa.submit(tokens, 7, temperature=.8, seed=seed),
+                             sb.submit(tokens, 7, temperature=.8, seed=seed)))
+        for uncached, cached in requests:
+            expected, actual = collect(uncached), collect(cached)
+            assert actual[0] == expected[0]
+            assert actual[1]['cached_prompt_tokens'] >= len(prompt)
+        assert sb.status()['batched_prefill'] is True
+        assert sb.status()['active_requests'] == 0
+    finally:
+        sa.close(); sb.close()

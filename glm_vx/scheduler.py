@@ -40,9 +40,15 @@ class Request:
     prefix_seconds: float = 0.0
 
 class Scheduler:
-    def __init__(self, model, *, max_sequences=8, token_budget=8192, prefill_chunk=16, decode_prefill_tokens=4, prefix_cache_bytes=0, max_pending_events=64):
+    def __init__(self, model, *, max_sequences=8, token_budget=8192, prefill_chunk=16, decode_prefill_tokens=4, prefix_cache_bytes=0, max_pending_events=64, batched_prefill=False):
         if min(max_sequences,token_budget,prefill_chunk,decode_prefill_tokens) < 1: raise ValueError("positive limits required")
         if type(max_pending_events) is not int or max_pending_events < 2: raise ValueError("at least two pending events required")
+        if type(batched_prefill) is not bool: raise ValueError('batched_prefill must be boolean')
+        if batched_prefill and not callable(getattr(model, 'prefill_chunk', None)):
+            raise ValueError('model does not support batched prefill')
+        if batched_prefill and getattr(model, 'trace', None) is not None:
+            raise ValueError('batched prefill does not support trace callbacks')
+        self.batched_prefill = batched_prefill
         self.max_pending_events = max_pending_events
         self.prefix_cache = PrefixCache(model, prefix_cache_bytes)
         self.model = model
@@ -123,23 +129,33 @@ class Scheduler:
                 req.cursor = req.cached_tokens = hit.tokens
                 hit_logits = hit.logits
         if req.cursor < len(req.tokens):
-            end = min(req.cursor+prefill_limit,len(req.tokens))
-            while req.cursor < end:
-                if self.closed or req.cancelled.is_set(): self._finish(req,"cancelled"); return False
+            if self.batched_prefill:
+                # A native chunk is indivisible; cap it independently of the
+                # scheduler budget and reconsider arrivals before the next one.
+                end = min(req.cursor+prefill_limit, req.cursor+64, len(req.tokens))
                 start = time.perf_counter()
-                prefill_token = getattr(self.model, "prefill_token", None)
-                if req.cursor < len(req.tokens)-1 and callable(prefill_token):
-                    prefill_token(req.tokens[req.cursor],req.cache)
-                else:
-                    logits = self.model.forward(req.tokens[req.cursor],req.cache)
+                logits = self.model.prefill_chunk(req.tokens[req.cursor:end], req.cache,
+                                                  output_logits=end == len(req.tokens))
                 req.prefill_seconds += time.perf_counter()-start
-                req.cursor += 1
-                if req.cursor < end:
-                    # A forward call is indivisible. Reconsider admissions at
-                    # each token boundary, even during an otherwise idle chunk.
-                    with self.lock:
-                        if self.pending or self.closed:
-                            return True
+                req.cursor = end
+            else:
+                end = min(req.cursor+prefill_limit,len(req.tokens))
+                while req.cursor < end:
+                    if self.closed or req.cancelled.is_set(): self._finish(req,"cancelled"); return False
+                    start = time.perf_counter()
+                    prefill_token = getattr(self.model, "prefill_token", None)
+                    if req.cursor < len(req.tokens)-1 and callable(prefill_token):
+                        prefill_token(req.tokens[req.cursor],req.cache)
+                    else:
+                        logits = self.model.forward(req.tokens[req.cursor],req.cache)
+                    req.prefill_seconds += time.perf_counter()-start
+                    req.cursor += 1
+                    if req.cursor < end:
+                        # A forward call is indivisible. Reconsider admissions at
+                        # each token boundary, even during an otherwise idle chunk.
+                        with self.lock:
+                            if self.pending or self.closed:
+                                return True
             if req.cursor < len(req.tokens): return True
             if self.closed or req.cancelled.is_set(): self._finish(req,"cancelled"); return False
             start = time.perf_counter()
@@ -211,7 +227,7 @@ class Scheduler:
         with self.lock:
             return {"active_requests":self.count,"reserved_tokens":self.reserved,
                     "max_sequences":self.max_sequences,"token_budget":self.token_budget,
-                    "max_pending_events":self.max_pending_events,"prefix_cache":self.prefix_cache.status()}
+                    "max_pending_events":self.max_pending_events,"batched_prefill":self.batched_prefill,"prefix_cache":self.prefix_cache.status()}
 
     def cancel(self, req):
         req.cancelled.set()

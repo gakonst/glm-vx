@@ -297,6 +297,11 @@ class GlmMoeDsaModel:
         cache.position += 1
         return logits
 
+    def prefill_chunk(self, token_ids, cache, *, output_logits=True):
+        """Opt-in, bounded layer-wise prefill; final logits or None for a prefix."""
+        from .prefill import prefill
+        return prefill(self, token_ids, cache, output_logits=output_logits)
+
     def prefill(self, token_ids, cache=None):
         """Causal sequential prefill, returning logits for every input token.
 

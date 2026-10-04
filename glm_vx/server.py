@@ -135,6 +135,7 @@ def main():
     p.add_argument('--max-sequences',type=int,default=8); p.add_argument('--token-budget',type=int,default=8192)
     p.add_argument('--prefix-cache-mib',type=int,default=0,help='CPU prompt snapshot storage budget; disabled by default, includes retained Python storage')
     p.add_argument('--max-pending-events',type=int,default=64,help='bounded unread output events per request; slow consumers are terminated')
+    p.add_argument('--batched-prefill',action='store_true',help='opt in to bounded layer-wise CPU prefill; one chunk is indivisible')
     p.add_argument('--prefill-chunk',type=int,default=16)
     p.add_argument('--decode-prefill-tokens',type=int,default=4,help='total prefill tokens per round with active decoders; lower favors decode latency')
     p.add_argument('--gpu-ptx-dir',help='directory containing compiled kernels.ptx')
@@ -182,7 +183,7 @@ def main():
         from tokenizers import Tokenizer
         tokenizer=Tokenizer.from_file(args.tokenizer)
     model=Model(config,weights,backend)
-    scheduler=Scheduler(model,max_sequences=args.max_sequences,token_budget=args.token_budget,prefill_chunk=args.prefill_chunk,decode_prefill_tokens=args.decode_prefill_tokens,prefix_cache_bytes=args.prefix_cache_mib*1024**2,max_pending_events=args.max_pending_events)
+    scheduler=Scheduler(model,max_sequences=args.max_sequences,token_budget=args.token_budget,prefill_chunk=args.prefill_chunk,decode_prefill_tokens=args.decode_prefill_tokens,prefix_cache_bytes=args.prefix_cache_mib*1024**2,max_pending_events=args.max_pending_events,batched_prefill=args.batched_prefill)
     server=Server((args.host,args.port),scheduler,tokenizer,name)
     print(json.dumps({'listening':f'http://{args.host}:{server.server_port}','model':name,'backend':backend.name}),flush=True)
     try:server.serve_forever()

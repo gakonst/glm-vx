@@ -110,13 +110,17 @@ def _attention(model, layer, x, start, state, previous):
     return _linear(model, prefix + '.o_proj', np.stack(values), bias), selections
 
 
-def prefill(model, tokens, cache, *, output_all_logits=False):
+def prefill(model, tokens, cache, *, output_all_logits=False, output_logits=True):
     """Append 1..64 tokens atomically and return final (or every) next logits.
 
     A failed chunk restores cache lengths and selections. Trace callbacks use
     the single-token executor until stage-complete batched tracing is supported.
     This prevents an apparently complete but incomplete trace from being emitted.
     """
+    if type(output_logits) is not bool or type(output_all_logits) is not bool:
+        raise ValueError('logit options must be boolean')
+    if output_all_logits and not output_logits:
+        raise ValueError('all logits requires output_logits')
     if model.trace is not None:
         raise ValueError('batched prefill does not yet support validation trace callbacks')
     if not isinstance(tokens, (list, tuple)) or not 0 < len(tokens) <= MAX_PREFILL_CHUNK:
@@ -142,6 +146,9 @@ def prefill(model, tokens, cache, *, output_all_logits=False):
             attention, selected = _attention(model, layer, _norm(model, prefix + '.input_layernorm', x, model.eps), start, state, selected)
             x = x + attention
             x = x + _feed_forward(model, layer, _norm(model, prefix + '.post_attention_layernorm', x, model.eps))
+        if not output_logits:
+            cache.position += len(tokens)
+            return None
         final = x if output_all_logits else x[-1:]
         head = 'model.embed_tokens' if model.config.get('tie_word_embeddings', False) else 'lm_head'
         logits = _linear(model, head, _norm(model, 'model.norm', final, model.eps))
