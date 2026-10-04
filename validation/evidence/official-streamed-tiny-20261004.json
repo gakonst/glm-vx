@@ -1,0 +1,121 @@
+{
+  "scope": "tiny bitwise storage-adaptation validation; no trained checkpoint opened; no gate promotion",
+  "numerical_mode": "official-eager-cpu-f32-streamed-storage-v1",
+  "base_main_revision": "44630c6",
+  "test_command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 PYTHONPATH=$PWD build/official-venv/bin/python -m pytest tests/test_official_gguf_trace.py -q",
+  "test_output": ".......................                                                  [100%]\n23 passed in 5.42s\n",
+  "source_sha256": {
+    "validation/official_gguf_trace.py": "adcdcdaa55bb4f15592f82100d8ac03930b260e9b34558e1ade5a0a422d8d346",
+    "tests/test_official_gguf_trace.py": "b051125a3f43e1a5c78de493dc076493f19d48cc458a1d8c2538178a308bcc6f",
+    "tests/test_model.py": "5270d90166f4981fd6687839437a5da2080ca64e187a9f615afe42c363d09aae"
+  },
+  "dependencies": {
+    "files_sha256": {
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/transformers/models/glm_moe_dsa/modeling_glm_moe_dsa.py": "039993e90e650395e65ecfd6f803a7200799967b88535f5742c490fe2346f1d8",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/transformers/models/glm_moe_dsa/configuration_glm_moe_dsa.py": "1afa39ac6d0b6b374c973ef32c3c318d10c6c957916531e15a286eb5713acaae",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/transformers/masking_utils.py": "af3d84dfe82a0b57c40625c89fb32b2cd6bf7351432ee5e76a9e8eac4289575b",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/transformers/modeling_rope_utils.py": "ca1038b2f550a72a90ade70585b2e1f033a1440ba1ef7f2d627665ea3c064a7f",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/transformers/activations.py": "5b20c0a3625edc0001a98f09ce3c6b5baa1100e1d7ad8dee649e4d45c8468665",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/transformers/integrations/moe.py": "a4cdb41cd6c4e40a3e602644b5781a5dc53ac4ef227249db2ed40c7347990556",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/gguf/quants.py": "04bb420aa84706d69b698680a7b11c93260e47989d9a829686efc7cb7825a2d9",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/torch/_C.cpython-310-x86_64-linux-gnu.so": "e68f58132ae32c60abd45cf883d23c2ba01bb52dc264ec8ebf5862e37f874b61",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/numpy/_core/_multiarray_umath.cpython-310-x86_64-linux-gnu.so": "c634eaf05367af02b815cf3d2020fbeee9b47426af1fe26cf3189e4798932dc5",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/torch/lib/libaoti_custom_ops.so": "2ad7760f3067c3e9f5daa1374c9e766742aa1ee29f8f698d939e29afe3893864",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/torch/lib/libbackend_with_compiler.so": "2d9b142b3a23fa5b27b0e0e0685e4d3fb089b0512f3928fa4fc830733be5e68d",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/torch/lib/libc10.so": "9c142dbe5f1c5291e57605586bf22eaa07cd27da720825b1cf02fc2f6eb8047e",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/torch/lib/libgomp.so.1": "dcb9bd5cc517b0a23cf5923864abeee11ee00ba11abe9b3089388f50f7ba4628",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/torch/lib/libjitbackend_test.so": "c9abfe6eabdf5e70e9d8f0e8a83395a5d79b8dfe7d94379f68bcfa1666fbc91e",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/torch/lib/libshm.so": "7846821a00be2750f0c718c69396bd3c3e54924d52ecce347ab610ee9079149a",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/torch/lib/libtorch.so": "28b3d3926e0674eda7dcdf26c27dfd05cb455d681d11cb84fdbf7e0df72f3f7b",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so": "41739918e84815747243de6356403e16e489f6bb6fdde2b79dfa6a42c3c1a705",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/torch/lib/libtorch_global_deps.so": "2e5d497259a62960d95f4a7719abaeb24745429b49ffdf58e67672140205eb99",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/torch/lib/libtorch_python.so": "b36a7ed4faba10522ddfd2d02cf93e80b89bcd73aec3b1c947c1ff769302cbba",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/torch/lib/libtorchbind_test.so": "f9bc71ab25c48b9e38de2523e40a7c31f989d9ddd09d6777116572eefff4e141",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/torch/nn/modules/linear.py": "1961ad1a1f650e104b3c7f78d19af2d21bf977e7af6c3fdf2420aad563c9e202",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/torch/nn/functional.py": "95ff403085bb179477a01df63acfddf59dfac0fb58829e99a9c8b5c2fe98899b",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/torch-2.14.1+cpu.dist-info/METADATA": "a3fd232f82dcc389c6dab2665dfc17649c03ffb72cb641e96a76a0690177b918",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/torch-2.14.1+cpu.dist-info/RECORD": "eb669b653f4266e192228f6a72895ed22d4565cf2e5de5a39aecbcddc9078105",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/transformers-5.19.0.dev0.dist-info/METADATA": "1f8d42cf585ec928645745e27f91cdf5c22c1bbc7e77356951ebd99550eb241e",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/transformers-5.19.0.dev0.dist-info/RECORD": "0617298aaf5f40c7f21305e3f2303e20fff9a092b45789492bda6a2472c7afb7",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/transformers-5.19.0.dev0.dist-info/direct_url.json": "70ce58492ea033f1c79170f23cbc8389915945a6dc388a2f8be3b5148fef8ece",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/numpy-2.2.6.dist-info/METADATA": "22d648f53848429464ca643b40d73b49a920d47876fc77c395d4dca4e834904a",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/numpy-2.2.6.dist-info/RECORD": "70b10afbd20ef043fc3682108a68ffeb0d359050c8d9f092bfd674b9c9fbdb0f",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/gguf-0.17.1.dist-info/METADATA": "a5af3f71ee6e7e858a1ead73ce1f7b1dee771198c5b5114e3450d6b65ee69002",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/gguf-0.17.1.dist-info/RECORD": "5c9d0981401d072280dd2097f95cccfed4a8c83c48d8903dbee5c8d7dcf9ec49",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/huggingface_hub-1.33.0.dist-info/METADATA": "bee565776d66f486d224f74024b656a69ed42e2639d80b18811fca4365adc42e",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/huggingface_hub-1.33.0.dist-info/RECORD": "559c0bb12f5872a6f87fe8ed6d74483cd0fd42805389dd1af786c9c58a7ede53",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/gguf/__init__.py": "3ccfc0104cd7ea88c6028743b7bf3f2c89b5f474425de03a217a6072320d7c2f",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/gguf/constants.py": "fbdda77cd6bc5e35db1ec315f477f48861f0726a17cc7d8927bdeb02fef734f1",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/gguf/gguf.py": "f0c0eeedad0911784b52ffed8e162a0eb5ae6d535ce35705bc16196e46597a72",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/gguf/gguf_reader.py": "eae238bda2de442d8c255fae52382c468519f9176cce2f2613f6c43f09e4e901",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/gguf/gguf_writer.py": "5095ea15add3d8438b7cf67a7a3defbb257b3817ca5d76accef1ca7872169922",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/gguf/lazy.py": "031cbfa656c7a02df89cc78afce45b6f11321059be173f01c4521ea9e8a94980",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/gguf/metadata.py": "bf4931a187c293fc976529f39523bd02143acff1ce529cecd1ce9957805149b0",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/gguf/tensor_mapping.py": "ea9503620972d3ec84acb57c1d26454a7ab214a029ed289e762b4c10732c6062",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/gguf/utility.py": "f34ad9dcc74667a6d7d3fc85bcba0f4d33a5c606bc4c7722845d2adfccb987a3",
+      "/srv/nanocodex/workspace/glm-vx-parity/build/official-venv/lib/python3.10/site-packages/gguf/vocab.py": "1abe3789d2aa738c811d0876d077de5bda1e81858ba4cf8bd192825713e3e0b7",
+      "/srv/nanocodex/workspace/glm-vx-parity/validation/official_gguf_trace.py": "adcdcdaa55bb4f15592f82100d8ac03930b260e9b34558e1ade5a0a422d8d346",
+      "/srv/nanocodex/workspace/glm-vx-parity/glm_vx/gguf_checkpoint.py": "ad69d8c6ac226c914833be1d492d8561bf11c451aa7e3928309822c19badfe1c",
+      "/srv/nanocodex/workspace/glm-vx-parity/glm_vx/gguf_reader.py": "ac44eb337fc45fa3853fefa7087b7e88049fdc01d368b345aaf1f2bb088edc31",
+      "/srv/nanocodex/workspace/glm-vx-parity/glm_vx/config.py": "42aebf6c06e6763659f2e4250b3cd5334080d86d31a6fff2ca18511a52624157",
+      "/srv/nanocodex/workspace/glm-vx-parity/metadata/sources.json": "2eb174129dd85b0e215364c47cd981de0399880100cba10997b450163339bf67",
+      "/srv/nanocodex/workspace/glm-vx-parity/docs/parity-evidence/ggml-codec-parity.json": "00ddfb329e2402fdb6e0d944c1690d03beab564c204dd4e5a55dcbbd07567d1b"
+    },
+    "versions": {
+      "torch": "2.14.1+cpu",
+      "transformers": "5.19.0.dev0",
+      "numpy": "2.2.6",
+      "gguf": "0.17.1",
+      "huggingface-hub": "1.33.0"
+    }
+  },
+  "ordinary_official_comparisons": [
+    {
+      "seed": 123,
+      "tokens": [
+        1,
+        7,
+        2,
+        11
+      ],
+      "all_sparse": false,
+      "captured_tensors": 88,
+      "equality": "bitwise including layer outputs, raw routing logits/IDs/weights, raw top-k slots, causal membership, logits"
+    },
+    {
+      "seed": 456,
+      "tokens": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "all_sparse": true,
+      "captured_tensors": 150,
+      "equality": "bitwise including layer outputs, raw routing logits/IDs/weights, raw top-k slots, causal membership, logits"
+    },
+    {
+      "seed": 789,
+      "tokens": [
+        5
+      ],
+      "all_sparse": false,
+      "captured_tensors": 22,
+      "equality": "bitwise including layer outputs, raw routing logits/IDs/weights, raw top-k slots, causal membership, logits"
+    }
+  ],
+  "storage_checks": [
+    "ordinary full-model constructors forbidden in streamed execution",
+    "256-expert 3D banks allocated on meta only",
+    "only selected expert IDs requested, once per bank",
+    "previous layer weight arrays released before next layer loads",
+    "no weight arrays retained after return"
+  ],
+  "trained_run": {
+    "status": "not_started",
+    "reason": "root owns IO scheduling; ready command in validation/OFFICIAL_GGUF_TRACE.md"
+  },
+  "thresholds_or_original_receipts_changed": false
+}
