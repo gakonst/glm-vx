@@ -16,6 +16,9 @@ short smoke took about 34 minutes and 32.2 GB peak RSS; it is not a complete
 answer or a practical-speed result. See [actual model evidence](docs/gguf-evidence/real-chat-summary.json).
 The included tiny model has deterministic random weights and is for testing mechanics only.
 
+[Serving research and prioritized roadmap](docs/SERVING-RESEARCH.md) reviews GLM-specific
+provider work, papers, X discussions and their applicability to this engine.
+
 ## Run
 
 Prerequisites: Linux x86-64, Python 3.10+, C linker, working Vx v0.0.2 and LLVM 22.
