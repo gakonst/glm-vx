@@ -1,0 +1,29 @@
+{
+  "repository": "https://github.com/ggml-org/llama.cpp",
+  "commit": "11fe02151f79c41d0d4af7da708755d73b9c0da6",
+  "source": "ggml/src/ggml-common.h",
+  "source_sha256": "0061131b615c5721fc88a78feeb22c1f8c450f1c2646a317d80796a653bf595c",
+  "binary_sha256": "89c698e44735267dc93e98feb70b5a97d22351fb41440029450edba277cc11b9",
+  "tables": {
+    "iq1s_grid": {
+      "offset": 0,
+      "bytes": 16384
+    },
+    "iq2xxs_grid": {
+      "offset": 16384,
+      "bytes": 2048
+    },
+    "iq3xxs_grid": {
+      "offset": 18432,
+      "bytes": 1024
+    },
+    "ksigns_iq2xs": {
+      "offset": 19456,
+      "bytes": 128
+    },
+    "kvalues_iq4nl": {
+      "offset": 19584,
+      "bytes": 16
+    }
+  }
+}

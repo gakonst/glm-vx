@@ -1,0 +1,96 @@
+"""Strict host boundary for fused Vx GGUF decoding and f32 matvec.
+
+The only resident lookup data is 19,600 codec bytes and a 256 KiB exact half
+conversion table. Weight bytes remain mmap-backed; no expanded matrix is made.
+"""
+import ctypes as C
+from functools import lru_cache
+import hashlib
+from pathlib import Path
+import sys
+import numpy as np
+
+# GGML enum -> (block elements, bytes, symbol suffix).
+LAYOUTS = {1: (1, 2, 'f16'), 8: (32, 34, 'q8_0'),
+           10: (256, 84, 'q2_k'), 11: (256, 110, 'q3_k'),
+           12: (256, 144, 'q4_k'), 13: (256, 176, 'q5_k'),
+           14: (256, 210, 'q6_k'), 16: (256, 66, 'iq2_xxs'),
+           18: (256, 98, 'iq3_xxs'), 19: (256, 50, 'iq1_s'),
+           23: (256, 136, 'iq4_xs')}
+_F = C.POINTER(C.c_float)
+_B = C.POINTER(C.c_uint8)
+_I = C.c_int32
+_MAX = np.iinfo(np.int32).max
+
+
+@lru_cache(maxsize=1)
+def lookup_tables():
+    if sys.byteorder != 'little':
+        raise RuntimeError('packed GGUF requires a little-endian host')
+    raw = Path(__file__).with_name('ggml_tables.bin').read_bytes()
+    if hashlib.sha256(raw).hexdigest() != '89c698e44735267dc93e98feb70b5a97d22351fb41440029450edba277cc11b9':
+        raise RuntimeError('packed GGML lookup table fingerprint mismatch')
+    table = np.frombuffer(raw, dtype=np.uint8)
+    # Includes IEEE signed zero/subnormals/Inf/NaN without lossy arithmetic.
+    half = np.arange(65536, dtype=np.uint16).view(np.float16).astype(np.float32)
+    half.flags.writeable = False
+    return half, table
+
+
+def supports(lib, kind):
+    kind = int(kind)
+    return kind == 0 or (kind in LAYOUTS and hasattr(lib, 'glm_vx_packed_' + LAYOUTS[kind][2]))
+
+
+def _buffers(raw, kind, shape):
+    if int(kind) != 0 and int(kind) not in LAYOUTS:
+        raise ValueError('unsupported packed GGML format')
+    if len(shape) != 2 or any(type(n) is not int for n in shape):
+        raise ValueError('packed weight shape must be two Python integer dimensions')
+    rows, cols = shape
+    block, size, suffix = (1, 4, 'f32') if int(kind) == 0 else LAYOUTS[int(kind)]
+    if rows < 0 or cols <= 0 or cols % block:
+        raise ValueError('packed matrix must have nonnegative rows and positive block-aligned cols')
+    if rows > _MAX or cols > _MAX or rows*cols > _MAX or rows*(cols//block)*size > _MAX:
+        raise ValueError('packed matrix exceeds Vx int32 indexing capacity')
+    # Reject strided/wrongly typed buffers instead of allocating an unseen copy.
+    if not isinstance(raw, np.ndarray) or raw.dtype != np.uint8 or not raw.flags.c_contiguous:
+        raise ValueError('packed bytes must be a contiguous uint8 array')
+    if raw.nbytes != rows*(cols//block)*size:
+        raise ValueError('packed byte count does not match shape/format')
+    return rows, cols, suffix
+
+
+def matvec(lib, raw, kind, shape, x):
+    rows, cols, suffix = _buffers(raw, kind, shape)
+    x = np.asarray(x, dtype=np.float32)
+    if x.ndim != 1 or x.size != cols:
+        raise ValueError('packed input must match weight columns')
+    if not np.isfinite(x).all():
+        raise ValueError('packed input must be finite')
+    x = np.ascontiguousarray(x)
+    out = np.empty(rows, dtype=np.float32)
+    half, table = lookup_tables()
+    fn = getattr(lib, 'glm_vx_packed_' + suffix)
+    fn.argtypes, fn.restype = [_F, _B, _F, _F, _B, _I, _I], _I
+    code = fn(out.ctypes.data_as(_F), raw.ctypes.data_as(_B), x.ctypes.data_as(_F),
+              half.ctypes.data_as(_F), table.ctypes.data_as(_B), rows, cols)
+    if code:
+        raise ValueError(f'Vx packed {suffix} rejected arguments ({code})')
+    if not np.isfinite(out).all():
+        raise ValueError('nonfinite packed GGUF output')
+    return out
+
+
+def unpack_for_validation(lib, raw, kind, shape):
+    """Diagnostic export only; never used by the serving matvec path."""
+    rows, cols, suffix = _buffers(raw, kind, shape)
+    half, table = lookup_tables()
+    out = np.empty(shape, dtype=np.float32)
+    fn = getattr(lib, 'glm_vx_unpack_' + suffix)
+    fn.argtypes, fn.restype = [_F, _B, _F, _B, _I], _I
+    code = fn(out.ctypes.data_as(_F), raw.ctypes.data_as(_B), half.ctypes.data_as(_F),
+              table.ctypes.data_as(_B), rows*cols//LAYOUTS[int(kind)][0])
+    if code:
+        raise ValueError(f'Vx unpack {suffix} rejected arguments ({code})')
+    return out

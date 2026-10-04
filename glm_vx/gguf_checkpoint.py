@@ -116,6 +116,23 @@ class GGUFCheckpoint:
             self.cache[name]=value;self.cache_bytes+=value.nbytes
         return value
 
+    def linear(self,name,x,backend):
+        """Optional model hook; fused packed weights with unchanged f32 input.
+
+        Unsupported codecs/backends and reconstructed KV-B explicitly use the
+        existing decoded tensor path. No quantized activation mode is enabled.
+        """
+        if self.store.closed:raise RuntimeError('GGUF checkpoint is closed')
+        source,expert=self._resolve(name)
+        supported=getattr(backend,'supports_packed',None)
+        if source.endswith('__kv_b__') or supported is None:
+            return backend.matvec(self.tensor(name),x)
+        kind=self.store.tensors[source].tensor_type
+        if not supported(kind):
+            return backend.matvec(self.tensor(name),x)
+        with self.store.packed_rows(source,expert=expert) as (raw,shape,kind):
+            return backend.packed_matvec(raw,kind,shape,x)
+
     def __call__(self,name):return self.tensor(name)
     def close(self):
         self.cache.clear();self.cache_bytes=0;self.store.close()

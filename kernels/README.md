@@ -91,3 +91,7 @@ it. Cached arrays are read-only. A dedicated test verifies repeated-call reuse,
 eviction after140 positions, unchanged numerical output, and large-dimension
 bypass. Final validation also ran all11 tests in `tests.test_model`; see
 `model-integration-results.log`.
+
+Packed GGUF CPU matvec, exact codec coverage, the checkpoint integration hook,
+opt-in optimized build, and bounded trained-row evidence are documented in
+[PACKED.md](PACKED.md). The default build remains O0.

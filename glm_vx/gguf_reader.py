@@ -1,9 +1,12 @@
 """Read-only split GGUF storage. Quant unpacking uses gguf-py's reference decoder.
 
 Only requested rows/experts are decoded; inference never runs through llama.cpp.
-Returned arrays own their memory, so closing the store cannot invalidate them.
+Decoded read() arrays own memory. packed_rows() explicitly borrows mmap bytes
+for the lifetime of its context, keeping close from racing active kernels.
 """
 from pathlib import Path
+from contextlib import contextmanager
+from threading import RLock
 import math
 import re
 import struct
@@ -19,6 +22,7 @@ class GGUFStore:
         if type(decode_threads) is not int or not 1<=decode_threads<=32:raise ValueError('decode_threads must be 1..32')
         self.pool=ThreadPoolExecutor(max_workers=decode_threads) if decode_threads>1 else None
         self.readers=[];self.tensors={};self.metadata={};self.closed=False
+        self._packed_lock=RLock()
         self.decode_rows=decode_rows;self.max_decode_bytes=max_decode_bytes
         path=Path(path)
         if path.is_dir():
@@ -77,8 +81,7 @@ class GGUFStore:
 
     def shape(self,name):return tuple(int(n) for n in reversed(self.tensors[name].shape))
 
-    def read(self,name,*,rows=None,expert=None):
-        import gguf
+    def _selection(self,name,*,rows=None,expert=None):
         if self.closed:raise RuntimeError('GGUF store is closed')
         tensor=self.tensors[name];data=tensor.data;shape=self.shape(name)
         if expert is not None:
@@ -89,6 +92,25 @@ class GGUFStore:
             start,stop,step=rows.indices(shape[0])
             if step!=1:raise CheckpointError('only contiguous row slices supported')
             data=data[start:stop];shape=(max(0,stop-start),shape[1])
+        return tensor,data,shape
+
+    @contextmanager
+    def packed_rows(self,name,*,rows=None,expert=None):
+        """Borrow mmap bytes until context exit; close waits for active kernels.
+
+        Only a matrix or one selected expert is accepted. The uint8 view makes
+        no weight copy and is invalid after store close; it must not escape.
+        """
+        with self._packed_lock:
+            tensor,data,shape=self._selection(name,rows=rows,expert=expert)
+            if len(shape)!=2:raise CheckpointError('packed matvec requires a matrix or one expert')
+            raw=data.view(np.uint8)
+            if not raw.flags.c_contiguous:raise CheckpointError('noncontiguous packed GGUF rows')
+            yield raw,tuple(shape),tensor.tensor_type
+
+    def read(self,name,*,rows=None,expert=None):
+        import gguf
+        tensor,data,shape=self._selection(name,rows=rows,expert=expert)
         if math.prod(shape)*4>self.max_decode_bytes:raise CheckpointError('decode exceeds byte bound; select one expert or rows')
         out=np.empty(shape,dtype=np.float32)
         if out.size:
@@ -111,6 +133,9 @@ class GGUFStore:
         return out
 
     def close(self):
+        with self._packed_lock:self._close_locked()
+
+    def _close_locked(self):
         if self.closed:return
         self.closed=True
         if self.pool is not None:self.pool.shutdown(wait=True)

@@ -99,6 +99,24 @@ class VxBackend:
         self._call('matmul_nt', out, x, w, x.shape[0], w.shape[0], w.shape[1])
         return out
 
+    def supports_packed(self, kind):
+        from .packed import supports
+        return supports(self.lib, kind)
+
+    def packed_matvec(self, raw, kind, shape, x):
+        """Consume borrowed contiguous GGUF bytes, preserving f32 activations."""
+        from .packed import matvec, _buffers
+        if int(kind) == 0:
+            _buffers(raw, kind, shape)
+            x = _array(x, 'input')
+            if not np.isfinite(x).all():
+                raise ValueError('packed input must be finite')
+            result = self.matvec(raw.view(np.float32).reshape(shape), x)
+            if not np.isfinite(result).all():
+                raise ValueError('nonfinite packed GGUF output')
+            return result
+        return matvec(self.lib, raw, kind, shape, x)
+
     def rmsnorm(self, x, w, eps):
         x, w = _array(x, 'input'), _array(w, 'weight')
         if w.ndim != 1 or w.size != x.shape[-1] or not w.size:

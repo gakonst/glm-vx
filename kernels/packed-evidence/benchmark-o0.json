@@ -1,0 +1,701 @@
+{
+  "schema": "glm-vx.packed-matvec.v1",
+  "scope": "bounded warm-page trained-row CPU microbenchmark; not token throughput",
+  "numerics": "native GGML dequantized weights times unquantized f32 x; ordered f32 sum",
+  "library": {
+    "path": "/srv/nanocodex/workspace/glm-vx-packed/kernels/build/libglm_vx.so",
+    "bytes": 44040,
+    "sha256": "5bcddebad74f3cc6a3f42eabba6caaf1971c39862ff91fffdabf7f1043515124"
+  },
+  "oracle": {
+    "repository": "https://github.com/ggml-org/llama.cpp",
+    "commit": "11fe02151f79c41d0d4af7da708755d73b9c0da6",
+    "codec_source_sha256": {
+      "ggml/src/ggml-quants.c": "5574a2dccf7c07e75b143733e04a5412d3d8c819e7945f5217a7b83a2b2ff8ab",
+      "ggml/src/ggml-common.h": "0061131b615c5721fc88a78feeb22c1f8c450f1c2646a317d80796a653bf595c",
+      "ggml/src/ggml-quants.h": "28ae5fca1f3be636b36cd6c4fa2ca74fd42d229bfbd5352eaf66f3727bb8a6da",
+      "ggml/src/ggml-impl.h": "43564db0238aebb7ed68501e346c194866b5dac218d1d37b26baff9f458c00d3",
+      "ggml/src/ggml.c": "7e8bf2b60598b50d718f46aa3c36c9293b10f4e7dfde6844f0693e6fc976d505",
+      "ggml/include/ggml.h": "12ee71f99db7db9b353bc02b1fbb57c344ee17c01ac5fb7952b41a637a747ea9"
+    },
+    "library": {
+      "path": "/srv/nanocodex/workspace/glm-vx-reference/build/bin/libggml-base.so.0.25.3",
+      "bytes": 931232,
+      "sha256": "2df815f3d891046b7126bc8742739acb81beb96c2c77dc4dc4fcf876015c6f49"
+    },
+    "engine": "ctypes calls exported GGML C dequantize_row_*; native memmove for F32",
+    "symbols": {
+      "Q2_K": "dequantize_row_q2_K",
+      "Q3_K": "dequantize_row_q3_K",
+      "Q4_K": "dequantize_row_q4_K",
+      "Q5_K": "dequantize_row_q5_K",
+      "Q6_K": "dequantize_row_q6_K",
+      "Q8_0": "dequantize_row_q8_0",
+      "IQ1_S": "dequantize_row_iq1_s",
+      "IQ2_XXS": "dequantize_row_iq2_xxs",
+      "IQ3_XXS": "dequantize_row_iq3_xxs",
+      "IQ4_XS": "dequantize_row_iq4_xs"
+    },
+    "binary_source_attestation": "source hashes verified; binary fingerprint recorded; no embedded commit attestation",
+    "build/CMakeCache.txt": {
+      "path": "/srv/nanocodex/workspace/glm-vx-reference/build/CMakeCache.txt",
+      "bytes": 34067,
+      "sha256": "6d266caa7e7f2272a772b64605ec10a7ebec1d344aa56f78a1b609dd710b4e72"
+    },
+    "build/compile_commands.json": {
+      "path": "/srv/nanocodex/workspace/glm-vx-reference/build/compile_commands.json",
+      "bytes": 206370,
+      "sha256": "11682f0431ffc1101beba8a78bf2dca7a721d917f5ed68eecfee5e6dde17fe7e"
+    },
+    "build/common/build-info.cpp": {
+      "path": "/srv/nanocodex/workspace/glm-vx-reference/build/common/build-info.cpp",
+      "bytes": 919,
+      "sha256": "51c17775ac93a6ba699b48714b3cce5694f5387e0fef69a9c1ad1b6f862ba846"
+    }
+  },
+  "rows_limit": 128,
+  "repeats": 7,
+  "samples": [
+    {
+      "format": "F32",
+      "tensor": "blk.40.ffn_gate_inp.weight",
+      "expert": null,
+      "start_row": 64,
+      "shape": [
+        128,
+        6144
+      ],
+      "byte_offset": 6169659616,
+      "raw_sha256": "fcd44ecbe2510288b35361b2826958e641f77de8936aeb8bcb18111a73e233f4",
+      "packed_bytes": 3145728,
+      "expanded_bytes": 3145728,
+      "weight_payload_reduction": 1.0,
+      "codec_exact": true,
+      "dot_exact": true,
+      "packed": {
+        "median_seconds": 0.0019885189831256866,
+        "samples_seconds": [
+          0.0019885189831256866,
+          0.0019866488873958588,
+          0.0020343028008937836,
+          0.002005249261856079,
+          0.001989971846342087,
+          0.0019833259284496307,
+          0.0019867457449436188
+        ]
+      },
+      "cached_f32_matvec": {
+        "median_seconds": 0.0019728094339370728,
+        "samples_seconds": [
+          0.0019903630018234253,
+          0.001980394124984741,
+          0.0019728094339370728,
+          0.0019684024155139923,
+          0.001971617341041565,
+          0.001965504139661789,
+          0.001976165920495987
+        ]
+      },
+      "decode_plus_f32_matvec": {
+        "median_seconds": 0.002311471849679947,
+        "samples_seconds": [
+          0.0022339560091495514,
+          0.002304680645465851,
+          0.0023270994424819946,
+          0.00227486714720726,
+          0.0023385174572467804,
+          0.002311471849679947,
+          0.002321843057870865
+        ]
+      },
+      "speedup_vs_decode_plus_f32": 1.1624087420310272
+    },
+    {
+      "format": "Q8_0",
+      "tensor": "blk.39.attn_v_b.weight",
+      "expert": 32,
+      "start_row": 64,
+      "shape": [
+        128,
+        512
+      ],
+      "byte_offset": 1420950752,
+      "raw_sha256": "49cbab4f23f85263e024ac6cd6f46d293e2d491cedc472db244aeca2b1e29f80",
+      "packed_bytes": 69632,
+      "expanded_bytes": 262144,
+      "weight_payload_reduction": 3.764705882352941,
+      "codec_exact": true,
+      "dot_exact": true,
+      "packed": {
+        "median_seconds": 0.0005329996347427368,
+        "samples_seconds": [
+          0.000543300062417984,
+          0.0005379393696784973,
+          0.0005254745483398438,
+          0.0005329996347427368,
+          0.0005294419825077057,
+          0.0005197934806346893,
+          0.0005358457565307617
+        ]
+      },
+      "cached_f32_matvec": {
+        "median_seconds": 0.00018073990941047668,
+        "samples_seconds": [
+          0.00017569959163665771,
+          0.0001800134778022766,
+          0.0001823902130126953,
+          0.00018277019262313843,
+          0.00018073990941047668,
+          0.00017957016825675964,
+          0.00018762797117233276
+        ]
+      },
+      "decode_plus_f32_matvec": {
+        "median_seconds": 0.0003419928252696991,
+        "samples_seconds": [
+          0.0003540925681591034,
+          0.00035202503204345703,
+          0.00034213438630104065,
+          0.00033397600054740906,
+          0.0003330335021018982,
+          0.0003305487334728241,
+          0.0003419928252696991
+        ]
+      },
+      "speedup_vs_decode_plus_f32": 0.6416380105678101
+    },
+    {
+      "format": "Q2_K",
+      "tensor": "blk.78.ffn_up_exps.weight",
+      "expert": 128,
+      "start_row": 960,
+      "shape": [
+        128,
+        6144
+      ],
+      "byte_offset": 17699600480,
+      "raw_sha256": "e7145cf048428e61101829d92b80cc9e716b4e835ba4d7fd80db81013fcb9167",
+      "packed_bytes": 258048,
+      "expanded_bytes": 3145728,
+      "weight_payload_reduction": 12.19047619047619,
+      "codec_exact": true,
+      "dot_exact": true,
+      "packed": {
+        "median_seconds": 0.005978863686323166,
+        "samples_seconds": [
+          0.005913581699132919,
+          0.005965095013380051,
+          0.005978863686323166,
+          0.006039619445800781,
+          0.0062436312437057495,
+          0.005999453365802765,
+          0.005889527499675751
+        ]
+      },
+      "cached_f32_matvec": {
+        "median_seconds": 0.001981925219297409,
+        "samples_seconds": [
+          0.001981925219297409,
+          0.0019823238253593445,
+          0.0019767433404922485,
+          0.0019777901470661163,
+          0.0020162463188171387,
+          0.0019813627004623413,
+          0.0019826292991638184
+        ]
+      },
+      "decode_plus_f32_matvec": {
+        "median_seconds": 0.0036863163113594055,
+        "samples_seconds": [
+          0.003679826855659485,
+          0.0036796778440475464,
+          0.003970663994550705,
+          0.003701716661453247,
+          0.0036863163113594055,
+          0.0036699362099170685,
+          0.003835190087556839
+        ]
+      },
+      "speedup_vs_decode_plus_f32": 0.6165580124852097
+    },
+    {
+      "format": "Q3_K",
+      "tensor": "blk.78.ffn_down_exps.weight",
+      "expert": 128,
+      "start_row": 3008,
+      "shape": [
+        128,
+        2048
+      ],
+      "byte_offset": 15397516384,
+      "raw_sha256": "9ba79a017c68c171c81c17e937b308a790de0601d5feccc93683f17c8b19b28b",
+      "packed_bytes": 112640,
+      "expanded_bytes": 1048576,
+      "weight_payload_reduction": 9.309090909090909,
+      "codec_exact": true,
+      "dot_exact": true,
+      "packed": {
+        "median_seconds": 0.002312593162059784,
+        "samples_seconds": [
+          0.0023245662450790405,
+          0.002311691641807556,
+          0.002437978982925415,
+          0.0023245960474014282,
+          0.002312593162059784,
+          0.0023088790476322174,
+          0.0023101679980754852
+        ]
+      },
+      "cached_f32_matvec": {
+        "median_seconds": 0.0006704665720462799,
+        "samples_seconds": [
+          0.0006704665720462799,
+          0.0006678439676761627,
+          0.0006626211106777191,
+          0.0006883777678012848,
+          0.000687137246131897,
+          0.0006884895265102386,
+          0.0006672404706478119
+        ]
+      },
+      "decode_plus_f32_matvec": {
+        "median_seconds": 0.0015128031373023987,
+        "samples_seconds": [
+          0.0015356391668319702,
+          0.0015208236873149872,
+          0.0015162266790866852,
+          0.0015016458928585052,
+          0.0015128031373023987,
+          0.001503095030784607,
+          0.001489829272031784
+        ]
+      },
+      "speedup_vs_decode_plus_f32": 0.6541587868204941
+    },
+    {
+      "format": "Q4_K",
+      "tensor": "token_embd.weight",
+      "expert": null,
+      "start_row": 77376,
+      "shape": [
+        128,
+        6144
+      ],
+      "byte_offset": 802730560,
+      "raw_sha256": "d977c67121097693ae5303a7ab01f7089c6016f3df36903274e457d5c13ac03d",
+      "packed_bytes": 442368,
+      "expanded_bytes": 3145728,
+      "weight_payload_reduction": 7.111111111111111,
+      "codec_exact": true,
+      "dot_exact": true,
+      "packed": {
+        "median_seconds": 0.006666362285614014,
+        "samples_seconds": [
+          0.006666362285614014,
+          0.006399776786565781,
+          0.006387349218130112,
+          0.00679408386349678,
+          0.006391339004039764,
+          0.006730757653713226,
+          0.007572241127490997
+        ]
+      },
+      "cached_f32_matvec": {
+        "median_seconds": 0.002030644565820694,
+        "samples_seconds": [
+          0.0020484663546085358,
+          0.002030644565820694,
+          0.0020256340503692627,
+          0.0020185373723506927,
+          0.002028040587902069,
+          0.002042718231678009,
+          0.0020346343517303467
+        ]
+      },
+      "decode_plus_f32_matvec": {
+        "median_seconds": 0.0038377121090888977,
+        "samples_seconds": [
+          0.0039970725774765015,
+          0.003906272351741791,
+          0.0038377121090888977,
+          0.0038283243775367737,
+          0.003963395953178406,
+          0.0038302652537822723,
+          0.0038149021565914154
+        ]
+      },
+      "speedup_vs_decode_plus_f32": 0.5756831004175496
+    },
+    {
+      "format": "Q5_K",
+      "tensor": "blk.40.attn_output.weight",
+      "expert": null,
+      "start_row": 3008,
+      "shape": [
+        128,
+        16384
+      ],
+      "byte_offset": 4005618912,
+      "raw_sha256": "1a1b109df6db5ce977e6cf43f1185ba3be80b62818321158de91917334194577",
+      "packed_bytes": 1441792,
+      "expanded_bytes": 8388608,
+      "weight_payload_reduction": 5.818181818181818,
+      "codec_exact": true,
+      "dot_exact": true,
+      "packed": {
+        "median_seconds": 0.020105551928281784,
+        "samples_seconds": [
+          0.01850462704896927,
+          0.01858539506793022,
+          0.019383154809474945,
+          0.021029457449913025,
+          0.021409377455711365,
+          0.020105551928281784,
+          0.02025989070534706
+        ]
+      },
+      "cached_f32_matvec": {
+        "median_seconds": 0.005317728966474533,
+        "samples_seconds": [
+          0.005305483937263489,
+          0.005335468798875809,
+          0.00527515634894371,
+          0.005270916968584061,
+          0.005325984209775925,
+          0.005324680358171463,
+          0.005317728966474533
+        ]
+      },
+      "decode_plus_f32_matvec": {
+        "median_seconds": 0.015063129365444183,
+        "samples_seconds": [
+          0.015559066087007523,
+          0.015063129365444183,
+          0.015600237995386124,
+          0.015255995094776154,
+          0.014948680996894836,
+          0.01498478651046753,
+          0.015060987323522568
+        ]
+      },
+      "speedup_vs_decode_plus_f32": 0.7492024799505952
+    },
+    {
+      "format": "Q6_K",
+      "tensor": "blk.38.ffn_down_shexp.weight",
+      "expert": null,
+      "start_row": 3008,
+      "shape": [
+        128,
+        2048
+      ],
+      "byte_offset": 49723714208,
+      "raw_sha256": "f069512c91b50cec99b8dff44800cf2bf2ac0a38ac821efcee4902bcc53bb8c7",
+      "packed_bytes": 215040,
+      "expanded_bytes": 1048576,
+      "weight_payload_reduction": 4.876190476190477,
+      "codec_exact": true,
+      "dot_exact": true,
+      "packed": {
+        "median_seconds": 0.0017885714769363403,
+        "samples_seconds": [
+          0.0017903223633766174,
+          0.001776810735464096,
+          0.0017789863049983978,
+          0.0017793960869312286,
+          0.002177111804485321,
+          0.0018054842948913574,
+          0.0017885714769363403
+        ]
+      },
+      "cached_f32_matvec": {
+        "median_seconds": 0.0006715394556522369,
+        "samples_seconds": [
+          0.0006733648478984833,
+          0.0006715394556522369,
+          0.0006696172058582306,
+          0.0006716586649417877,
+          0.0006674304604530334,
+          0.0006699785590171814,
+          0.0006954707205295563
+        ]
+      },
+      "decode_plus_f32_matvec": {
+        "median_seconds": 0.0013678856194019318,
+        "samples_seconds": [
+          0.0016189292073249817,
+          0.0019048415124416351,
+          0.0015553534030914307,
+          0.0013531558215618134,
+          0.0013398341834545135,
+          0.0013678856194019318,
+          0.0013369843363761902
+        ]
+      },
+      "speedup_vs_decode_plus_f32": 0.7647922585375201
+    },
+    {
+      "format": "IQ2_XXS",
+      "tensor": "blk.50.ffn_gate_exps.weight",
+      "expert": 128,
+      "start_row": 960,
+      "shape": [
+        128,
+        6144
+      ],
+      "byte_offset": 34455575776,
+      "raw_sha256": "9d8bfbc0cc0321934ce3db83221bcc18c8d9a7e775a67f77de5a435f89c04ae0",
+      "packed_bytes": 202752,
+      "expanded_bytes": 3145728,
+      "weight_payload_reduction": 15.515151515151516,
+      "codec_exact": true,
+      "dot_exact": true,
+      "packed": {
+        "median_seconds": 0.00808246061205864,
+        "samples_seconds": [
+          0.007963426411151886,
+          0.008121542632579803,
+          0.007997367531061172,
+          0.00808246061205864,
+          0.007929839193820953,
+          0.008138645440340042,
+          0.008279994130134583
+        ]
+      },
+      "cached_f32_matvec": {
+        "median_seconds": 0.001999467611312866,
+        "samples_seconds": [
+          0.002002749592065811,
+          0.0019911639392375946,
+          0.001999467611312866,
+          0.0020098350942134857,
+          0.0020007602870464325,
+          0.0019803419709205627,
+          0.00198354572057724
+        ]
+      },
+      "decode_plus_f32_matvec": {
+        "median_seconds": 0.010518085211515427,
+        "samples_seconds": [
+          0.010483313351869583,
+          0.010443903505802155,
+          0.010518085211515427,
+          0.01094679906964302,
+          0.011595252901315689,
+          0.012056015431880951,
+          0.010328307747840881
+        ]
+      },
+      "speedup_vs_decode_plus_f32": 1.3013469185142645
+    },
+    {
+      "format": "IQ3_XXS",
+      "tensor": "blk.39.ffn_down_exps.weight",
+      "expert": 128,
+      "start_row": 3008,
+      "shape": [
+        128,
+        2048
+      ],
+      "byte_offset": 2044294368,
+      "raw_sha256": "998e0cdca604d7f672c9eddb3bb47b637cc1d14362999fc8b478cc8512707713",
+      "packed_bytes": 100352,
+      "expanded_bytes": 1048576,
+      "weight_payload_reduction": 10.448979591836734,
+      "codec_exact": true,
+      "dot_exact": true,
+      "packed": {
+        "median_seconds": 0.0029779039323329926,
+        "samples_seconds": [
+          0.0026858672499656677,
+          0.002721332013607025,
+          0.003237806260585785,
+          0.003063872456550598,
+          0.0029281899333000183,
+          0.0030706748366355896,
+          0.0029779039323329926
+        ]
+      },
+      "cached_f32_matvec": {
+        "median_seconds": 0.000668797641992569,
+        "samples_seconds": [
+          0.0006903819739818573,
+          0.0006790943443775177,
+          0.000668797641992569,
+          0.0006765983998775482,
+          0.0006687939167022705,
+          0.0006680414080619812,
+          0.0006679780781269073
+        ]
+      },
+      "decode_plus_f32_matvec": {
+        "median_seconds": 0.004125684499740601,
+        "samples_seconds": [
+          0.0038183555006980896,
+          0.003963116556406021,
+          0.004152119159698486,
+          0.00419800728559494,
+          0.004125684499740601,
+          0.004249513149261475,
+          0.0037870556116104126
+        ]
+      },
+      "speedup_vs_decode_plus_f32": 1.3854323690383112
+    },
+    {
+      "format": "IQ1_S",
+      "tensor": "blk.35.ffn_up_exps.weight",
+      "expert": 128,
+      "start_row": 960,
+      "shape": [
+        128,
+        6144
+      ],
+      "byte_offset": 42682438304,
+      "raw_sha256": "d9d7c5a44e28a31e670cce9b085b6bf6c49b23c21f7fc935685c439f41f306b1",
+      "packed_bytes": 153600,
+      "expanded_bytes": 3145728,
+      "weight_payload_reduction": 20.48,
+      "codec_exact": true,
+      "dot_exact": true,
+      "packed": {
+        "median_seconds": 0.007719375193119049,
+        "samples_seconds": [
+          0.006860688328742981,
+          0.008576273918151855,
+          0.00689166784286499,
+          0.008182015269994736,
+          0.007423941045999527,
+          0.008317999541759491,
+          0.007719375193119049
+        ]
+      },
+      "cached_f32_matvec": {
+        "median_seconds": 0.001995738595724106,
+        "samples_seconds": [
+          0.0020643286406993866,
+          0.002015989273786545,
+          0.002006314694881439,
+          0.0019887760281562805,
+          0.001995738595724106,
+          0.0019882619380950928,
+          0.001992102712392807
+        ]
+      },
+      "decode_plus_f32_matvec": {
+        "median_seconds": 0.007542595267295837,
+        "samples_seconds": [
+          0.0074961185455322266,
+          0.007487572729587555,
+          0.007490050047636032,
+          0.007574025541543961,
+          0.007542595267295837,
+          0.007674377411603928,
+          0.007832307368516922
+        ]
+      },
+      "speedup_vs_decode_plus_f32": 0.9770991924345391
+    },
+    {
+      "format": "IQ4_XS",
+      "tensor": "blk.76.ffn_down_exps.weight",
+      "expert": 128,
+      "start_row": 3008,
+      "shape": [
+        128,
+        2048
+      ],
+      "byte_offset": 8462524512,
+      "raw_sha256": "4b0ab3f07b0b0dab46a7af8369065d677ba1ef59446b42509dbc542b6c0897b1",
+      "packed_bytes": 139264,
+      "expanded_bytes": 1048576,
+      "weight_payload_reduction": 7.529411764705882,
+      "codec_exact": true,
+      "dot_exact": true,
+      "packed": {
+        "median_seconds": 0.002855699509382248,
+        "samples_seconds": [
+          0.0028340183198451996,
+          0.0028335079550743103,
+          0.002855699509382248,
+          0.0028498731553554535,
+          0.003137502819299698,
+          0.0037282072007656097,
+          0.002953656017780304
+        ]
+      },
+      "cached_f32_matvec": {
+        "median_seconds": 0.0007259398698806763,
+        "samples_seconds": [
+          0.0007035695016384125,
+          0.000680483877658844,
+          0.000727236270904541,
+          0.0007259398698806763,
+          0.0007155835628509521,
+          0.0007371716201305389,
+          0.000728163868188858
+        ]
+      },
+      "decode_plus_f32_matvec": {
+        "median_seconds": 0.0023927725851535797,
+        "samples_seconds": [
+          0.0023927725851535797,
+          0.0023513250052928925,
+          0.0023296475410461426,
+          0.003038402646780014,
+          0.00324050709605217,
+          0.002664819359779358,
+          0.002340257167816162
+        ]
+      },
+      "speedup_vs_decode_plus_f32": 0.8378936849946058
+    }
+  ],
+  "inventory": {
+    "Q4_K": {
+      "tensors": 2,
+      "bytes": 1070530560
+    },
+    "F32": {
+      "tensors": 709,
+      "bytes": 545227776
+    },
+    "Q8_0": {
+      "tensors": 476,
+      "bytes": 5209448448
+    },
+    "Q5_K": {
+      "tensors": 312,
+      "bytes": 7681867776
+    },
+    "Q6_K": {
+      "tensors": 82,
+      "bytes": 1073479680
+    },
+    "IQ3_XXS": {
+      "tensors": 71,
+      "bytes": 87551901696
+    },
+    "IQ1_S": {
+      "tensors": 106,
+      "bytes": 66689433600
+    },
+    "IQ2_XXS": {
+      "tensors": 44,
+      "bytes": 36540776448
+    },
+    "IQ4_XS": {
+      "tensors": 4,
+      "bytes": 6845104128
+    },
+    "Q3_K": {
+      "tensors": 1,
+      "bytes": 1384120320
+    },
+    "Q2_K": {
+      "tensors": 2,
+      "bytes": 2113929216
+    }
+  },
+  "status": "passed"
+}

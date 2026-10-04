@@ -1,0 +1,471 @@
+// Packed GGUF CPU kernels. Reconstructed f32 weights feed the existing ordered
+// f32 dot; activation vectors are NEVER quantized. No expanded weight buffer.
+// Layouts and lookup tables: ggml-org/llama.cpp commit
+// 11fe02151f79c41d0d4af7da708755d73b9c0da6 (MIT; see GGML-LICENSE).
+// Byte loads avoid alignment/aliasing assumptions. Host checks all buffer sizes.
+fn packed_u16(w: *const u8, b: i32) -> i32 {
+  unsafe { return (w[b] as i32) | ((w[b + 1] as i32) << 8); }
+  return 0;
+}
+fn packed_low28(w: *const u8, b: i32) -> i32 {
+  unsafe { return (w[b] as i32) | ((w[b+1] as i32) << 8) | ((w[b+2] as i32) << 16) | (((w[b+3] as i32) & 15) << 24); }
+  return 0;
+}
+fn packed_half(w: *const u8, b: i32, half: *const f32) -> f32 {
+  unsafe { return half[packed_u16(w, b)]; }
+  return 0.0;
+}
+fn packed_signed(v: u8) -> i32 {
+  let n: i32 = v as i32;
+  if n >= 128 { return n - 256; }
+  return n;
+  return 0;
+}
+fn packed_weight_f16(w: *const u8, b: i32, j: i32, half: *const f32, table: *const u8) -> f32 {
+  return packed_half(w,b,half);
+  return 0.0;
+}
+fn packed_weight_q8_0(w: *const u8, b: i32, j: i32, half: *const f32, table: *const u8) -> f32 {
+  unsafe { return packed_half(w,b,half) * (packed_signed(w[b+2+j]) as f32); }
+  return 0.0;
+}
+fn packed_weight_iq1_s(w: *const u8, b: i32, j: i32, half: *const f32, table: *const u8) -> f32 {
+  unsafe {
+    let g: i32 = j / 32;
+    let l: i32 = (j % 32) / 8;
+    let high: i32 = packed_u16(w,b+34+2*g);
+    let index: i32 = (w[b+2+g*4+l] as i32) | (((high >> (3*l)) & 7) << 8);
+    let dl: f32 = packed_half(w,b,half) * ((2*((high >> 12) & 7)+1) as f32);
+    let mut delta: f32 = 0.125;
+    if (high & 32768) != 0 { delta = -0.125; }
+    return dl * ((packed_signed(table[index*8+j%8]) as f32) + delta);
+  }
+  return 0.0;
+}
+fn packed_weight_iq2_xxs(w: *const u8, b: i32, j: i32, half: *const f32, table: *const u8) -> f32 {
+  unsafe {
+    let g: i32 = j / 32;
+    let l: i32 = (j % 32) / 8;
+    let p: i32 = b+2+8*g;
+    let bits: i32 = packed_low28(w,p+4);
+    let dl: f32 = packed_half(w,b,half) * (0.5+((w[p+7] as i32) >> 4) as f32) * 0.25;
+    let index: i32 = w[p+l] as i32;
+    let sign: i32 = table[19456+((bits >> (7*l)) & 127)] as i32;
+    let mut s: f32 = 1.0;
+    if (sign & (1 << (j%8))) != 0 { s = -1.0; }
+    return dl * (table[16384+index*8+j%8] as f32) * s;
+  }
+  return 0.0;
+}
+fn packed_weight_iq3_xxs(w: *const u8, b: i32, j: i32, half: *const f32, table: *const u8) -> f32 {
+  unsafe {
+    let g: i32 = j / 32;
+    let l: i32 = (j % 32) / 8;
+    let p: i32 = b+66+4*g;
+    let bits: i32 = packed_low28(w,p);
+    let dl: f32 = packed_half(w,b,half) * (0.5+((w[p+3] as i32) >> 4) as f32) * 0.5;
+    let index: i32 = w[b+2+8*g+2*l+(j%8)/4] as i32;
+    let sign: i32 = table[19456+((bits >> (7*l)) & 127)] as i32;
+    let mut s: f32 = 1.0;
+    if (sign & (1 << (j%8))) != 0 { s = -1.0; }
+    return dl * (table[18432+index*4+j%4] as f32) * s;
+  }
+  return 0.0;
+}
+fn packed_weight_iq4_xs(w: *const u8, b: i32, j: i32, half: *const f32, table: *const u8) -> f32 {
+  unsafe {
+    let g: i32 = j/32;
+    let sc: i32 = (((w[b+4+g/2] as i32) >> (4*(g%2))) & 15) | (((packed_u16(w,b+2) >> (2*g)) & 3) << 4);
+    let dl: f32 = packed_half(w,b,half) * ((sc-32) as f32);
+    let q: i32 = ((w[b+8+16*g+j%16] as i32) >> (4*((j%32)/16))) & 15;
+    return dl * (packed_signed(table[19584+q]) as f32);
+  }
+  return 0.0;
+}
+fn packed_weight_q2_k(w: *const u8, b: i32, j: i32, half: *const f32, table: *const u8) -> f32 {
+  unsafe {
+    let sc: i32 = w[b+j/16] as i32;
+    let q: i32 = ((w[b+16+(j/128)*32+j%32] as i32) >> (2*((j%128)/32))) & 3;
+    let dl: f32 = packed_half(w,b+80,half) * ((sc & 15) as f32);
+    let ml: f32 = packed_half(w,b+82,half) * ((sc >> 4) as f32);
+    return dl*(q as f32)-ml;
+  }
+  return 0.0;
+}
+fn packed_weight_q3_k(w: *const u8, b: i32, j: i32, half: *const f32, table: *const u8) -> f32 {
+  unsafe {
+    let g: i32 = j/16;
+    let low: i32 = ((w[b+96+g%8] as i32) >> (4*(g/8))) & 15;
+    let high: i32 = ((w[b+104+g%4] as i32) >> (2*(g/4))) & 3;
+    let sc: i32 = (low | (high << 4))-32;
+    let mut q: i32 = ((w[b+32+(j/128)*32+j%32] as i32) >> (2*((j%128)/32))) & 3;
+    if ((w[b+j%32] as i32) & (1 << (j/32))) == 0 { q = q - 4; }
+    return packed_half(w,b+108,half)*(sc as f32)*(q as f32);
+  }
+  return 0.0;
+}
+fn packed_scale_k4(w: *const u8, b: i32, g: i32) -> i32 {
+  unsafe {
+    if g < 4 { return (w[b+g] as i32) & 63; }
+    return ((w[b+g+4] as i32) & 15) | (((w[b+g-4] as i32) >> 6) << 4);
+  }
+  return 0;
+}
+fn packed_min_k4(w: *const u8, b: i32, g: i32) -> i32 {
+  unsafe {
+    if g < 4 { return (w[b+g+4] as i32) & 63; }
+    return ((w[b+g+4] as i32) >> 4) | (((w[b+g] as i32) >> 6) << 4);
+  }
+  return 0;
+}
+fn packed_weight_q4_k(w: *const u8, b: i32, j: i32, half: *const f32, table: *const u8) -> f32 {
+  unsafe {
+    let g: i32 = j/32;
+    let q: i32 = ((w[b+16+(j/64)*32+j%32] as i32) >> (4*(g%2))) & 15;
+    let dl: f32 = packed_half(w,b,half)*(packed_scale_k4(w,b+4,g) as f32);
+    let ml: f32 = packed_half(w,b+2,half)*(packed_min_k4(w,b+4,g) as f32);
+    return dl*(q as f32)-ml;
+  }
+  return 0.0;
+}
+fn packed_weight_q5_k(w: *const u8, b: i32, j: i32, half: *const f32, table: *const u8) -> f32 {
+  unsafe {
+    let g: i32 = j/32;
+    let low: i32 = ((w[b+48+(j/64)*32+j%32] as i32) >> (4*(g%2))) & 15;
+    let q: i32 = low | ((((w[b+16+j%32] as i32) >> g) & 1) << 4);
+    let dl: f32 = packed_half(w,b,half)*(packed_scale_k4(w,b+4,g) as f32);
+    let ml: f32 = packed_half(w,b+2,half)*(packed_min_k4(w,b+4,g) as f32);
+    return dl*(q as f32)-ml;
+  }
+  return 0.0;
+}
+fn packed_weight_q6_k(w: *const u8, b: i32, j: i32, half: *const f32, table: *const u8) -> f32 {
+  unsafe {
+    let g: i32 = (j%128)/32;
+    let low: i32 = ((w[b+(j/128)*64+(g%2)*32+j%32] as i32) >> (4*(g/2))) & 15;
+    let high: i32 = ((w[b+128+(j/128)*32+j%32] as i32) >> (2*g)) & 3;
+    let q: i32 = (low | (high << 4))-32;
+    let sc: i32 = packed_signed(w[b+192+j/16]);
+    return packed_half(w,b+208,half)*(sc as f32)*(q as f32);
+  }
+  return 0.0;
+}
+
+fn glm_vx_packed_f16(out: *mut f32, w: *const u8, x: *const f32, half: *const f32, table: *const u8, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols <= 0 { return -1; }
+  if cols % 1 != 0 { return -1; }
+  let blocks: i32 = cols/1;
+  unsafe {
+    for r in 0..rows {
+      let mut sum: f32 = 0.0;
+      for block in 0..blocks {
+        let b: i32 = (r*blocks+block)*2;
+        for j in 0..1 {
+          let v: f32 = packed_weight_f16(w,b,j,half,table);
+          sum = sum + v*x[block*1+j];
+        }
+      }
+      out[r] = sum;
+    }
+  }
+  return 0;
+}
+// Bounded diagnostic codec export; serving calls the fused kernel above.
+fn glm_vx_unpack_f16(out: *mut f32, w: *const u8, half: *const f32, table: *const u8, blocks: i32) -> i32 {
+  if blocks < 0 { return -1; }
+  unsafe { for block in 0..blocks { for j in 0..1 {
+    out[block*1+j] = packed_weight_f16(w,block*2,j,half,table);
+  } } }
+  return 0;
+}
+
+fn glm_vx_packed_q8_0(out: *mut f32, w: *const u8, x: *const f32, half: *const f32, table: *const u8, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols <= 0 { return -1; }
+  if cols % 32 != 0 { return -1; }
+  let blocks: i32 = cols/32;
+  unsafe {
+    for r in 0..rows {
+      let mut sum: f32 = 0.0;
+      for block in 0..blocks {
+        let b: i32 = (r*blocks+block)*34;
+        for j in 0..32 {
+          let v: f32 = packed_weight_q8_0(w,b,j,half,table);
+          sum = sum + v*x[block*32+j];
+        }
+      }
+      out[r] = sum;
+    }
+  }
+  return 0;
+}
+// Bounded diagnostic codec export; serving calls the fused kernel above.
+fn glm_vx_unpack_q8_0(out: *mut f32, w: *const u8, half: *const f32, table: *const u8, blocks: i32) -> i32 {
+  if blocks < 0 { return -1; }
+  unsafe { for block in 0..blocks { for j in 0..32 {
+    out[block*32+j] = packed_weight_q8_0(w,block*34,j,half,table);
+  } } }
+  return 0;
+}
+
+fn glm_vx_packed_iq1_s(out: *mut f32, w: *const u8, x: *const f32, half: *const f32, table: *const u8, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols <= 0 { return -1; }
+  if cols % 256 != 0 { return -1; }
+  let blocks: i32 = cols/256;
+  unsafe {
+    for r in 0..rows {
+      let mut sum: f32 = 0.0;
+      for block in 0..blocks {
+        let b: i32 = (r*blocks+block)*50;
+        for j in 0..256 {
+          let v: f32 = packed_weight_iq1_s(w,b,j,half,table);
+          sum = sum + v*x[block*256+j];
+        }
+      }
+      out[r] = sum;
+    }
+  }
+  return 0;
+}
+// Bounded diagnostic codec export; serving calls the fused kernel above.
+fn glm_vx_unpack_iq1_s(out: *mut f32, w: *const u8, half: *const f32, table: *const u8, blocks: i32) -> i32 {
+  if blocks < 0 { return -1; }
+  unsafe { for block in 0..blocks { for j in 0..256 {
+    out[block*256+j] = packed_weight_iq1_s(w,block*50,j,half,table);
+  } } }
+  return 0;
+}
+
+fn glm_vx_packed_iq2_xxs(out: *mut f32, w: *const u8, x: *const f32, half: *const f32, table: *const u8, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols <= 0 { return -1; }
+  if cols % 256 != 0 { return -1; }
+  let blocks: i32 = cols/256;
+  unsafe {
+    for r in 0..rows {
+      let mut sum: f32 = 0.0;
+      for block in 0..blocks {
+        let b: i32 = (r*blocks+block)*66;
+        for j in 0..256 {
+          let v: f32 = packed_weight_iq2_xxs(w,b,j,half,table);
+          sum = sum + v*x[block*256+j];
+        }
+      }
+      out[r] = sum;
+    }
+  }
+  return 0;
+}
+// Bounded diagnostic codec export; serving calls the fused kernel above.
+fn glm_vx_unpack_iq2_xxs(out: *mut f32, w: *const u8, half: *const f32, table: *const u8, blocks: i32) -> i32 {
+  if blocks < 0 { return -1; }
+  unsafe { for block in 0..blocks { for j in 0..256 {
+    out[block*256+j] = packed_weight_iq2_xxs(w,block*66,j,half,table);
+  } } }
+  return 0;
+}
+
+fn glm_vx_packed_iq3_xxs(out: *mut f32, w: *const u8, x: *const f32, half: *const f32, table: *const u8, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols <= 0 { return -1; }
+  if cols % 256 != 0 { return -1; }
+  let blocks: i32 = cols/256;
+  unsafe {
+    for r in 0..rows {
+      let mut sum: f32 = 0.0;
+      for block in 0..blocks {
+        let b: i32 = (r*blocks+block)*98;
+        for j in 0..256 {
+          let v: f32 = packed_weight_iq3_xxs(w,b,j,half,table);
+          sum = sum + v*x[block*256+j];
+        }
+      }
+      out[r] = sum;
+    }
+  }
+  return 0;
+}
+// Bounded diagnostic codec export; serving calls the fused kernel above.
+fn glm_vx_unpack_iq3_xxs(out: *mut f32, w: *const u8, half: *const f32, table: *const u8, blocks: i32) -> i32 {
+  if blocks < 0 { return -1; }
+  unsafe { for block in 0..blocks { for j in 0..256 {
+    out[block*256+j] = packed_weight_iq3_xxs(w,block*98,j,half,table);
+  } } }
+  return 0;
+}
+
+fn glm_vx_packed_iq4_xs(out: *mut f32, w: *const u8, x: *const f32, half: *const f32, table: *const u8, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols <= 0 { return -1; }
+  if cols % 256 != 0 { return -1; }
+  let blocks: i32 = cols/256;
+  unsafe {
+    for r in 0..rows {
+      let mut sum: f32 = 0.0;
+      for block in 0..blocks {
+        let b: i32 = (r*blocks+block)*136;
+        for j in 0..256 {
+          let v: f32 = packed_weight_iq4_xs(w,b,j,half,table);
+          sum = sum + v*x[block*256+j];
+        }
+      }
+      out[r] = sum;
+    }
+  }
+  return 0;
+}
+// Bounded diagnostic codec export; serving calls the fused kernel above.
+fn glm_vx_unpack_iq4_xs(out: *mut f32, w: *const u8, half: *const f32, table: *const u8, blocks: i32) -> i32 {
+  if blocks < 0 { return -1; }
+  unsafe { for block in 0..blocks { for j in 0..256 {
+    out[block*256+j] = packed_weight_iq4_xs(w,block*136,j,half,table);
+  } } }
+  return 0;
+}
+
+fn glm_vx_packed_q2_k(out: *mut f32, w: *const u8, x: *const f32, half: *const f32, table: *const u8, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols <= 0 { return -1; }
+  if cols % 256 != 0 { return -1; }
+  let blocks: i32 = cols/256;
+  unsafe {
+    for r in 0..rows {
+      let mut sum: f32 = 0.0;
+      for block in 0..blocks {
+        let b: i32 = (r*blocks+block)*84;
+        for j in 0..256 {
+          let v: f32 = packed_weight_q2_k(w,b,j,half,table);
+          sum = sum + v*x[block*256+j];
+        }
+      }
+      out[r] = sum;
+    }
+  }
+  return 0;
+}
+// Bounded diagnostic codec export; serving calls the fused kernel above.
+fn glm_vx_unpack_q2_k(out: *mut f32, w: *const u8, half: *const f32, table: *const u8, blocks: i32) -> i32 {
+  if blocks < 0 { return -1; }
+  unsafe { for block in 0..blocks { for j in 0..256 {
+    out[block*256+j] = packed_weight_q2_k(w,block*84,j,half,table);
+  } } }
+  return 0;
+}
+
+fn glm_vx_packed_q3_k(out: *mut f32, w: *const u8, x: *const f32, half: *const f32, table: *const u8, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols <= 0 { return -1; }
+  if cols % 256 != 0 { return -1; }
+  let blocks: i32 = cols/256;
+  unsafe {
+    for r in 0..rows {
+      let mut sum: f32 = 0.0;
+      for block in 0..blocks {
+        let b: i32 = (r*blocks+block)*110;
+        for j in 0..256 {
+          let v: f32 = packed_weight_q3_k(w,b,j,half,table);
+          sum = sum + v*x[block*256+j];
+        }
+      }
+      out[r] = sum;
+    }
+  }
+  return 0;
+}
+// Bounded diagnostic codec export; serving calls the fused kernel above.
+fn glm_vx_unpack_q3_k(out: *mut f32, w: *const u8, half: *const f32, table: *const u8, blocks: i32) -> i32 {
+  if blocks < 0 { return -1; }
+  unsafe { for block in 0..blocks { for j in 0..256 {
+    out[block*256+j] = packed_weight_q3_k(w,block*110,j,half,table);
+  } } }
+  return 0;
+}
+
+fn glm_vx_packed_q4_k(out: *mut f32, w: *const u8, x: *const f32, half: *const f32, table: *const u8, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols <= 0 { return -1; }
+  if cols % 256 != 0 { return -1; }
+  let blocks: i32 = cols/256;
+  unsafe {
+    for r in 0..rows {
+      let mut sum: f32 = 0.0;
+      for block in 0..blocks {
+        let b: i32 = (r*blocks+block)*144;
+        for j in 0..256 {
+          let v: f32 = packed_weight_q4_k(w,b,j,half,table);
+          sum = sum + v*x[block*256+j];
+        }
+      }
+      out[r] = sum;
+    }
+  }
+  return 0;
+}
+// Bounded diagnostic codec export; serving calls the fused kernel above.
+fn glm_vx_unpack_q4_k(out: *mut f32, w: *const u8, half: *const f32, table: *const u8, blocks: i32) -> i32 {
+  if blocks < 0 { return -1; }
+  unsafe { for block in 0..blocks { for j in 0..256 {
+    out[block*256+j] = packed_weight_q4_k(w,block*144,j,half,table);
+  } } }
+  return 0;
+}
+
+fn glm_vx_packed_q5_k(out: *mut f32, w: *const u8, x: *const f32, half: *const f32, table: *const u8, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols <= 0 { return -1; }
+  if cols % 256 != 0 { return -1; }
+  let blocks: i32 = cols/256;
+  unsafe {
+    for r in 0..rows {
+      let mut sum: f32 = 0.0;
+      for block in 0..blocks {
+        let b: i32 = (r*blocks+block)*176;
+        for j in 0..256 {
+          let v: f32 = packed_weight_q5_k(w,b,j,half,table);
+          sum = sum + v*x[block*256+j];
+        }
+      }
+      out[r] = sum;
+    }
+  }
+  return 0;
+}
+// Bounded diagnostic codec export; serving calls the fused kernel above.
+fn glm_vx_unpack_q5_k(out: *mut f32, w: *const u8, half: *const f32, table: *const u8, blocks: i32) -> i32 {
+  if blocks < 0 { return -1; }
+  unsafe { for block in 0..blocks { for j in 0..256 {
+    out[block*256+j] = packed_weight_q5_k(w,block*176,j,half,table);
+  } } }
+  return 0;
+}
+
+fn glm_vx_packed_q6_k(out: *mut f32, w: *const u8, x: *const f32, half: *const f32, table: *const u8, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols <= 0 { return -1; }
+  if cols % 256 != 0 { return -1; }
+  let blocks: i32 = cols/256;
+  unsafe {
+    for r in 0..rows {
+      let mut sum: f32 = 0.0;
+      for block in 0..blocks {
+        let b: i32 = (r*blocks+block)*210;
+        for j in 0..256 {
+          let v: f32 = packed_weight_q6_k(w,b,j,half,table);
+          sum = sum + v*x[block*256+j];
+        }
+      }
+      out[r] = sum;
+    }
+  }
+  return 0;
+}
+// Bounded diagnostic codec export; serving calls the fused kernel above.
+fn glm_vx_unpack_q6_k(out: *mut f32, w: *const u8, half: *const f32, table: *const u8, blocks: i32) -> i32 {
+  if blocks < 0 { return -1; }
+  unsafe { for block in 0..blocks { for j in 0..256 {
+    out[block*256+j] = packed_weight_q6_k(w,block*210,j,half,table);
+  } } }
+  return 0;
+}
