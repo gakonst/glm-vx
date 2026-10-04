@@ -8,6 +8,8 @@ import argparse
 import hashlib
 import json
 import math
+import platform
+from importlib.metadata import version
 import os
 from pathlib import Path
 import shutil
@@ -22,12 +24,16 @@ ROOT=Path(__file__).resolve().parents[1]
 LEVELS=(0,1,2,3)
 FILES=('tests/test_model.py','tests/test_batched_prefill.py','tests/test_topk_heap.py',
        'tests/test_packed_model.py','tests/test_backend_oracle.py','kernels/test_backend.py',
-       'tests/test_cpu_candidate_gate.py')
+       'tests/test_cpu_candidate_gate.py','tests/test_chunk_review.py',
+       'tests/test_prefill_serving.py','tests/test_prefix_cache.py','tests/test_scheduler.py',
+       'tests/test_scheduler_latency.py','tests/test_server.py','tests/test_model_trace.py',
+       'tests/test_dsa_boundaries.py','tests/test_trace_gate.py')
 PACKED_NODES=('test_synthetic_raw_bytes_codec_and_dot_exact','test_iq1_all_2048_grid_indices_and_scale_bits',
               'test_half_lookup_all_finite_bit_patterns','test_bounds_before_kernel',
               'test_store_rejects_bad_expert_or_rows','test_empty_rows_and_close_waits_for_borrow',
               'test_linear_uses_borrowed_bytes_and_explicit_fallback','test_corrupt_scale_fails_closed',
-              'test_table_extraction_is_reproducible','test_backend_without_packed_symbols_has_explicit_fallback')
+              'test_table_extraction_is_reproducible','test_backend_without_packed_symbols_has_explicit_fallback',
+              'test_f32_capacity_counts_elements_and_rejects_unaligned_bytes')
 DESELECT='tests/test_model.py::ModelTests::test_compiled_vx_model_matches_independent_expanded_oracle'
 CASE_IDS=('matrix-8-256-6144','matrix-8-1024-6144','matrix-16-512-2048','prefill-8','prefill-32')
 
@@ -44,7 +50,8 @@ def digest(path):
 
 def snapshot(root):
     """Freeze implementation, test and benchmark inputs, including uncommitted files."""
-    paths=[root/'pyproject.toml'] if (root/'pyproject.toml').is_file() else []
+    paths=[root/name for name in ('pyproject.toml','conftest.py','pytest.ini','tox.ini','setup.cfg')
+           if (root/name).is_file()]
     for directory in ('glm_vx','kernels','tests','validation','benchmarks'):
         paths.extend(p for p in (root/directory).rglob('*') if p.is_file()
                      and not any(part.startswith('build') or part in ('__pycache__','.pytest_cache','packed-evidence','evidence','cpu-validation') for part in p.relative_to(root).parts[:-1])
@@ -56,8 +63,8 @@ def source_changes(before,after):
     return sorted(k for k in before.keys()|after.keys() if before.get(k)!=after.get(k))
 
 
-def test_argv(python,junit):
-    return [str(python),'-m','pytest','-q','--maxfail=1','--strict-markers','-o','xfail_strict=true',
+def test_argv(python,junit,root=ROOT):
+    return [str(python),'-m','pytest','-q','--maxfail=1','--strict-markers','-o','xfail_strict=true','-o','addopts=','-c',str(root/'pyproject.toml'),
             '--junitxml',str(junit),'--deselect',DESELECT,*FILES,
             *['tests/test_packed_matvec.py::'+node for node in PACKED_NODES]]
 
@@ -77,7 +84,9 @@ def inspect_junit(path):
     present={part for c in cases for part in c.get('classname','').split('.')}
     missing=modules-present
     if missing:raise SearchError('CPU gate missing required test modules: '+','.join(sorted(missing)))
-    return {'passed':len(cases),'failures':0,'errors':0,'skips':0,'sha256':digest(path)}
+    nodes=sorted(c.get('classname','')+'::'+c.get('name','') for c in cases)
+    if len(nodes)!=len(set(nodes)):raise SearchError('CPU gate contains duplicate test identities')
+    return {'passed':len(cases),'failures':0,'errors':0,'skips':0,'sha256':digest(path),'node_ids':nodes}
 
 
 def command(argv,cwd,env,log,timeout):
@@ -127,7 +136,7 @@ def rank_candidates(candidates):
     return sorted(ranked,key=lambda c:(-c['geomean_speedup_vs_o0'],c['optimization']))[0]
 
 
-def run_search(output,python,vxc,reference,repeats=7,timeout=300,root=ROOT):
+def run_search(output,python,vxc,reference,repeats=7,timeout=300,root=ROOT,toolchain_files=()):
     root=Path(root).resolve();output=Path(output).resolve()
     if not 3<=repeats<=31:raise SearchError('repeats must be 3..31')
     if not 1<=timeout<=1800:raise SearchError('timeout must be 1..1800 seconds per command')
@@ -153,6 +162,7 @@ def run_search(output,python,vxc,reference,repeats=7,timeout=300,root=ROOT):
         if not python.is_file() or not vxc.is_file():raise SearchError('Python/compiler executable missing')
         receipt['python']={'path':str(python),'sha256':digest(python)}
         receipt['compiler']={'path':str(vxc),'sha256':digest(vxc)}
+        receipt['toolchain_files']={str(Path(p).resolve()):digest(p) for p in toolchain_files}
         from validation.ggml_oracle import NativeGGML
         native=NativeGGML(reference);receipt['native_codec_resource']=native.provenance()
         env=os.environ.copy()
@@ -173,7 +183,7 @@ def run_search(output,python,vxc,reference,repeats=7,timeout=300,root=ROOT):
                 candidate['library_sha256']=digest(lib)
                 cenv['GLM_VX_CANDIDATE_SHA256']=candidate['library_sha256']
                 junit=directory/'tests.xml'
-                candidate['test_command']=command(test_argv(python,junit),root,cenv,directory/'tests.txt',timeout)
+                candidate['test_command']=command(test_argv(python,junit,root),root,cenv,directory/'tests.txt',timeout)
                 if candidate['test_command']['returncode']!=0:raise SearchError('candidate semantic tests failed')
                 candidate['tests']=inspect_junit(junit)
                 if digest(lib)!=candidate['library_sha256']:raise SearchError('candidate library changed during tests')
@@ -190,6 +200,8 @@ def run_search(output,python,vxc,reference,repeats=7,timeout=300,root=ROOT):
             argv=[str(python),'-m','validation.cpu_search','--worker-library',candidate['library'],
                   '--worker-baseline',baseline['library'],'--worker-output',str(result),'--repeats',str(repeats)]
             try:
+                if candidate['tests']['node_ids']!=baseline['tests']['node_ids']:
+                    raise SearchError('candidate test collection differs from O0')
                 candidate['benchmark_command']=command(argv,root,cenv,directory/'benchmark.txt',timeout)
                 if candidate['benchmark_command']['returncode']!=0:raise SearchError('candidate benchmark failed')
                 candidate['benchmark']=validate_benchmark(json.loads(result.read_text()),candidate['library_sha256'],baseline['library_sha256'],repeats)
@@ -215,9 +227,15 @@ def run_search(output,python,vxc,reference,repeats=7,timeout=300,root=ROOT):
                 lib=Path(candidate['library']);current=digest(lib) if lib.is_file() else None
                 candidate['final_library_sha256']=current
                 drift=drift or current!=candidate['library_sha256']
+        if receipt.get('python'):
+            interpreter=Path(receipt['python']['path'])
+            drift=drift or not interpreter.is_file() or digest(interpreter)!=receipt['python']['sha256']
         if receipt.get('compiler'):
             compiler=Path(receipt['compiler']['path'])
             drift=drift or not compiler.is_file() or digest(compiler)!=receipt['compiler']['sha256']
+        for name,expected in receipt.get('toolchain_files',{}).items():
+            path=Path(name)
+            drift=drift or not path.is_file() or digest(path)!=expected
         if receipt.get('native_codec_resource'):
             resource=receipt['native_codec_resource']
             for name,expected in resource['codec_source_sha256'].items():
@@ -234,6 +252,13 @@ def run_search(output,python,vxc,reference,repeats=7,timeout=300,root=ROOT):
     return receipt
 
 
+def assert_finite_exact(actual,expected):
+    import numpy as np
+    if not np.isfinite(expected).all() or not np.isfinite(actual).all():
+        raise SearchError('benchmark outputs must be finite, including O0')
+    np.testing.assert_array_equal(actual,expected)
+
+
 def benchmark_worker(library,baseline,output,repeats):
     """Fixed synthetic workload, fresh process per compiler candidate; no model IO."""
     import numpy as np
@@ -244,13 +269,18 @@ def benchmark_worker(library,baseline,output,repeats):
     if output.exists():raise SearchError('worker output exists')
     current=VxBackend(library);base=VxBackend(baseline);rng=np.random.default_rng(735)
     report={'library_sha256':digest(library),'baseline_sha256':digest(baseline),'cases':[],
-            'seed':735,'scope':'fixed synthetic resident matrix and prefill; warmup excluded'}
+            'seed':735,'scope':'fixed synthetic resident matrix and prefill; warmup excluded',
+            'environment':{'python':sys.version,'numpy':version('numpy'),'pytest':version('pytest'),
+                           'gguf':version('gguf'),'tokenizers':version('tokenizers'),
+                           'os':platform.system(),'os_release':platform.release(),
+                           'machine':platform.machine(),'logical_cpus':os.cpu_count(),
+                           'cpu_affinity_count':len(os.sched_getaffinity(0)) if hasattr(os,'sched_getaffinity') else None}}
     def measure(name,fn,expected):
-        np.testing.assert_array_equal(fn(),expected)
+        assert_finite_exact(fn(),expected)
         samples=[]
         for _ in range(repeats):
             start=time.perf_counter();actual=fn();elapsed=time.perf_counter()-start
-            np.testing.assert_array_equal(actual,expected);samples.append(elapsed)
+            assert_finite_exact(actual,expected);samples.append(elapsed)
         report['cases'].append({'id':name,'samples_seconds':samples,'median_seconds':statistics.median(samples),
                                 'exact_baseline':True,'output_sha256':hashlib.sha256(actual.tobytes()).hexdigest()})
     for m,n,k in ((8,256,6144),(8,1024,6144),(16,512,2048)):
@@ -273,6 +303,7 @@ def main(argv=None):
     p.add_argument('--vxc',type=Path,default=Path(shutil.which('vxc') or 'vxc'))
     p.add_argument('--reference',type=Path,default=ROOT.parent/'glm-vx-reference')
     p.add_argument('--repeats',type=int,default=7);p.add_argument('--timeout',type=int,default=300)
+    p.add_argument('--toolchain-file',type=Path,action='append',default=[],help='Additional LLVM/linker/environment file to pin and recheck')
     p.add_argument('--worker-library',type=Path,help=argparse.SUPPRESS)
     p.add_argument('--worker-baseline',type=Path,help=argparse.SUPPRESS)
     p.add_argument('--worker-output',type=Path,help=argparse.SUPPRESS)
@@ -281,7 +312,7 @@ def main(argv=None):
         if not args.worker_baseline or not args.worker_output:p.error('worker requires baseline/output')
         benchmark_worker(args.worker_library,args.worker_baseline,args.worker_output,args.repeats);return 0
     if not args.output_dir:p.error('--output-dir is required')
-    try:receipt=run_search(args.output_dir,args.python,args.vxc,args.reference,args.repeats,args.timeout)
+    try:receipt=run_search(args.output_dir,args.python,args.vxc,args.reference,args.repeats,args.timeout,toolchain_files=args.toolchain_file)
     except SearchError as exc:print(str(exc),file=sys.stderr);return 2
     print(json.dumps({'status':receipt['status'],'selected':receipt['selected'],'release_eligible':False,
                       'receipt':str(args.output_dir/'receipt.json'),'error':receipt.get('error')}))

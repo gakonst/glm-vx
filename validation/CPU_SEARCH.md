@@ -20,7 +20,13 @@ PYTHONPATH=$PWD ../glm-vx/.venv/bin/python -m validation.cpu_search \
 
 Use a fresh output directory each time; existing evidence is never overwritten.
 The Python executable path preserves venv symlinks. The toolchain environment
-must already supply Vx's LLVM dependencies. Builds invoke the existing build
+must already supply Vx's LLVM dependencies. `--vxc` fingerprints the supplied
+executable; a wrapper's hash is only a launcher hash. On the documented local
+installation, set `VX_LLVM_BIN="$VX_TOOLCHAIN_ROOT/llvm22/usr/lib/llvm-22/bin"`
+and pass `--vxc "$VX_TOOLCHAIN_ROOT/release/bin/vxc"` to pin the actual release
+binary. Repeated `--toolchain-file /path/to/file` options also pin and recheck
+LLVM/linker tools or environment scripts. Transitive LLVM/linker and Python-package binaries are not all attested;
+retain the pinned toolchain/dependency environment alongside the receipt. Builds invoke the existing build
 script with structured argv and an absolute `VX_BUILD_DIR`; default O0 and
 `kernels/build/libglm_vx.so` remain unchanged. Test and benchmark children get
 that candidate's `GLM_VX_LIBRARY`, this checkout's `PYTHONPATH`, deterministic
@@ -29,26 +35,31 @@ seeds, and one BLAS/OpenMP thread. No shell command strings are interpolated.
 ## Required gates and provenance
 
 Each candidate must build successfully and pass the fixed model, packed-model,
-backend, batch-prefill, and top-k tests. Selected synthetic packed-codec tests
+backend, batch-prefill, top-k, trace, cache, scheduler and HTTP lifecycle tests. Selected synthetic packed-codec tests
 also run against the independently pinned native GGML codec reference. The
 reference's source hashes and library fingerprint are recorded and rechecked;
 missing reference assets fail the run. No trained GGUF rows are accessed.
 The exact required files/node IDs are constants in the runner and are included
 in its receipt. Missing files, empty collection, missing required test modules,
-failures, collection errors, **any skipped test**, or timeout prevent eligibility.
+failures, duplicate identities, collection errors, **any skipped test**, or timeout prevent eligibility.
+Pytest uses the explicit root `pyproject.toml` with `addopts` cleared, so ambient
+configuration cannot silently select only a subset of every candidate.
 
 One historical model test hardcodes the default library. The runner explicitly
 deselects it and runs `test_cpu_candidate_gate.py` instead: that test checks the
 candidate path/hash and exercises the independent expanded-model oracle using
 that candidate. This is a documented replacement, not a silently skipped test.
-GPU tests are intentionally outside this CPU gate.
+Every candidate must report the same test identities as O0 before benchmarking;
+partial collection cannot make another candidate appear eligible. Root pytest
+configuration files are included in the source freeze. GPU tests are
+intentionally outside this CPU gate.
 
 All repository implementation/test/benchmark source files and lookup data in
 `glm_vx`, `kernels`, `tests`, `validation`, and `benchmarks` are hashed before and
 after the search, and checked between candidates/stages. Generated build,
-cache and evidence directories are excluded. The compiler, native reference,
+cache and evidence directories are excluded. The compiler launcher, Python executable, native reference,
 default library, and each actual candidate `.so` are fingerprinted. Tests and
-benchmarks bind the candidate's hash. A final source/compiler/library drift
+benchmarks bind the candidate's hash. A final source/compiler/Python/library drift
 check revokes **every** eligibility decision and removes the winner.
 
 The receipt retains structured command argv, exit statuses, timeout state,
@@ -65,11 +76,13 @@ receipt when it has created its evidence directory.
 Every passing candidate benchmarks the same fixed seeded resident F32 matrix
 cases `(batch, output, input) = (8,256,6144), (8,1024,6144), (16,512,2048)` and
 the same synthetic 256-hidden-width model prefill prompts of 8 and 32 tokens.
-Every run uses fresh KV cache state; initial warmup is excluded. Each measured
+Every run uses fresh KV cache state; initial warmup is excluded. Both O0 and
+candidate outputs must be finite; matching NaNs or infinities fail. Each measured
 output must exactly equal the O0 output. At least three (default seven)
 positive finite timing samples per case are required. Workload IDs, sample
 counts, exact-output hashes, library hashes, and reported medians are checked
-again by the parent runner before ranking.
+again by the parent runner before ranking. Each benchmark worker also records
+its actual Python/package versions, OS, architecture and CPU affinity count.
 
 The score is the equal-case geometric mean of O0 median/candidate median.
 Larger scores win; exact ties prefer the lower optimization level. The selected

@@ -118,7 +118,7 @@ def test_output_cannot_overlap_source(tmp_path):
         s.run_search(tmp_path/'validation/out',Path(sys.executable),Path('/absent'),tmp_path/'ref',root=tmp_path)
 
 
-@pytest.mark.parametrize('fault',[None,'source','library','skip','build','benchhash'])
+@pytest.mark.parametrize('fault',[None,'source','library','skip','build','benchhash','collection','toolchain'])
 def test_orchestration_binds_hashes_revokes_drift_never_promotes(tmp_path,monkeypatch,fault):
     from validation import ggml_oracle
     root=tmp_path/'repo';root.mkdir()
@@ -126,6 +126,7 @@ def test_orchestration_binds_hashes_revokes_drift_never_promotes(tmp_path,monkey
         path=root/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text('# frozen\n')
     default=root/'kernels/build/libglm_vx.so';default.parent.mkdir();default.write_bytes(b'never replace')
     compiler=tmp_path/'vxc';compiler.write_bytes(b'compiler')
+    toolchain=tmp_path/'compiler-environment';toolchain.write_bytes(b'pinned environment')
     reference=tmp_path/'ref';reference.mkdir();native=reference/'native.so';native.write_bytes(b'oracle')
     class Native:
         def __init__(self,*a):pass
@@ -136,11 +137,15 @@ def test_orchestration_binds_hashes_revokes_drift_never_promotes(tmp_path,monkey
         if argv[0]=='bash':
             lib=Path(env['GLM_VX_LIBRARY']);lib.parent.mkdir();lib.write_bytes(('lib'+env['VX_OPT_LEVEL']).encode())
             if fault=='source':(root/'kernels/build.sh').write_text('tampered')
+            if fault=='toolchain':toolchain.write_bytes(b'changed environment')
             if fault=='build':return {'returncode':1}
         elif '--junitxml' in argv:
             assert env['PYTHONPATH']==str(root)
             assert env['GLM_VX_CANDIDATE_SHA256']==s.digest(env['GLM_VX_LIBRARY'])
-            xml(Path(argv[argv.index('--junitxml')+1]),skip=fault=='skip')
+            junit=Path(argv[argv.index('--junitxml')+1])
+            xml(junit,skip=fault=='skip')
+            if fault=='collection' and env['VX_OPT_LEVEL']=='1':
+                tree=ET.parse(junit);tree.find('.//testcase').set('name','different_test');tree.write(junit)
             if fault=='library':Path(env['GLM_VX_LIBRARY']).write_bytes(b'tampered')
         elif '--worker-library' in argv:
             lib=Path(argv[argv.index('--worker-library')+1]);base=Path(argv[argv.index('--worker-baseline')+1])
@@ -149,14 +154,52 @@ def test_orchestration_binds_hashes_revokes_drift_never_promotes(tmp_path,monkey
             Path(argv[argv.index('--worker-output')+1]).write_text(json.dumps(data))
         return {'returncode':0,'argv':argv}
     monkeypatch.setattr(s,'command',fake_command)
-    result=s.run_search(tmp_path/'out',Path(sys.executable),compiler,reference,repeats=3,root=root)
+    result=s.run_search(tmp_path/'out',Path(sys.executable),compiler,reference,repeats=3,root=root,toolchain_files=[toolchain])
     assert result['release_eligible'] is False
     assert default.read_bytes()==b'never replace'
     assert result['default_library']['unchanged']
-    if fault is None:
+    if fault=='collection':
+        assert result['status']=='complete' and result['selected']['optimization']==3
+        assert not result['candidates'][1]['scoped_eligible']
+        assert 'collection differs' in result['candidates'][1]['error']
+    elif fault is None:
         assert result['status']=='complete' and result['selected']['optimization']==3
         assert result['selected']['release_eligible'] is False
         assert all(c['tests']['skips']==0 and c['scoped_eligible'] for c in result['candidates'])
     else:
         assert result['status']=='failed' and result['selected'] is None
         assert not any(c['scoped_eligible'] for c in result['candidates'])
+
+
+def test_root_pytest_configuration_is_frozen(tmp_path):
+    for name in ('conftest.py', 'pytest.ini', 'tox.ini', 'setup.cfg'):
+        (tmp_path/name).write_text('before')
+    before = s.snapshot(tmp_path)
+    assert set(before) == {'conftest.py', 'pytest.ini', 'tox.ini', 'setup.cfg'}
+    (tmp_path/'pytest.ini').write_text('after')
+    assert s.source_changes(before, s.snapshot(tmp_path)) == ['pytest.ini']
+
+
+def test_duplicate_test_identity_is_rejected(tmp_path):
+    path = tmp_path/'gate.xml'
+    xml(path)
+    tree = ET.parse(path)
+    import copy
+    tree.find('.//testsuite').append(copy.deepcopy(tree.find('.//testcase')))
+    tree.write(path)
+    with pytest.raises(s.SearchError, match='duplicate'):
+        s.inspect_junit(path)
+
+
+@pytest.mark.parametrize('bad', [float('nan'), float('inf'), -float('inf')])
+def test_benchmark_rejects_shared_nonfinite_outputs(bad):
+    import numpy as np
+    with pytest.raises(s.SearchError, match='finite'):
+        s.assert_finite_exact(np.array([bad]), np.array([bad]))
+    s.assert_finite_exact(np.array([1.0]), np.array([1.0]))
+
+
+def test_gate_overrides_ambient_pytest_addopts(tmp_path):
+    argv = s.test_argv(Path('/venv/bin/python'), tmp_path/'gate.xml', tmp_path)
+    assert 'addopts=' in argv
+    assert argv[argv.index('-c')+1] == str(tmp_path/'pyproject.toml')
