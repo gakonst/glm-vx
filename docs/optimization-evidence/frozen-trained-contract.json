@@ -1,0 +1,2074 @@
+{
+  "schema_version": 1,
+  "contract_id": "real-2-position-expanded-f32-v1",
+  "scope": "Two teacher-forced real-weight positions; all78 layer outputs plus full logits versus independent expanded-KV F32 equations. No long-context/release/official-runtime parity claim.",
+  "pins": {
+    "config_sha256": "3ac72612095574542f7fff847ada8e59d9199dd8af44bdf625d7e02615572e69",
+    "weights_sha256": {
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00001-of-00006.gguf": "ff3adab0853dfb00bdf3889ec3f5556196f56b65783115720d57767bbd760dd9",
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00002-of-00006.gguf": "659d04cf4fc0b6026944f34c0b590a635803bff06c1775361e28490db7b168f8",
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00003-of-00006.gguf": "433302bac0e2d54da64c7c2f28509fa1b235aeccdf5b215a8a446ebaad1b5b27",
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00004-of-00006.gguf": "d0a6f19452d5b5cd498e1eb8fbe856e00aed7da1f80c27c095301eabe81e9bc1",
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00005-of-00006.gguf": "2ea1537ffab40fa8b8584a8647ec10fbaa6199dfed45e4019b822da2b319db37",
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00006-of-00006.gguf": "42a76ef04ffc5e321e1240f4e572b6fa6fc3315da5bea22fb598d7460db210fe"
+    },
+    "tokenizer_sha256": "19e773648cb4e65de8660ea6365e10acca112d42a854923df93db4a6f333a82d",
+    "template_sha256": "3740abcea51c45830cb3ca562084ad5fb2ef53589376f73332e9886f93ade41c",
+    "corpus_sha256": "83fb691ecf7a5ed9f93da204c3403f9c4dc28de6fb0a062c3172b5f880fa5cab",
+    "corpus_version": "hello-let-teacher-forced-v1",
+    "reference_revision": "782f829ad5f0677ed5a0eafd4adb27c35457cee85cc984690d9293f146dc5850",
+    "numerical_mode": "dequantized F32: independent expanded-KV batch equations versus Vx compressed incremental decoder",
+    "tie_breaking": "stable-lowest-index"
+  },
+  "producers": {
+    "reference": {
+      "binary_sha256": "a2f33a6e006989270f4340528eb61f8f97366e00a5d1b602ac8672ea44fc56ae",
+      "compiler": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+      "libraries_sha256": {
+        "validation/expanded_reference.py": "782f829ad5f0677ed5a0eafd4adb27c35457cee85cc984690d9293f146dc5850",
+        "validation/export_expanded_trace.py": "fa01b8c71fa17eac8b65dd252043bd704c1acf5b570556cdb62e28dc9811e605",
+        "glm_vx/gguf_checkpoint.py": "67d4137dbc27bb5a3b312f3b9947b5ed8426de0fcf19e257c6f56bd7aad04262",
+        "glm_vx/gguf_reader.py": "3a20571b848ee72330dffa1d8bd2cf05a8c60d246a49f39d3aba2a6e870f0f26"
+      },
+      "flags": [
+        "OPENBLAS_NUM_THREADS=1",
+        "GGUF decode_threads=4",
+        "expanded causal batch equations"
+      ],
+      "hardware": "x86_64"
+    },
+    "candidate": {
+      "binary_sha256": "f72dcf7e9182baea987e3973d2ba60d507c3a2326293b9ce4d260575067f242f",
+      "compiler": "Vx v0.0.2 -O3, no fast-math flag",
+      "libraries_sha256": {
+        "model.py": "146ba64e1872a517b7056ac9b08f97f0cbd68b525fff565d58bb193034d5ab1a",
+        "export_vx_trace.py": "b5f2ce13810a8e2288853c1f175418f2144463d5928cdb5febb8e94077f84326"
+      },
+      "flags": [
+        "cpu",
+        "GGUF decode_threads=4",
+        "teacher_forcing"
+      ],
+      "hardware": "x86_64"
+    }
+  },
+  "reference_trace_sha256": "6440829416fba7910f410ff59c19cd1402ca195af22b2e838848e574b7aae2b4",
+  "budgets": {
+    "layer_output": {
+      "atol": 4e-06,
+      "rtol": 4e-05,
+      "normalized_l2": 4e-05,
+      "normalization_floor": 1e-06,
+      "softmax_tv": 4e-05,
+      "top_k": 5,
+      "top_k_margin_atol": 4e-05
+    },
+    "logits": {
+      "atol": 4e-06,
+      "rtol": 4e-05,
+      "normalized_l2": 4e-05,
+      "normalization_floor": 1e-06,
+      "softmax_tv": 4e-05,
+      "top_k": 5,
+      "top_k_margin_atol": 4e-05
+    }
+  },
+  "cases": [
+    {
+      "id": "hello-let-teacher-forced-v1",
+      "token_ids": [
+        9703,
+        10056
+      ],
+      "positions": [
+        0,
+        1
+      ],
+      "execution": "decode",
+      "chunks": [
+        1,
+        1
+      ],
+      "cache_owner": "isolated-single-request",
+      "layers": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77
+      ],
+      "vocab_size": 154880,
+      "tensors": [
+        {
+          "key": "p0.layer.0.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 0,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.1.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 1,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.2.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 2,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.3.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 3,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.4.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 4,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.5.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 5,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.6.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 6,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.7.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 7,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.8.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 8,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.9.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 9,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.10.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 10,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.11.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 11,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.12.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 12,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.13.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 13,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.14.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 14,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.15.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 15,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.16.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 16,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.17.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 17,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.18.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 18,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.19.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 19,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.20.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 20,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.21.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 21,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.22.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 22,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.23.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 23,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.24.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 24,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.25.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 25,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.26.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 26,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.27.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 27,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.28.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 28,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.29.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 29,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.30.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 30,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.31.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 31,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.32.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 32,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.33.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 33,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.34.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 34,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.35.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 35,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.36.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 36,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.37.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 37,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.38.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 38,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.39.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 39,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.40.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 40,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.41.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 41,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.42.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 42,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.43.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 43,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.44.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 44,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.45.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 45,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.46.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 46,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.47.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 47,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.48.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 48,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.49.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 49,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.50.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 50,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.51.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 51,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.52.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 52,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.53.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 53,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.54.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 54,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.55.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 55,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.56.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 56,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.57.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 57,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.58.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 58,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.59.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 59,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.60.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 60,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.61.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 61,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.62.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 62,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.63.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 63,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.64.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 64,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.65.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 65,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.66.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 66,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.67.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 67,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.68.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 68,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.69.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 69,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.70.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 70,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.71.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 71,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.72.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 72,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.73.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 73,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.74.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 74,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.75.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 75,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.76.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 76,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.layer.77.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": 77,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p0.logits",
+          "operation": "logits",
+          "kind": "logits",
+          "shape": [
+            154880
+          ],
+          "dtype": "float32",
+          "position": 0,
+          "layer": null,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.0.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 0,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.1.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 1,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.2.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 2,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.3.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 3,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.4.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 4,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.5.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 5,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.6.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 6,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.7.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 7,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.8.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 8,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.9.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 9,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.10.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 10,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.11.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 11,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.12.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 12,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.13.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 13,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.14.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 14,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.15.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 15,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.16.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 16,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.17.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 17,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.18.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 18,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.19.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 19,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.20.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 20,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.21.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 21,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.22.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 22,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.23.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 23,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.24.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 24,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.25.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 25,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.26.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 26,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.27.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 27,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.28.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 28,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.29.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 29,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.30.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 30,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.31.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 31,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.32.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 32,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.33.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 33,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.34.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 34,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.35.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 35,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.36.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 36,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.37.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 37,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.38.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 38,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.39.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 39,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.40.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 40,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.41.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 41,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.42.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 42,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.43.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 43,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.44.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 44,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.45.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 45,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.46.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 46,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.47.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 47,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.48.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 48,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.49.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 49,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.50.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 50,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.51.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 51,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.52.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 52,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.53.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 53,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.54.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 54,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.55.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 55,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.56.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 56,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.57.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 57,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.58.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 58,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.59.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 59,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.60.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 60,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.61.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 61,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.62.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 62,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.63.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 63,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.64.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 64,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.65.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 65,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.66.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 66,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.67.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 67,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.68.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 68,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.69.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 69,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.70.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 70,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.71.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 71,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.72.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 72,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.73.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 73,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.74.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 74,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.75.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 75,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.76.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 76,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.layer.77.output",
+          "operation": "layer_output",
+          "kind": "float",
+          "shape": [
+            6144
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": 77,
+          "infinity": "forbid"
+        },
+        {
+          "key": "p1.logits",
+          "operation": "logits",
+          "kind": "logits",
+          "shape": [
+            154880
+          ],
+          "dtype": "float32",
+          "position": 1,
+          "layer": null,
+          "infinity": "forbid"
+        }
+      ]
+    }
+  ]
+}

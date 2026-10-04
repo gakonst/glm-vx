@@ -1,0 +1,83 @@
+{
+  "scope": "Pinned official eager CPU F32 GGUF versus packed Vx incremental CPU F32; two teacher-forced tokens across all 78 layers. No trained long-context pruning or original FP8 quality claim.",
+  "status": "fail",
+  "release_eligible": false,
+  "errors": [],
+  "numeric_checks": 308,
+  "numeric_failures": 112,
+  "discrete_checks": 306,
+  "discrete_failures": 0,
+  "first_failure": {
+    "key": "p0.layer.9.output",
+    "pass": false,
+    "failure": {
+      "code": "numeric",
+      "message": "absolute/relative budget exceeded",
+      "tensor": "p0.layer.9.output",
+      "index": [
+        110
+      ],
+      "metrics": {
+        "max_abs": 0.0001373291015625,
+        "normalized_l2": 1.756393899396878e-06
+      }
+    }
+  },
+  "logit_diagnostics_nongating": [
+    {
+      "position": 0,
+      "max_abs": 6.961822509765625e-05,
+      "normalized_l2": 2.390691988003302e-06,
+      "softmax_tv": 5.44362718951587e-06,
+      "reference_top5": [
+        154820,
+        565,
+        59,
+        4102,
+        319
+      ],
+      "candidate_top5": [
+        154820,
+        565,
+        59,
+        4102,
+        319
+      ],
+      "top5_margin_delta": 3.337860107421875e-06
+    },
+    {
+      "position": 1,
+      "max_abs": 0.00010097026824951172,
+      "normalized_l2": 5.597514860252455e-06,
+      "softmax_tv": 5.030672314434454e-06,
+      "reference_top5": [
+        594,
+        748,
+        752,
+        12778,
+        42397
+      ],
+      "candidate_top5": [
+        594,
+        748,
+        752,
+        12778,
+        42397
+      ],
+      "top5_margin_delta": 3.5762786865234375e-05
+    }
+  ],
+  "artifacts": {
+    "official-trained-comparison.json": "ab5f0c1dc8edfde5fe1b161a1682ba979ccb181f4626876532cc60a7594e1da1",
+    "official-trained-reference.json": "f8dfb8faea2bda5d652589e519092bad3ba4959e02e1112c46eb88b2cd5cb506",
+    "official-trained-candidate.json": "473e6c5530c3cae9d64d44bede968545e9a0ebb5810ecda3c48ab7e582dc10ba",
+    "frozen-trained-contract.json": "e5daccfed587d2db1e0adb6aa4f064016333df78c100d1cedf8743d062019ebd"
+  },
+  "archive_availability": "Large NPZ archives retained locally; reproduce with validation/OFFICIAL_GGUF_TRACE.md. JSON receipts and archive hashes are published.",
+  "parser_history": "First attempt rejected official short-context int32 slots. Final comparator accepts official int32 shortcut and int64 top-k slots without changing IDs or numerical budgets; 53 mutation tests pass.",
+  "comparison_code_sha256": {
+    "validation/compare_official_trace.py": "5d196719c47fcc58123308bf6da65875640bccd24f7f26183f627cd7ea223a54",
+    "validation/trace_gate.py": "a2fece60f2eae48043bec13e24bc6a2507ebf3d9e9a6de38c01ec04da683aef6",
+    "validation/trace_identity.py": "37368ecdb19bf5ea89d00409e7b69a21e7552fe7cb8f24ce23082b070443e91a"
+  }
+}

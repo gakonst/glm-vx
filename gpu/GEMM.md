@@ -3,8 +3,7 @@
 `gemm.vx` contains two resident GPU GEMM entries for `C[M,N] = A[M,K] B[K,N]`.
 The default F32 reference uses F32 multiply/add. The opt-in `tf32_rna` path uses
 actual `mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32`, with six
-`cvt.rna.tf32.f32` conversions per lane/instruction. It is a working offline-
-compiled implementation, **not device-validated or performance-tuned**.
+`cvt.rna.tf32.f32` conversions per lane/instruction. It is an offline-compiled implementation, **not device-validated or performance-tuned**.
 
 ```python
 from gpu.runtime import CUDAContext

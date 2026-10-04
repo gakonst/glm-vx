@@ -9,3 +9,6 @@ benchmarks/cpu-validation/*.txt linguist-generated
 
 # Machine-generated validation receipts.
 docs/parity-evidence/** linguist-generated
+docs/optimization-evidence/** linguist-generated
+kernels/packed-evidence/** linguist-generated
+validation/evidence/** linguist-generated

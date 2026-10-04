@@ -5,8 +5,12 @@ hook. `x` must be one f32 vector. It resolves stacked expert offsets and calls
 `backend.packed_matvec(raw_uint8, ggml_type, (rows, cols), x)` inside a scoped
 `GGUFStore.packed_rows` borrow. Closing the store from another thread waits
 for the borrow. Returned output owns memory; borrowed bytes must not escape.
-Neither model.py nor glm_vx/backend.py is changed here. Batched prefill can
-continue using the existing expanded matrix interface.
+`Model(..., packed_weights=True)` opts into this hook for compatible GGUF/Vx
+backends; the HTTP and generation CLIs expose `--packed-weights`. Dense, shared
+and routed MLP projections honor that explicit mode even if a backend also
+exposes an expanded-weight resident MLP. Batched prefill keeps singleton projections and singleton expert groups packed,
+including the final vocabulary projection. Multirow groups still use the expanded
+matrix interface; a packed GEMM remains future work.
 
 `VxBackend.supports_packed(kind)` advertises compiled symbols. All eleven
 formats in the actual six-shard GLM-5.3-UD-IQ1_S checkpoint are covered: F32,
@@ -21,10 +25,14 @@ expanded-weight LRU entirely.
 Numerics remain decoded-f32-weight times unquantized-f32-activation, with the
 same ordered f32 accumulation as existing Vx matvec. This is **not** GGML's
 Q8-activation dot mode. Codec diagnostic exports are only for validation;
-serving never allocates an expanded matrix. Resident lookup storage is a
+the fused packed matvec itself never allocates an expanded matrix. KV-B
+reconstruction, unsupported-codec fallbacks and multirow batched projections can still expand
+weights, so this is not a process-wide allocation guarantee. Resident lookup storage is a
 19,600-byte codebook plus a 256 KiB exact half-conversion table. Host checks
 contiguity, dtype, shape/block alignment, byte counts, finite input/output,
-and int32 index bounds before/after the native boundary.
+and int32 index bounds before/after the native boundary. F32 counts float
+elements for indexing and requires aligned borrowed bytes; quantized codecs
+use the stricter byte-address bound.
 
 ## Build and validate
 

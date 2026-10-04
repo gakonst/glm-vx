@@ -4,6 +4,8 @@ Reviewed 2026-10-04 against GLM-Vx `4845ebf89b8b9a22bcd9b8811c77dfc5d6b77cf2`.
 This is a broad primary-source review, not an exhaustive literature census or a
 claim that the techniques below have been implemented or benchmarked in Vx.
 Provider results describe their own hardware, workloads and numerical modes.
+Implementation since this review is tracked in [OPTIMIZATION-PROGRESS.md](OPTIMIZATION-PROGRESS.md);
+the audit and priority tables below describe the reviewed historical revision.
 
 ## Conclusions for this engine
 

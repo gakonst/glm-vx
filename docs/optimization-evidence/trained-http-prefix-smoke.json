@@ -1,0 +1,316 @@
+{
+  "status": "complete",
+  "started_at": "2026-10-04T20:47:44.489442+00:00",
+  "finished_at": "2026-10-04T21:14:14.295002+00:00",
+  "command": [
+    "/srv/nanocodex/workspace/glm-vx/.venv/bin/python",
+    "-m",
+    "glm_vx.server",
+    "--gguf",
+    "../models/glm-5.3-iq1s",
+    "--backend",
+    "vx",
+    "--packed-weights",
+    "--batched-prefill",
+    "--prefill-chunk",
+    "8",
+    "--decode-prefill-tokens",
+    "4",
+    "--prefix-cache-mib",
+    "64",
+    "--max-sequences",
+    "1",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "0"
+  ],
+  "library_sha256_end": "cff6023afc49cd7c03b8d30b4f91937494c06cfc1f68c5014bab75dda45d3441",
+  "all_ids_match_prior": true,
+  "source_unchanged_during_run": true,
+  "library_unchanged_during_run": true,
+  "owned_server_pid_absent": true,
+  "port_connection_refused_after_shutdown": true,
+  "server_returncode": 0,
+  "child_peak_rss_bytes": 28942786560,
+  "scope": "Full trained six-shard GGUF CPU HTTP smoke; one six-token prompt repeated once. No controlled throughput or global parity claim.",
+  "release_eligible": false,
+  "timing_limitations": "Default decode_threads=1; BLAS variables unset; shared host. Official independent trace ran concurrently during part of the first request and second request. Cached TTFT reuses retained final-prompt logits; it is not newly computed prefill.",
+  "raw_receipt_sha256": "f169df6ffb6218a0750157df922b15468bad38e86cd227371717058c1987497f",
+  "source_sha256": {
+    "glm_vx/__init__.py": "43709db6aea8fee65d39301ac8b15e1d4c03a4f139a5b59ee29b3038ce66b07c",
+    "glm_vx/backend.py": "806c8da973abbcda4e18e2f3c1c3c1897207913169f7f81a3a80178815348c80",
+    "glm_vx/checkpoint.py": "979d9532e9dd4f86920b49126f0afa1878db17c33898e525cd843fc155b25a1d",
+    "glm_vx/config.py": "42aebf6c06e6763659f2e4250b3cd5334080d86d31a6fff2ca18511a52624157",
+    "glm_vx/disaggregated.py": "51bcdcf20163efa200ca8d62c33a8ecfa1398e4ae8792b3956fe89a37515dd42",
+    "glm_vx/generate.py": "ea0f9035e07a2d4d6cf629919719cb87e606f62c6c1f0426d7f30112401af6d2",
+    "glm_vx/gguf_checkpoint.py": "ad69d8c6ac226c914833be1d492d8561bf11c451aa7e3928309822c19badfe1c",
+    "glm_vx/gguf_reader.py": "ac44eb337fc45fa3853fefa7087b7e88049fdc01d368b345aaf1f2bb088edc31",
+    "glm_vx/handoff.py": "9a793e27c6a651c48017c5d370411fdb2a3cf73a8482cd4b427a187ac9df8399",
+    "glm_vx/model.py": "9aaac844f42e0ec5eed88279e6b73aef9eb191980ac4fcdbf08e93728c5e4d4e",
+    "glm_vx/prefill.py": "aec98bbb4aef4e88c70eac327233e0ac71c7ae23f186ac1d5636454193198fea",
+    "glm_vx/prefix.py": "8ce8dcd91aa823f508308e2732c8b9a215ce3b2fcfb4790303fcdd4f39ba05f5",
+    "glm_vx/scheduler.py": "fed63d095819777bbd158f55448c13e285f353d9e3f4b0f6538b2de0ac66d608",
+    "glm_vx/server.py": "6717b39558f432321a4042b317f7ea9b40f6e2f534d6b9efba44501ae0d22c92",
+    "glm_vx/tiny.py": "30906afd9f6c09691579bee412209da4a1079667f8408381d51d319f7a684044",
+    "kernels/backend.py": "cf486a8ce85a294d8644234ddcb120d07663b42d03da292dc4024cb63e814f70",
+    "kernels/build.sh": "6e1a09a22080e54a98a093bae87095ec2c86862032cef06d97a71b8184a57524",
+    "kernels/kernels.vx": "56a56c47a70da205eadcac038983953d05b7ea9431dabb51cee47527e635e708",
+    "kernels/packed.py": "c5675b0a92cf601bd40c6b78191c5f8bc8172ed0bdb98ce443fdcbb88e7fd1f2",
+    "kernels/packed.vx": "2040aeb56d5f95bd44de1a5389b7eb323f0efa7a5a4a1fc9caa6fa26187f1772"
+  },
+  "environment": {
+    "platform": "Linux-5.15.0-164-generic-x86_64-with-glibc2.35",
+    "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+    "cpu_count": 24,
+    "affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "cpu_model": "AMD EPYC 4484PX 12-Core Processor",
+    "thread_environment": {
+      "GLM_VX_LIBRARY": "/srv/nanocodex/workspace/glm-vx/kernels/build-o3/libglm_vx.so"
+    },
+    "versions": {
+      "numpy": "2.2.6",
+      "gguf": "0.17.1",
+      "tokenizers": "0.23.2"
+    }
+  },
+  "requests": [
+    {
+      "index": 1,
+      "phase": "first_prompt",
+      "token_ids": [
+        10056,
+        752
+      ],
+      "text": "Let me",
+      "ttft_seconds": 1334.155988972634,
+      "inter_token_seconds": [
+        126.73682625219226
+      ],
+      "end_to_end_seconds": 1460.899158012122,
+      "heartbeat_count": 145,
+      "http_status": 200,
+      "done_received": true,
+      "matches_prior_ids": true,
+      "health_before": {
+        "status": "ok",
+        "model": "glm-gguf-vx-experimental",
+        "backend": "vx-cpu-f32",
+        "active_requests": 0,
+        "reserved_tokens": 0,
+        "max_sequences": 1,
+        "token_budget": 8192,
+        "max_pending_events": 64,
+        "batched_prefill": true,
+        "prefix_cache": {
+          "budget_bytes": 67108864,
+          "retained_bytes": 0,
+          "entries": 0,
+          "hits": 0,
+          "misses": 0,
+          "evictions": 0,
+          "rejected": 0
+        }
+      },
+      "health_after": {
+        "status": "ok",
+        "model": "glm-gguf-vx-experimental",
+        "backend": "vx-cpu-f32",
+        "active_requests": 0,
+        "reserved_tokens": 0,
+        "max_sequences": 1,
+        "token_budget": 8192,
+        "max_pending_events": 64,
+        "batched_prefill": true,
+        "prefix_cache": {
+          "budget_bytes": 67108864,
+          "retained_bytes": 1798090,
+          "entries": 1,
+          "hits": 0,
+          "misses": 1,
+          "evictions": 0,
+          "rejected": 0
+        }
+      },
+      "terminal": {
+        "id": "cmpl-761e26869b63457b8f2044b9b8929358",
+        "object": "text_completion",
+        "created": 1791146872,
+        "model": "glm-gguf-vx-experimental",
+        "choices": [
+          {
+            "index": 0,
+            "text": "Let me",
+            "token_ids": [
+              10056,
+              752
+            ],
+            "finish_reason": "length"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 6,
+          "completion_tokens": 2,
+          "total_tokens": 8,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "prefill_seconds": 1334.115094523877,
+          "decode_seconds": 126.73350273445249,
+          "prefix_seconds": 0.031359244138002396
+        }
+      }
+    },
+    {
+      "index": 2,
+      "phase": "same_prompt_primed_prefix",
+      "token_ids": [
+        10056,
+        752
+      ],
+      "text": "Let me",
+      "ttft_seconds": 0.01938558742403984,
+      "inter_token_seconds": [
+        112.4440442211926
+      ],
+      "end_to_end_seconds": 112.4637976102531,
+      "heartbeat_count": 11,
+      "http_status": 200,
+      "done_received": true,
+      "matches_prior_ids": true,
+      "health_before": {
+        "status": "ok",
+        "model": "glm-gguf-vx-experimental",
+        "backend": "vx-cpu-f32",
+        "active_requests": 0,
+        "reserved_tokens": 0,
+        "max_sequences": 1,
+        "token_budget": 8192,
+        "max_pending_events": 64,
+        "batched_prefill": true,
+        "prefix_cache": {
+          "budget_bytes": 67108864,
+          "retained_bytes": 1798090,
+          "entries": 1,
+          "hits": 0,
+          "misses": 1,
+          "evictions": 0,
+          "rejected": 0
+        }
+      },
+      "health_after": {
+        "status": "ok",
+        "model": "glm-gguf-vx-experimental",
+        "backend": "vx-cpu-f32",
+        "active_requests": 0,
+        "reserved_tokens": 0,
+        "max_sequences": 1,
+        "token_budget": 8192,
+        "max_pending_events": 64,
+        "batched_prefill": true,
+        "prefix_cache": {
+          "budget_bytes": 67108864,
+          "retained_bytes": 1798090,
+          "entries": 1,
+          "hits": 1,
+          "misses": 1,
+          "evictions": 0,
+          "rejected": 0
+        }
+      },
+      "terminal": {
+        "id": "cmpl-4b79076deec348b0b5d61ea1bf5ce677",
+        "object": "text_completion",
+        "created": 1791148333,
+        "model": "glm-gguf-vx-experimental",
+        "choices": [
+          {
+            "index": 0,
+            "text": "Let me",
+            "token_ids": [
+              10056,
+              752
+            ],
+            "finish_reason": "length"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 6,
+          "completion_tokens": 2,
+          "total_tokens": 8,
+          "prompt_tokens_details": {
+            "cached_tokens": 6
+          }
+        },
+        "timings": {
+          "prefill_seconds": 0.0,
+          "decode_seconds": 112.44321857020259,
+          "prefix_seconds": 0.011961743235588074
+        }
+      }
+    }
+  ],
+  "library": {
+    "path": "/srv/nanocodex/workspace/glm-vx/kernels/build-o3/libglm_vx.so",
+    "sha256": "cff6023afc49cd7c03b8d30b4f91937494c06cfc1f68c5014bab75dda45d3441",
+    "bytes": 76880
+  },
+  "checkpoint": {
+    "path": "/srv/nanocodex/workspace/models/glm-5.3-iq1s",
+    "manifest_sha256": "d2d5ff36f13d47078ca9ecdea80169c8211713330ef98dce292146c7f64eb6ea",
+    "config_sha256": "3ac72612095574542f7fff847ada8e59d9199dd8af44bdf625d7e02615572e69",
+    "tokenizer_sha256": "19e773648cb4e65de8660ea6365e10acca112d42a854923df93db4a6f333a82d",
+    "weight_shards_rehashed": false
+  },
+  "workload": {
+    "prompt_ids": [
+      154822,
+      154824,
+      154827,
+      13041,
+      154828,
+      154841
+    ],
+    "prompt_text": "[gMASK]<sop><|user|>Hi<|assistant|><think>",
+    "max_tokens": 2,
+    "temperature": 0,
+    "stream": true,
+    "prior_expected_ids": [
+      10056,
+      752
+    ]
+  },
+  "prior_reference": {
+    "path": "/srv/nanocodex/workspace/glm-vx/docs/gguf-evidence/real-vx-chat-completion.json",
+    "sha256": "a42ffc3a9a2f360c36735828d96b500c0fb9995fe238e042c39463a545c0a28f",
+    "scope": "Historical same-checkpoint two-token observation; no strict logits comparison"
+  },
+  "startup_seconds": 7.6151804476976395
+}

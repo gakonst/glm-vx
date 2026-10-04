@@ -2,8 +2,8 @@
 
 An experimental, from-scratch GLM-MoE-DSA inference engine using **real compiled
 Vx numerical kernels**. Python handles checkpoint IO, tensor storage, model
-orchestration, request scheduling and HTTP. No vLLM, SGLang, Transformers or
-PyTorch inference runtime is used. NumPy supplies storage and an explicit test
+orchestration, request scheduling and HTTP. The serving path does not use vLLM, SGLang, Transformers or
+PyTorch. An optional validation environment runs the pinned official model. NumPy supplies storage and an explicit test
 oracle; the `vx` backend never silently falls back to NumPy matrix operations.
 
 **Current status: tested CPU prototype plus an explicit NVIDIA GPU kernel/backend path.**
@@ -12,8 +12,12 @@ unverified. See [GPU implementation and run instructions](gpu/README.md).
 The full trained GLM-5.3 mixed-bit GGUF checkpoint has executed on CPU through
 all 78 base-decoder layers, generating **“Let me”** from a six-token abbreviated
 chat prefix. Both tokens match an independent llama.cpp CPU reference. This
-short smoke took about 34 minutes and 32.2 GB peak RSS; it is not a complete
+original baseline smoke took about 34 minutes and 32.2 GB peak RSS; it is not a complete
 answer or a practical-speed result. See [actual model evidence](docs/gguf-evidence/real-chat-summary.json).
+The latest [implementation report](docs/OPTIMIZATION-PROGRESS.md) adds packed
+Vx kernels, batched prefill, prompt reuse and compiler candidate search. Its full
+trained official comparison matches all 306 discrete checks but fails 112 of
+308 frozen numerical checks. **Automatic release promotion remains blocked.**
 The included tiny model has deterministic random weights and is for testing mechanics only.
 
 [Serving research and prioritized roadmap](docs/SERVING-RESEARCH.md) reviews GLM-specific
@@ -81,6 +85,10 @@ The [original CPU report](REPORT.md) remains a baseline, not a GPU benchmark.
 
 ## Serving performance
 
+[Implemented optimizations and current evidence](docs/OPTIMIZATION-PROGRESS.md)
+cover packed GGUF kernels, SIMD batched prefill, exact heap selection, prefix
+reuse, official eager validation and an explicit tensor-core GEMM path.
+
 The [HTTP load benchmark and measurements](benchmarks/README.md) track client
 TTFT, inter-token gaps, request latency and throughput with mixed prompt lengths.
 Prefill skips unused vocabulary heads, GPU MLP intermediates stay on-device,
@@ -95,15 +103,18 @@ throughput claim is made.
   stable softmax, SwiGLU, sigmoid router with correction bias, top-k and attention.
 - `glm_vx/model.py`: dense and sparse blocks, selected routed experts plus shared
   experts, absorbed MLA decode, compressed request-local KV, full/shared DSA
-  indexer selection, and causal sequential prefill.
+  indexer selection, official expert reduction order and causal sequential decode.
+- `glm_vx/prefill.py`: opt-in layer-wise batched prefill with grouped experts.
+- `kernels/packed.vx`: fused GGUF unpack-and-dot for all trained checkpoint formats.
 - `glm_vx/checkpoint.py`: lazy read-only safetensors mmap with checked headers,
   BF16/F16/F32/FP8 E4M3FN decoding and block scales. No remote code execution.
-- `glm_vx/scheduler.py`: decode-first interleaving, bounded sequential prefill,
+- `glm_vx/scheduler.py`: decode-first interleaving, bounded optional batched prefill,
   prompt-plus-output token admission, cancellation, failure isolation and cleanup.
   Disconnect detection is cooperative between model forwards (socket polling
   every 250 ms); keep the TCP connection open until the reply. Shutdown raises
   an explicit timeout if a forward is still running, leaving weights open.
-  This is not fused tensor batching or paged GPU KV allocation.
+  Optional bounded prefix snapshots reuse prompt state; this is CPU serving,
+  not a paged GPU KV allocator.
 - `glm_vx/server.py`: bounded HTTP handlers, JSON completion and SSE transport.
 
 ## Validation and measurement
@@ -135,8 +146,9 @@ The available machine has no detected NVIDIA GPU, about 93 GiB RAM and roughly
 downloaded in full and all six shard SHA256 hashes verified. No GPU hardware
 was rented or provisioned.
 
-To deliver an optimized production engine still requires: measured GPU tuning and tensor-core lowering, fused/parallel prefill, FP8 GEMM and quantized
-activation parity, paged KV/prefix sharing, tensor/expert parallel collectives,
+To deliver an optimized production engine still requires: actual GPU validation
+and tuning, packed/fused GPU prefill, MTP, FP8 GEMM and quantized activation
+parity, paged/distributed KV sharing, tensor/expert parallel collectives,
 GPU topology-specific placement, trained-checkpoint logits/generation parity,
 and throughput/latency benchmarks against established engines on matching
 hardware and workloads. “Optimal” cannot be established from this CPU prototype.

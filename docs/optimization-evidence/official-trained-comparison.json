@@ -1,0 +1,4540 @@
+{
+  "status": "fail",
+  "release_eligible": false,
+  "numeric": [
+    {
+      "key": "p0.layer.0.output",
+      "max_abs": 1.1734664440155029e-07,
+      "normalized_l2": 1.5773225833284548e-06,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.1.output",
+      "max_abs": 1.1548399925231934e-07,
+      "normalized_l2": 1.6928596826452161e-06,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.2.output",
+      "max_abs": 1.9371509552001953e-07,
+      "normalized_l2": 1.5788828874882091e-06,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.3.output",
+      "max_abs": 1.341104507446289e-07,
+      "normalized_l2": 1.369147270537347e-06,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.4.output",
+      "max_abs": 1.1548399925231934e-07,
+      "normalized_l2": 1.7515489906799183e-06,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.5.output",
+      "max_abs": 2.980232238769531e-07,
+      "normalized_l2": 1.473950178593507e-06,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.6.output",
+      "max_abs": 4.5299530029296875e-06,
+      "normalized_l2": 1.4557259722192755e-06,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.7.output",
+      "max_abs": 4.0531158447265625e-06,
+      "normalized_l2": 1.201103913994545e-06,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.8.output",
+      "max_abs": 5.7220458984375e-06,
+      "normalized_l2": 6.124860714964883e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.9.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.9.output",
+        "index": [
+          110
+        ],
+        "metrics": {
+          "max_abs": 0.0001373291015625,
+          "normalized_l2": 1.756393899396878e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.10.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.10.output",
+        "index": [
+          211
+        ],
+        "metrics": {
+          "max_abs": 0.0001373291015625,
+          "normalized_l2": 1.747893395047434e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.11.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.11.output",
+        "index": [
+          211
+        ],
+        "metrics": {
+          "max_abs": 0.0001373291015625,
+          "normalized_l2": 1.7474592197993774e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.12.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.12.output",
+        "index": [
+          211
+        ],
+        "metrics": {
+          "max_abs": 0.00012969970703125,
+          "normalized_l2": 1.7439843494740132e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.13.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.13.output",
+        "index": [
+          211
+        ],
+        "metrics": {
+          "max_abs": 0.00012969970703125,
+          "normalized_l2": 1.7437208103578524e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.14.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.14.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.00014495849609375,
+          "normalized_l2": 1.748110308018267e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.15.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.15.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.00014495849609375,
+          "normalized_l2": 1.7476964758539867e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.16.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.16.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.00014495849609375,
+          "normalized_l2": 1.7463697168131783e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.17.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.17.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.00014495849609375,
+          "normalized_l2": 1.7458858358511977e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.18.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.18.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.00014495849609375,
+          "normalized_l2": 1.746776654650937e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.19.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.19.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.00014495849609375,
+          "normalized_l2": 1.7467710898701212e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.20.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.20.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.00014495849609375,
+          "normalized_l2": 1.74700621562276e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.21.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.21.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.00014495849609375,
+          "normalized_l2": 1.746692991744569e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.22.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.22.output",
+        "index": [
+          211
+        ],
+        "metrics": {
+          "max_abs": 0.00018310546875,
+          "normalized_l2": 1.7568544518286497e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.23.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.23.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.7773419232347379e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.24.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.24.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.7231113795625025e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.25.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.25.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.6859408382354834e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.26.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.26.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.6821149775603527e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.27.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.27.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.6815436863500738e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.28.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.28.output",
+        "index": [
+          43
+        ],
+        "metrics": {
+          "max_abs": 0.0002288818359375,
+          "normalized_l2": 1.6150262683064468e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.29.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.29.output",
+        "index": [
+          11
+        ],
+        "metrics": {
+          "max_abs": 0.0002593994140625,
+          "normalized_l2": 1.6706226983502955e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.30.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.30.output",
+        "index": [
+          11
+        ],
+        "metrics": {
+          "max_abs": 0.0002593994140625,
+          "normalized_l2": 1.6066933000221167e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.31.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.31.output",
+        "index": [
+          11
+        ],
+        "metrics": {
+          "max_abs": 0.0002593994140625,
+          "normalized_l2": 1.5916538239439588e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.32.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.32.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0002593994140625,
+          "normalized_l2": 1.560482138223807e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.33.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.33.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.000274658203125,
+          "normalized_l2": 1.5622722342599274e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.34.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.34.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0002899169921875,
+          "normalized_l2": 1.5581029614921668e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.35.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.35.output",
+        "index": [
+          11
+        ],
+        "metrics": {
+          "max_abs": 0.000274658203125,
+          "normalized_l2": 1.535012541885978e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.36.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.36.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0002593994140625,
+          "normalized_l2": 1.5168262118893627e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.37.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.37.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0002593994140625,
+          "normalized_l2": 1.5083831891929411e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.38.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.38.output",
+        "index": [
+          201
+        ],
+        "metrics": {
+          "max_abs": 0.0002593994140625,
+          "normalized_l2": 1.5074127675236601e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.39.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.39.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0002899169921875,
+          "normalized_l2": 1.5062445959216792e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.40.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.40.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.00030517578125,
+          "normalized_l2": 1.504928387296571e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.41.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.41.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.00030517578125,
+          "normalized_l2": 1.501866760659623e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.42.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.42.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.00030517578125,
+          "normalized_l2": 1.5009273450396986e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.43.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.43.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.00030517578125,
+          "normalized_l2": 1.5017254953308634e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.44.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.44.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.5023774096416413e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.45.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.45.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.5004380533937678e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.46.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.46.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.502151958403131e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.47.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.47.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.50321038431333e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.48.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.48.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.5014330369497843e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.49.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.49.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.5036349587348782e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.50.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.50.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.505096039841304e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.51.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.51.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.000335693359375,
+          "normalized_l2": 1.501378900856703e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.52.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.52.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.4964327509225974e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.53.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.53.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.4961221458739293e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.54.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.54.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.4979571615694444e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.55.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.55.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.494351714260711e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.56.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.56.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.00030517578125,
+          "normalized_l2": 1.5020960882207808e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.57.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.57.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.5041045180246465e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.58.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.58.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.5034421582076153e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.59.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.59.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.5052336352986856e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.60.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.60.output",
+        "index": [
+          259
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.509408485637873e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.61.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.61.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.000335693359375,
+          "normalized_l2": 1.5112584325642879e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.62.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.62.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.000335693359375,
+          "normalized_l2": 1.5233973831941783e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.63.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.63.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.5229107771944352e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.64.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.64.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.0003204345703125,
+          "normalized_l2": 1.532343871894943e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.65.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.65.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.000335693359375,
+          "normalized_l2": 1.5491215349971233e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.66.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.66.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.000335693359375,
+          "normalized_l2": 1.5579604477542245e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.67.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.67.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.000335693359375,
+          "normalized_l2": 1.564046719475396e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.68.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.68.output",
+        "index": [
+          54
+        ],
+        "metrics": {
+          "max_abs": 0.0003509521484375,
+          "normalized_l2": 1.5801007072776435e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.69.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.69.output",
+        "index": [
+          11
+        ],
+        "metrics": {
+          "max_abs": 0.00042724609375,
+          "normalized_l2": 2.3253885815150547e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.70.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.70.output",
+        "index": [
+          11
+        ],
+        "metrics": {
+          "max_abs": 0.0002593994140625,
+          "normalized_l2": 2.152885564782469e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.71.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.71.output",
+        "index": [
+          75
+        ],
+        "metrics": {
+          "max_abs": 0.0001983642578125,
+          "normalized_l2": 2.287937761312899e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.72.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.72.output",
+        "index": [
+          13
+        ],
+        "metrics": {
+          "max_abs": 0.00023651123046875,
+          "normalized_l2": 2.700443170508497e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.73.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.73.output",
+        "index": [
+          13
+        ],
+        "metrics": {
+          "max_abs": 0.00022125244140625,
+          "normalized_l2": 2.847307230213013e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.74.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.74.output",
+        "index": [
+          60
+        ],
+        "metrics": {
+          "max_abs": 0.000213623046875,
+          "normalized_l2": 2.9080588931257543e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.75.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.75.output",
+        "index": [
+          12
+        ],
+        "metrics": {
+          "max_abs": 0.00054931640625,
+          "normalized_l2": 3.3989409983738605e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.76.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.76.output",
+        "index": [
+          13
+        ],
+        "metrics": {
+          "max_abs": 0.0005340576171875,
+          "normalized_l2": 3.18788581812891e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.77.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.77.output",
+        "index": [
+          16
+        ],
+        "metrics": {
+          "max_abs": 0.00048828125,
+          "normalized_l2": 2.152688222672934e-06
+        }
+      }
+    },
+    {
+      "key": "p0.logits",
+      "max_abs": 6.961822509765625e-05,
+      "normalized_l2": 2.3906919880032996e-06,
+      "softmax_tv": 5.44362718951587e-06,
+      "reference_top_k_margin": 0.5737134218215942,
+      "candidate_top_k_margin": 0.5737167596817017,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.0.output",
+      "max_abs": 2.2351741790771484e-07,
+      "normalized_l2": 2.111980901584364e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.1.output",
+      "max_abs": 1.648440957069397e-07,
+      "normalized_l2": 2.155347422993448e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.2.output",
+      "max_abs": 1.4901161193847656e-07,
+      "normalized_l2": 2.0798335163037375e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.3.output",
+      "max_abs": 1.3969838619232178e-07,
+      "normalized_l2": 1.9648686247480467e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.4.output",
+      "max_abs": 1.555308699607849e-07,
+      "normalized_l2": 2.194828666292015e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.5.output",
+      "max_abs": 1.1175870895385742e-07,
+      "normalized_l2": 2.023983345499343e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.6.output",
+      "max_abs": 1.6763806343078613e-07,
+      "normalized_l2": 2.3009360336972e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.7.output",
+      "max_abs": 1.9371509552001953e-07,
+      "normalized_l2": 2.3003197570043087e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.8.output",
+      "max_abs": 2.1979212760925293e-07,
+      "normalized_l2": 2.190057125298152e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.9.output",
+      "max_abs": 2.5331974029541016e-07,
+      "normalized_l2": 2.1255645939869537e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.10.output",
+      "max_abs": 3.203749656677246e-07,
+      "normalized_l2": 2.3741394762086114e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.11.output",
+      "max_abs": 3.6135315895080566e-07,
+      "normalized_l2": 2.618425596772876e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.12.output",
+      "max_abs": 5.885958671569824e-07,
+      "normalized_l2": 2.7756168212093197e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.13.output",
+      "max_abs": 4.842877388000488e-07,
+      "normalized_l2": 2.8615379155146975e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.14.output",
+      "max_abs": 1.2814998626708984e-06,
+      "normalized_l2": 3.0451314119814935e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.15.output",
+      "max_abs": 1.519918441772461e-06,
+      "normalized_l2": 3.0769601841122043e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.16.output",
+      "max_abs": 5.662441253662109e-07,
+      "normalized_l2": 3.343606343697876e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.17.output",
+      "max_abs": 6.258487701416016e-07,
+      "normalized_l2": 3.302707796164951e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.18.output",
+      "max_abs": 6.221234798431396e-07,
+      "normalized_l2": 3.334143997726335e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.19.output",
+      "max_abs": 7.897615432739258e-07,
+      "normalized_l2": 3.3529167040266296e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.20.output",
+      "max_abs": 1.0728836059570312e-06,
+      "normalized_l2": 3.293082406546643e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.21.output",
+      "max_abs": 1.6689300537109375e-06,
+      "normalized_l2": 3.3475129468370086e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.22.output",
+      "max_abs": 2.86102294921875e-06,
+      "normalized_l2": 3.4051809337188894e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.23.output",
+      "max_abs": 6.4373016357421875e-06,
+      "normalized_l2": 3.6044228114898146e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.24.output",
+      "max_abs": 5.7220458984375e-06,
+      "normalized_l2": 3.8349000826805e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.25.output",
+      "max_abs": 6.4373016357421875e-06,
+      "normalized_l2": 4.1291246518932536e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.26.output",
+      "max_abs": 5.9604644775390625e-06,
+      "normalized_l2": 4.1209381536699146e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.27.output",
+      "max_abs": 2.0153820514678955e-06,
+      "normalized_l2": 4.434098317269921e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.28.output",
+      "max_abs": 2.168118953704834e-06,
+      "normalized_l2": 4.549888501328507e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.29.output",
+      "max_abs": 5.602836608886719e-06,
+      "normalized_l2": 4.761675507097426e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.30.output",
+      "max_abs": 9.298324584960938e-06,
+      "normalized_l2": 4.950858618825392e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.31.output",
+      "max_abs": 7.3909759521484375e-06,
+      "normalized_l2": 5.129487515171494e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.32.output",
+      "max_abs": 1.8596649169921875e-05,
+      "normalized_l2": 5.326390543524146e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.33.output",
+      "max_abs": 1.4781951904296875e-05,
+      "normalized_l2": 5.6408402259630485e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.34.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.34.output",
+        "index": [
+          4129
+        ],
+        "metrics": {
+          "max_abs": 1.1444091796875e-05,
+          "normalized_l2": 5.7585679719105555e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.35.output",
+      "max_abs": 1.049041748046875e-05,
+      "normalized_l2": 5.712689661141502e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.36.output",
+      "max_abs": 1.811981201171875e-05,
+      "normalized_l2": 5.717190870245759e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.37.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.37.output",
+        "index": [
+          1578
+        ],
+        "metrics": {
+          "max_abs": 2.193450927734375e-05,
+          "normalized_l2": 5.7221187779472035e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.38.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.38.output",
+        "index": [
+          984
+        ],
+        "metrics": {
+          "max_abs": 3.147125244140625e-05,
+          "normalized_l2": 5.461125107959225e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.39.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.39.output",
+        "index": [
+          1564
+        ],
+        "metrics": {
+          "max_abs": 3.337860107421875e-05,
+          "normalized_l2": 5.782979301242538e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.40.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.40.output",
+        "index": [
+          415
+        ],
+        "metrics": {
+          "max_abs": 3.24249267578125e-05,
+          "normalized_l2": 5.808008491062502e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.41.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.41.output",
+        "index": [
+          1
+        ],
+        "metrics": {
+          "max_abs": 4.9591064453125e-05,
+          "normalized_l2": 5.597430025691305e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.42.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.42.output",
+        "index": [
+          136
+        ],
+        "metrics": {
+          "max_abs": 7.2479248046875e-05,
+          "normalized_l2": 5.833726239133771e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.43.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.43.output",
+        "index": [
+          264
+        ],
+        "metrics": {
+          "max_abs": 7.62939453125e-05,
+          "normalized_l2": 5.525968251258174e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.44.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.44.output",
+        "index": [
+          618
+        ],
+        "metrics": {
+          "max_abs": 8.96453857421875e-05,
+          "normalized_l2": 5.927702432275757e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.45.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.45.output",
+        "index": [
+          98
+        ],
+        "metrics": {
+          "max_abs": 8.58306884765625e-05,
+          "normalized_l2": 5.984116342029395e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.46.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.46.output",
+        "index": [
+          111
+        ],
+        "metrics": {
+          "max_abs": 7.62939453125e-05,
+          "normalized_l2": 5.177879078315503e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.47.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.47.output",
+        "index": [
+          415
+        ],
+        "metrics": {
+          "max_abs": 4.9591064453125e-05,
+          "normalized_l2": 5.101582523307539e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.48.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.48.output",
+        "index": [
+          363
+        ],
+        "metrics": {
+          "max_abs": 4.38690185546875e-05,
+          "normalized_l2": 4.9306392290617535e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.49.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.49.output",
+        "index": [
+          81
+        ],
+        "metrics": {
+          "max_abs": 3.24249267578125e-05,
+          "normalized_l2": 4.964588925420662e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.50.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.50.output",
+        "index": [
+          98
+        ],
+        "metrics": {
+          "max_abs": 5.340576171875e-05,
+          "normalized_l2": 4.882103561108238e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.51.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.51.output",
+        "index": [
+          81
+        ],
+        "metrics": {
+          "max_abs": 3.24249267578125e-05,
+          "normalized_l2": 4.841877459586054e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.52.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.52.output",
+        "index": [
+          81
+        ],
+        "metrics": {
+          "max_abs": 1.1920928955078125e-05,
+          "normalized_l2": 4.911957971217106e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.53.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.53.output",
+        "index": [
+          98
+        ],
+        "metrics": {
+          "max_abs": 1.2949109077453613e-05,
+          "normalized_l2": 4.682894056466024e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.54.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.54.output",
+        "index": [
+          26
+        ],
+        "metrics": {
+          "max_abs": 1.52587890625e-05,
+          "normalized_l2": 4.71181751156596e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.55.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.55.output",
+        "index": [
+          26
+        ],
+        "metrics": {
+          "max_abs": 3.24249267578125e-05,
+          "normalized_l2": 4.969896381658218e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.56.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.56.output",
+        "index": [
+          26
+        ],
+        "metrics": {
+          "max_abs": 3.0517578125e-05,
+          "normalized_l2": 5.1057022475347195e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.57.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.57.output",
+        "index": [
+          3
+        ],
+        "metrics": {
+          "max_abs": 2.288818359375e-05,
+          "normalized_l2": 5.523193761759127e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.58.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.58.output",
+        "index": [
+          3
+        ],
+        "metrics": {
+          "max_abs": 6.29425048828125e-05,
+          "normalized_l2": 5.875385579110205e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.59.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.59.output",
+        "index": [
+          26
+        ],
+        "metrics": {
+          "max_abs": 6.67572021484375e-05,
+          "normalized_l2": 6.186360663561378e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.60.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.60.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 4.9591064453125e-05,
+          "normalized_l2": 5.76201550579044e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.61.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.61.output",
+        "index": [
+          3
+        ],
+        "metrics": {
+          "max_abs": 0.000133514404296875,
+          "normalized_l2": 5.817303366740799e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.62.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.62.output",
+        "index": [
+          3
+        ],
+        "metrics": {
+          "max_abs": 0.000133514404296875,
+          "normalized_l2": 6.314166109183584e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.63.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.63.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.000141143798828125,
+          "normalized_l2": 6.561316106018256e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.64.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.64.output",
+        "index": [
+          8
+        ],
+        "metrics": {
+          "max_abs": 0.0001220703125,
+          "normalized_l2": 6.575730927539444e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.65.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.65.output",
+        "index": [
+          2
+        ],
+        "metrics": {
+          "max_abs": 0.0001583099365234375,
+          "normalized_l2": 7.1748861511704425e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.66.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.66.output",
+        "index": [
+          2
+        ],
+        "metrics": {
+          "max_abs": 0.0001811981201171875,
+          "normalized_l2": 7.751218908908266e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.67.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.67.output",
+        "index": [
+          2
+        ],
+        "metrics": {
+          "max_abs": 0.00014495849609375,
+          "normalized_l2": 7.664713452569438e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.68.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.68.output",
+        "index": [
+          2
+        ],
+        "metrics": {
+          "max_abs": 0.00020599365234375,
+          "normalized_l2": 8.38918079385058e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.69.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.69.output",
+        "index": [
+          25
+        ],
+        "metrics": {
+          "max_abs": 0.0002117156982421875,
+          "normalized_l2": 8.193694817863033e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.70.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.70.output",
+        "index": [
+          3
+        ],
+        "metrics": {
+          "max_abs": 0.0002269744873046875,
+          "normalized_l2": 8.654890211466617e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.71.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.71.output",
+        "index": [
+          2
+        ],
+        "metrics": {
+          "max_abs": 0.0002307891845703125,
+          "normalized_l2": 8.822067236318343e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.72.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.72.output",
+        "index": [
+          22
+        ],
+        "metrics": {
+          "max_abs": 0.00023651123046875,
+          "normalized_l2": 8.826413947398294e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.73.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.73.output",
+        "index": [
+          4
+        ],
+        "metrics": {
+          "max_abs": 0.0001850128173828125,
+          "normalized_l2": 9.129429082756022e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.74.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.74.output",
+        "index": [
+          4
+        ],
+        "metrics": {
+          "max_abs": 0.00021266937255859375,
+          "normalized_l2": 8.934368091537554e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.75.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.75.output",
+        "index": [
+          35
+        ],
+        "metrics": {
+          "max_abs": 0.000156402587890625,
+          "normalized_l2": 3.913620417638644e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.76.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.76.output",
+        "index": [
+          18
+        ],
+        "metrics": {
+          "max_abs": 0.000152587890625,
+          "normalized_l2": 3.5459319050100435e-06
+        }
+      }
+    },
+    {
+      "key": "p1.layer.77.output",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.layer.77.output",
+        "index": [
+          7
+        ],
+        "metrics": {
+          "max_abs": 0.000335693359375,
+          "normalized_l2": 6.959058482137645e-06
+        }
+      }
+    },
+    {
+      "key": "p1.logits",
+      "pass": false,
+      "failure": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p1.logits",
+        "index": [
+          15
+        ],
+        "metrics": {
+          "max_abs": 0.00010097026824951172,
+          "normalized_l2": 5.597514860252454e-06
+        }
+      }
+    },
+    {
+      "key": "p0.layer.3.mlp.route_weights",
+      "max_abs": 1.7881393432617188e-07,
+      "normalized_l2": 2.3469320088827965e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.4.mlp.route_weights",
+      "max_abs": 4.3213367462158203e-07,
+      "normalized_l2": 7.159043775498453e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.5.mlp.route_weights",
+      "max_abs": 3.5762786865234375e-07,
+      "normalized_l2": 5.670120296760265e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.6.mlp.route_weights",
+      "max_abs": 9.5367431640625e-07,
+      "normalized_l2": 7.960514699610248e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.7.mlp.route_weights",
+      "max_abs": 5.21540641784668e-07,
+      "normalized_l2": 6.352766254325374e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.8.mlp.route_weights",
+      "max_abs": 6.705522537231445e-08,
+      "normalized_l2": 4.554103293228703e-08,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.9.mlp.route_weights",
+      "max_abs": 1.5925616025924683e-07,
+      "normalized_l2": 1.093527637566907e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.10.mlp.route_weights",
+      "max_abs": 1.430511474609375e-06,
+      "normalized_l2": 1.3653374533923263e-06,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.11.mlp.route_weights",
+      "max_abs": 8.940696716308594e-08,
+      "normalized_l2": 1.5078760981446993e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.12.mlp.route_weights",
+      "max_abs": 1.7881393432617188e-07,
+      "normalized_l2": 3.5039186872772836e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.13.mlp.route_weights",
+      "max_abs": 8.940696716308594e-08,
+      "normalized_l2": 2.0508974159493096e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.14.mlp.route_weights",
+      "max_abs": 8.940696716308594e-08,
+      "normalized_l2": 1.7520044287216955e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.15.mlp.route_weights",
+      "max_abs": 1.4901161193847656e-07,
+      "normalized_l2": 1.9947487605867848e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.16.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 1.3058616472454819e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.17.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 1.3486953733704672e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.18.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 8.920780239445412e-08,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.19.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 1.305869114572329e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.20.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 9.536681415849926e-08,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.21.mlp.route_weights",
+      "max_abs": 1.1920928955078125e-07,
+      "normalized_l2": 1.846772225546266e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.22.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 1.4305039015159392e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.23.mlp.route_weights",
+      "max_abs": 8.940696716308594e-08,
+      "normalized_l2": 1.5078782127559233e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.24.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 1.011523424820181e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.25.mlp.route_weights",
+      "max_abs": 8.940696716308594e-08,
+      "normalized_l2": 1.4305067900077477e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.26.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 9.536721710987742e-08,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.27.mlp.route_weights",
+      "max_abs": 1.1920928955078125e-07,
+      "normalized_l2": 1.3902042225690134e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.28.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 1.1680053672248563e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.29.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 1.1182773282162033e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.30.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 1.1679726800599424e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.31.mlp.route_weights",
+      "max_abs": 1.1920928955078125e-07,
+      "normalized_l2": 2.3601698884866068e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.32.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 7.539375970388006e-08,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.33.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 9.536687606550144e-08,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.34.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 9.536670506167341e-08,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.35.mlp.route_weights",
+      "max_abs": 8.940696716308594e-08,
+      "normalized_l2": 1.5078664550425523e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.36.mlp.route_weights",
+      "max_abs": 2.9802322387695312e-08,
+      "normalized_l2": 5.839951510711485e-08,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.37.mlp.route_weights",
+      "max_abs": 2.9802322387695312e-08,
+      "normalized_l2": 5.839920404576022e-08,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.38.mlp.route_weights",
+      "max_abs": 8.940696716308594e-08,
+      "normalized_l2": 1.215690023952424e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.39.mlp.route_weights",
+      "max_abs": 8.940696716308594e-08,
+      "normalized_l2": 1.5450999122951246e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.40.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 1.0115182976037509e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.41.mlp.route_weights",
+      "max_abs": 8.940696716308594e-08,
+      "normalized_l2": 1.3486946301162878e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.42.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 1.01151432621122e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.43.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 1.215634135578665e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.44.mlp.route_weights",
+      "max_abs": 8.940696716308594e-08,
+      "normalized_l2": 1.5078763025714006e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.45.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 9.53608672793394e-08,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.46.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 1.0115116052682695e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.47.mlp.route_weights",
+      "max_abs": 2.9802322387695312e-08,
+      "normalized_l2": 7.539202739259899e-08,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.48.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 8.920626369494454e-08,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.49.mlp.route_weights",
+      "max_abs": 8.940696716308594e-08,
+      "normalized_l2": 1.1182577723852412e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.50.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 8.259005836699309e-08,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.51.mlp.route_weights",
+      "max_abs": 5.960464477539063e-08,
+      "normalized_l2": 1.2615788099904074e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.52.mlp.route_weights",
+      "max_abs": 1.7881393432617188e-07,
+      "normalized_l2": 2.958055747384921e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.53.mlp.route_weights",
+      "max_abs": 1.7881393432617188e-07,
+      "normalized_l2": 3.342474704492448e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.54.mlp.route_weights",
+      "max_abs": 1.1920928955078125e-07,
+      "normalized_l2": 2.521007291037757e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.55.mlp.route_weights",
+      "max_abs": 1.7881393432617188e-07,
+      "normalized_l2": 2.496633153596303e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.56.mlp.route_weights",
+      "max_abs": 2.682209014892578e-07,
+      "normalized_l2": 4.3628232886116814e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.57.mlp.route_weights",
+      "max_abs": 2.682209014892578e-07,
+      "normalized_l2": 4.3394082316141044e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.58.mlp.route_weights",
+      "max_abs": 2.384185791015625e-07,
+      "normalized_l2": 3.533894898137517e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.59.mlp.route_weights",
+      "max_abs": 3.2782554626464844e-07,
+      "normalized_l2": 5.742108701697979e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.60.mlp.route_weights",
+      "max_abs": 2.980232238769531e-07,
+      "normalized_l2": 4.1053901546432477e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.61.mlp.route_weights",
+      "max_abs": 2.980232238769531e-07,
+      "normalized_l2": 5.513046492750664e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.62.mlp.route_weights",
+      "max_abs": 2.905726432800293e-07,
+      "normalized_l2": 3.7743631861259123e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.63.mlp.route_weights",
+      "max_abs": 5.736947059631348e-07,
+      "normalized_l2": 8.321671368806882e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.64.mlp.route_weights",
+      "max_abs": 3.725290298461914e-07,
+      "normalized_l2": 5.394833460258641e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.65.mlp.route_weights",
+      "max_abs": 3.8743019104003906e-07,
+      "normalized_l2": 4.675044188668576e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.66.mlp.route_weights",
+      "max_abs": 4.76837158203125e-07,
+      "normalized_l2": 4.319305975636468e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.67.mlp.route_weights",
+      "max_abs": 5.960464477539062e-07,
+      "normalized_l2": 5.253127832178206e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.68.mlp.route_weights",
+      "max_abs": 3.0547380447387695e-07,
+      "normalized_l2": 1.7832702861642942e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.69.mlp.route_weights",
+      "max_abs": 9.685754776000977e-08,
+      "normalized_l2": 5.8671241691923854e-08,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.70.mlp.route_weights",
+      "max_abs": 1.4901161193847656e-07,
+      "normalized_l2": 8.102864294052351e-08,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.71.mlp.route_weights",
+      "max_abs": 2.86102294921875e-06,
+      "normalized_l2": 1.5643673553582863e-06,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.72.mlp.route_weights",
+      "max_abs": 1.1175870895385742e-06,
+      "normalized_l2": 9.305898062685764e-07,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.73.mlp.route_weights",
+      "max_abs": 4.5299530029296875e-06,
+      "normalized_l2": 4.9839423613133205e-06,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.74.mlp.route_weights",
+      "max_abs": 2.9802322387695312e-06,
+      "normalized_l2": 2.0595299116028525e-06,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.75.mlp.route_weights",
+      "max_abs": 1.2516975402832031e-06,
+      "normalized_l2": 1.108150874953985e-06,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.76.mlp.route_weights",
+      "max_abs": 6.705522537231445e-07,
+      "normalized_l2": 1.247768534303138e-06,
+      "pass": true
+    },
+    {
+      "key": "p0.layer.77.mlp.route_weights",
+      "max_abs": 4.172325134277344e-07,
+      "normalized_l2": 7.372278056446007e-07,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.3.mlp.route_weights",
+      "max_abs": 3.129243850708008e-07,
+      "normalized_l2": 4.6919590349054326e-07,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.4.mlp.route_weights",
+      "max_abs": 3.725290298461914e-07,
+      "normalized_l2": 6.068895897299806e-07,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.5.mlp.route_weights",
+      "max_abs": 3.8743019104003906e-07,
+      "normalized_l2": 5.607526636412967e-07,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.6.mlp.route_weights",
+      "max_abs": 9.834766387939453e-07,
+      "normalized_l2": 1.3336660331845316e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.7.mlp.route_weights",
+      "max_abs": 7.152557373046875e-07,
+      "normalized_l2": 9.992614723260203e-07,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.8.mlp.route_weights",
+      "max_abs": 5.662441253662109e-07,
+      "normalized_l2": 8.313365555463603e-07,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.9.mlp.route_weights",
+      "max_abs": 4.76837158203125e-07,
+      "normalized_l2": 8.104761667067418e-07,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.10.mlp.route_weights",
+      "max_abs": 1.430511474609375e-06,
+      "normalized_l2": 1.3711811824622939e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.11.mlp.route_weights",
+      "max_abs": 7.152557373046875e-07,
+      "normalized_l2": 1.3849129799756604e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.12.mlp.route_weights",
+      "max_abs": 1.3113021850585938e-06,
+      "normalized_l2": 2.6440879176475604e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.13.mlp.route_weights",
+      "max_abs": 8.344650268554688e-07,
+      "normalized_l2": 1.1259515754497727e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.14.mlp.route_weights",
+      "max_abs": 1.3113021850585938e-06,
+      "normalized_l2": 1.6795759265121075e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.15.mlp.route_weights",
+      "max_abs": 1.5348196029663086e-06,
+      "normalized_l2": 2.7696042318336396e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.16.mlp.route_weights",
+      "max_abs": 2.86102294921875e-06,
+      "normalized_l2": 2.366466601373815e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.17.mlp.route_weights",
+      "max_abs": 1.1026859283447266e-06,
+      "normalized_l2": 1.6110691953756514e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.18.mlp.route_weights",
+      "max_abs": 1.3709068298339844e-06,
+      "normalized_l2": 1.565921245476638e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.19.mlp.route_weights",
+      "max_abs": 1.7881393432617188e-06,
+      "normalized_l2": 1.5939728337258068e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.20.mlp.route_weights",
+      "max_abs": 1.0728836059570312e-06,
+      "normalized_l2": 1.4622262335106064e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.21.mlp.route_weights",
+      "max_abs": 1.7881393432617188e-06,
+      "normalized_l2": 2.786693180204101e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.22.mlp.route_weights",
+      "max_abs": 1.1920928955078125e-06,
+      "normalized_l2": 1.5055245938237431e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.23.mlp.route_weights",
+      "max_abs": 1.1920928955078125e-06,
+      "normalized_l2": 1.8697109261003492e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.24.mlp.route_weights",
+      "max_abs": 9.5367431640625e-07,
+      "normalized_l2": 1.152509368463416e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.25.mlp.route_weights",
+      "max_abs": 7.003545761108398e-07,
+      "normalized_l2": 7.79522716498099e-07,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.26.mlp.route_weights",
+      "max_abs": 7.152557373046875e-07,
+      "normalized_l2": 9.39561903088728e-07,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.27.mlp.route_weights",
+      "max_abs": 1.341104507446289e-06,
+      "normalized_l2": 1.853880032849767e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.28.mlp.route_weights",
+      "max_abs": 8.344650268554688e-07,
+      "normalized_l2": 1.0479672190628432e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.29.mlp.route_weights",
+      "max_abs": 1.6987323760986328e-06,
+      "normalized_l2": 2.8125741429279144e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.30.mlp.route_weights",
+      "max_abs": 1.1324882507324219e-06,
+      "normalized_l2": 1.8664557195723254e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.31.mlp.route_weights",
+      "max_abs": 3.516674041748047e-06,
+      "normalized_l2": 5.621833216539968e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.32.mlp.route_weights",
+      "max_abs": 2.86102294921875e-06,
+      "normalized_l2": 5.253511660004597e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.33.mlp.route_weights",
+      "max_abs": 4.589557647705078e-06,
+      "normalized_l2": 5.395045035533356e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.34.mlp.route_weights",
+      "max_abs": 2.8014183044433594e-06,
+      "normalized_l2": 3.5989459013193593e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.35.mlp.route_weights",
+      "max_abs": 1.8477439880371094e-06,
+      "normalized_l2": 3.148170878492502e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.36.mlp.route_weights",
+      "max_abs": 2.5331974029541016e-06,
+      "normalized_l2": 4.261508463382303e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.37.mlp.route_weights",
+      "max_abs": 3.039836883544922e-06,
+      "normalized_l2": 3.1443047737557863e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.38.mlp.route_weights",
+      "max_abs": 6.020069122314453e-06,
+      "normalized_l2": 7.74194817066407e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.39.mlp.route_weights",
+      "max_abs": 4.351139068603516e-06,
+      "normalized_l2": 5.92370811809694e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.40.mlp.route_weights",
+      "max_abs": 2.0265579223632812e-06,
+      "normalized_l2": 2.33180481705282e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.41.mlp.route_weights",
+      "max_abs": 3.9637088775634766e-06,
+      "normalized_l2": 4.351512219989236e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.42.mlp.route_weights",
+      "max_abs": 2.86102294921875e-06,
+      "normalized_l2": 3.9126793663330726e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.43.mlp.route_weights",
+      "max_abs": 2.5331974029541016e-06,
+      "normalized_l2": 3.6845502835595928e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.44.mlp.route_weights",
+      "max_abs": 1.1324882507324219e-06,
+      "normalized_l2": 1.8916402534564265e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.45.mlp.route_weights",
+      "max_abs": 2.652406692504883e-06,
+      "normalized_l2": 4.301843947333223e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.46.mlp.route_weights",
+      "max_abs": 2.1457672119140625e-06,
+      "normalized_l2": 2.481705022293773e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.47.mlp.route_weights",
+      "max_abs": 2.6226043701171875e-06,
+      "normalized_l2": 3.244232683383967e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.48.mlp.route_weights",
+      "max_abs": 2.0265579223632812e-06,
+      "normalized_l2": 2.1463589350378815e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.49.mlp.route_weights",
+      "max_abs": 1.7285346984863281e-06,
+      "normalized_l2": 3.515917001651528e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.50.mlp.route_weights",
+      "max_abs": 2.682209014892578e-06,
+      "normalized_l2": 3.543564748307518e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.51.mlp.route_weights",
+      "max_abs": 3.4570693969726562e-06,
+      "normalized_l2": 3.981402977382781e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.52.mlp.route_weights",
+      "max_abs": 2.682209014892578e-06,
+      "normalized_l2": 3.36253387434037e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.53.mlp.route_weights",
+      "max_abs": 2.0712614059448242e-06,
+      "normalized_l2": 3.0951185764944003e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.54.mlp.route_weights",
+      "max_abs": 2.682209014892578e-06,
+      "normalized_l2": 4.0330297860631925e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.55.mlp.route_weights",
+      "max_abs": 4.32133674621582e-06,
+      "normalized_l2": 5.095564252311152e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.56.mlp.route_weights",
+      "max_abs": 4.410743713378906e-06,
+      "normalized_l2": 5.762194328243416e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.57.mlp.route_weights",
+      "max_abs": 2.562999725341797e-06,
+      "normalized_l2": 3.272151058110033e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.58.mlp.route_weights",
+      "max_abs": 3.4868717193603516e-06,
+      "normalized_l2": 3.7962873045955744e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.59.mlp.route_weights",
+      "max_abs": 2.205371856689453e-06,
+      "normalized_l2": 3.8357360400983395e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.60.mlp.route_weights",
+      "max_abs": 2.473592758178711e-06,
+      "normalized_l2": 4.56784691935631e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.61.mlp.route_weights",
+      "max_abs": 2.592802047729492e-06,
+      "normalized_l2": 3.543728909789277e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.62.mlp.route_weights",
+      "max_abs": 2.9802322387695312e-06,
+      "normalized_l2": 4.457981494803667e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.63.mlp.route_weights",
+      "max_abs": 3.0994415283203125e-06,
+      "normalized_l2": 4.068790953056622e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.64.mlp.route_weights",
+      "max_abs": 9.238719940185547e-07,
+      "normalized_l2": 1.7010931601906867e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.65.mlp.route_weights",
+      "max_abs": 3.11434268951416e-06,
+      "normalized_l2": 3.3834965025212015e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.66.mlp.route_weights",
+      "max_abs": 1.5497207641601562e-06,
+      "normalized_l2": 2.426807697055189e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.67.mlp.route_weights",
+      "max_abs": 2.652406692504883e-06,
+      "normalized_l2": 3.793126009583883e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.68.mlp.route_weights",
+      "max_abs": 2.562999725341797e-06,
+      "normalized_l2": 3.2299605930965402e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.69.mlp.route_weights",
+      "max_abs": 3.4570693969726562e-06,
+      "normalized_l2": 4.129037262065513e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.70.mlp.route_weights",
+      "max_abs": 2.9206275939941406e-06,
+      "normalized_l2": 4.1492858839686186e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.71.mlp.route_weights",
+      "max_abs": 3.933906555175781e-06,
+      "normalized_l2": 4.845645345336957e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.72.mlp.route_weights",
+      "max_abs": 2.115964889526367e-06,
+      "normalized_l2": 3.2911726169275537e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.73.mlp.route_weights",
+      "max_abs": 1.2069940567016602e-06,
+      "normalized_l2": 2.021725577190119e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.74.mlp.route_weights",
+      "max_abs": 1.7881393432617188e-06,
+      "normalized_l2": 2.264953351904119e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.75.mlp.route_weights",
+      "max_abs": 1.3560056686401367e-06,
+      "normalized_l2": 2.424437795195459e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.76.mlp.route_weights",
+      "max_abs": 9.5367431640625e-07,
+      "normalized_l2": 1.5116468938358771e-06,
+      "pass": true
+    },
+    {
+      "key": "p1.layer.77.mlp.route_weights",
+      "max_abs": 7.450580596923828e-07,
+      "normalized_l2": 1.3313890042840207e-06,
+      "pass": true
+    }
+  ],
+  "discrete": [
+    {
+      "key": "p0.layer.0.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.1.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.2.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.3.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.3.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.4.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.4.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.5.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.5.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.6.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.6.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.7.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.7.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.8.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.8.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.9.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.9.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.10.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.10.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.11.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.11.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.12.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.12.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.13.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.13.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.14.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.14.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.15.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.15.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.16.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.16.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.17.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.17.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.18.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.18.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.19.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.19.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.20.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.20.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.21.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.21.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.22.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.22.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.23.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.23.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.24.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.24.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.25.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.25.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.26.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.26.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.27.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.27.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.28.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.28.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.29.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.29.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.30.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.30.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.31.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.31.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.32.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.32.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.33.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.33.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.34.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.34.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.35.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.35.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.36.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.36.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.37.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.37.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.38.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.38.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.39.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.39.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.40.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.40.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.41.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.41.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.42.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.42.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.43.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.43.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.44.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.44.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.45.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.45.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.46.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.46.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.47.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.47.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.48.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.48.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.49.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.49.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.50.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.50.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.51.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.51.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.52.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.52.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.53.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.53.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.54.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.54.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.55.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.55.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.56.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.56.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.57.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.57.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.58.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.58.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.59.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.59.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.60.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.60.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.61.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.61.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.62.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.62.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.63.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.63.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.64.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.64.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.65.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.65.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.66.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.66.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.67.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.67.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.68.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.68.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.69.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.69.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.70.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.70.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.71.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.71.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.72.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.72.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.73.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.73.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.74.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.74.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.75.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.75.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.76.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.76.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p0.layer.77.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p0.layer.77.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.0.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.1.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.2.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.3.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.3.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.4.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.4.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.5.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.5.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.6.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.6.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.7.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.7.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.8.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.8.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.9.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.9.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.10.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.10.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.11.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.11.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.12.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.12.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.13.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.13.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.14.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.14.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.15.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.15.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.16.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.16.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.17.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.17.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.18.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.18.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.19.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.19.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.20.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.20.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.21.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.21.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.22.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.22.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.23.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.23.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.24.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.24.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.25.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.25.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.26.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.26.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.27.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.27.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.28.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.28.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.29.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.29.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.30.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.30.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.31.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.31.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.32.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.32.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.33.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.33.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.34.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.34.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.35.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.35.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.36.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.36.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.37.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.37.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.38.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.38.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.39.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.39.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.40.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.40.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.41.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.41.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.42.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.42.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.43.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.43.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.44.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.44.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.45.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.45.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.46.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.46.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.47.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.47.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.48.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.48.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.49.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.49.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.50.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.50.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.51.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.51.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.52.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.52.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.53.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.53.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.54.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.54.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.55.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.55.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.56.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.56.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.57.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.57.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.58.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.58.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.59.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.59.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.60.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.60.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.61.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.61.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.62.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.62.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.63.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.63.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.64.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.64.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.65.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.65.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.66.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.66.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.67.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.67.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.68.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.68.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.69.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.69.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.70.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.70.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.71.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.71.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.72.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.72.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.73.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.73.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.74.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.74.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.75.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.75.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.76.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.76.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    },
+    {
+      "key": "p1.layer.77.selected",
+      "pass": true,
+      "comparison": "causal membership"
+    },
+    {
+      "key": "p1.layer.77.mlp.route_ids",
+      "pass": true,
+      "comparison": "expert membership, preserving weight pairing"
+    }
+  ],
+  "errors": [],
+  "scope": "finite full-layer/logit and discrete-routing comparison; no release, long-context or original-FP8 quality proof",
+  "canonicalization": "causal DSA membership; expert IDs sorted together with their corresponding weights",
+  "routing_budget": "unchanged inherited layer_output budget, diagnostic, not independently calibrated",
+  "producer_attestation": false,
+  "contract_reuse": "unchanged config/checkpoint pins, tensor coverage and budgets; current producer/archive hashes recorded here, historical producer/archive contract fields do not describe this comparison",
+  "identity": {
+    "contract_sha256": "e5daccfed587d2db1e0adb6aa4f064016333df78c100d1cedf8743d062019ebd",
+    "reference_receipt_sha256": "f8dfb8faea2bda5d652589e519092bad3ba4959e02e1112c46eb88b2cd5cb506",
+    "candidate_receipt_sha256": "473e6c5530c3cae9d64d44bede968545e9a0ebb5810ecda3c48ab7e582dc10ba",
+    "reference_arrays_sha256": "351119d6ef3d222d71c1f64f12bb9a2ea5ee7af4387c95659a5b56368c4e904a",
+    "candidate_arrays_sha256": "40ee459b6dfc3e62348c823de7ef483da82b8e0ba1bf4d966e0d9f0c5012c3f1",
+    "candidate_library_sha256": "f2bc9751ad54071fdee3d4eb0b454632f12fc40db30291f0186aac2b341c499f",
+    "checkpoint_bytes_rehashed": false
+  },
+  "first_failure": {
+    "key": "p0.layer.9.output",
+    "pass": false,
+    "failure": {
+      "code": "numeric",
+      "message": "absolute/relative budget exceeded",
+      "tensor": "p0.layer.9.output",
+      "index": [
+        110
+      ],
+      "metrics": {
+        "max_abs": 0.0001373291015625,
+        "normalized_l2": 1.756393899396878e-06
+      }
+    }
+  }
+}

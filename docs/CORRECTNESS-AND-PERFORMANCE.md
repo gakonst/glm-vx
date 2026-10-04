@@ -1,5 +1,9 @@
 # Correctness gates before automatic optimization
 
+Subsequent work: [implemented optimization progress](OPTIMIZATION-PROGRESS.md) and
+[numerical-mode corrections/stage replay](../validation/STAGE_REPLAY.md).
+The original measurements and failed receipts below remain historical evidence.
+
 Audit of engine revision `1f434489dbfb20fdef726d002f5f00b9911b2b91`.
 This is a proposed acceptance contract plus a measured compiler experiment,
 not a claim that the full parity gate is implemented or passed.

@@ -1,5 +1,9 @@
 # Implemented parity tooling and current evidence
 
+Subsequent work: [implemented optimization progress](OPTIMIZATION-PROGRESS.md) and
+[numerical-mode corrections/stage replay](../validation/STAGE_REPLAY.md).
+The original measurements and failed receipts below remain historical evidence.
+
 This change adds executable trace validation and CPU prefill/decode handoff.
 **Automatic optimization promotion remains blocked.** Neither real-model strict
 trace comparison passed, and the long-context/held-out release corpus is not yet

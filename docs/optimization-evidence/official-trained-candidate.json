@@ -1,0 +1,114 @@
+{
+  "status": "complete",
+  "token_ids": [
+    9703,
+    10056
+  ],
+  "packed_weights": true,
+  "model_identity": {
+    "config_sha256": "3ac72612095574542f7fff847ada8e59d9199dd8af44bdf625d7e02615572e69",
+    "contract_sha256": "e5daccfed587d2db1e0adb6aa4f064016333df78c100d1cedf8743d062019ebd",
+    "manifest_sha256": "d2d5ff36f13d47078ca9ecdea80169c8211713330ef98dce292146c7f64eb6ea",
+    "checkpoint_files": {
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00001-of-00006.gguf": {
+        "declared_sha256": "ff3adab0853dfb00bdf3889ec3f5556196f56b65783115720d57767bbd760dd9",
+        "bytes": 9428677,
+        "mtime_ns": 1791086735551349602
+      },
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00002-of-00006.gguf": {
+        "declared_sha256": "659d04cf4fc0b6026944f34c0b590a635803bff06c1775361e28490db7b168f8",
+        "bytes": 49968868928,
+        "mtime_ns": 1791087979195971322
+      },
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00003-of-00006.gguf": {
+        "declared_sha256": "433302bac0e2d54da64c7c2f28509fa1b235aeccdf5b215a8a446ebaad1b5b27",
+        "bytes": 49728982688,
+        "mtime_ns": 1791087912515987058
+      },
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00004-of-00006.gguf": {
+        "declared_sha256": "d0a6f19452d5b5cd498e1eb8fbe856e00aed7da1f80c27c095301eabe81e9bc1",
+        "bytes": 49210788064,
+        "mtime_ns": 1791088089431941029
+      },
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00005-of-00006.gguf": {
+        "declared_sha256": "2ea1537ffab40fa8b8584a8647ec10fbaa6199dfed45e4019b822da2b319db37",
+        "bytes": 49471673632,
+        "mtime_ns": 1791088558135772149
+      },
+      "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00006-of-00006.gguf": {
+        "declared_sha256": "42a76ef04ffc5e321e1240f4e572b6fa6fc3315da5bea22fb598d7460db210fe",
+        "bytes": 18325623904,
+        "mtime_ns": 1791088234131894694
+      }
+    },
+    "verification": "declared shard pins reused; weight bytes NOT rehashed"
+  },
+  "identity_bound": true,
+  "loaded_checkpoint_paths": {
+    "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00001-of-00006.gguf": "/srv/nanocodex/workspace/models/glm-5.3-iq1s/GLM-5.3-UD-IQ1_S-00001-of-00006.gguf",
+    "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00002-of-00006.gguf": "/srv/nanocodex/workspace/models/glm-5.3-iq1s/GLM-5.3-UD-IQ1_S-00002-of-00006.gguf",
+    "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00003-of-00006.gguf": "/srv/nanocodex/workspace/models/glm-5.3-iq1s/GLM-5.3-UD-IQ1_S-00003-of-00006.gguf",
+    "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00004-of-00006.gguf": "/srv/nanocodex/workspace/models/glm-5.3-iq1s/GLM-5.3-UD-IQ1_S-00004-of-00006.gguf",
+    "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00005-of-00006.gguf": "/srv/nanocodex/workspace/models/glm-5.3-iq1s/GLM-5.3-UD-IQ1_S-00005-of-00006.gguf",
+    "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00006-of-00006.gguf": "/srv/nanocodex/workspace/models/glm-5.3-iq1s/GLM-5.3-UD-IQ1_S-00006-of-00006.gguf"
+  },
+  "config_sha256": "3ac72612095574542f7fff847ada8e59d9199dd8af44bdf625d7e02615572e69",
+  "arrays_sha256": "40ee459b6dfc3e62348c823de7ef483da82b8e0ba1bf4d966e0d9f0c5012c3f1",
+  "source_paths": {
+    "glm_vx/model.py": "/srv/nanocodex/workspace/glm-vx/glm_vx/model.py",
+    "glm_vx/config.py": "/srv/nanocodex/workspace/glm-vx/glm_vx/config.py",
+    "glm_vx/checkpoint.py": "/srv/nanocodex/workspace/glm-vx/glm_vx/checkpoint.py",
+    "glm_vx/gguf_checkpoint.py": "/srv/nanocodex/workspace/glm-vx/glm_vx/gguf_checkpoint.py",
+    "glm_vx/gguf_reader.py": "/srv/nanocodex/workspace/glm-vx/glm_vx/gguf_reader.py",
+    "kernels/backend.py": "/srv/nanocodex/workspace/glm-vx/kernels/backend.py",
+    "kernels/packed.py": "/srv/nanocodex/workspace/glm-vx/kernels/packed.py",
+    "validation/trace_identity.py": "/srv/nanocodex/workspace/glm-vx/validation/trace_identity.py",
+    "validation/trace_gate.py": "/srv/nanocodex/workspace/glm-vx/validation/trace_gate.py",
+    "validation/export_vx_trace.py": "/srv/nanocodex/workspace/glm-vx/validation/export_vx_trace.py"
+  },
+  "source_sha256": {
+    "glm_vx/model.py": "9aaac844f42e0ec5eed88279e6b73aef9eb191980ac4fcdbf08e93728c5e4d4e",
+    "glm_vx/config.py": "42aebf6c06e6763659f2e4250b3cd5334080d86d31a6fff2ca18511a52624157",
+    "glm_vx/checkpoint.py": "979d9532e9dd4f86920b49126f0afa1878db17c33898e525cd843fc155b25a1d",
+    "glm_vx/gguf_checkpoint.py": "ad69d8c6ac226c914833be1d492d8561bf11c451aa7e3928309822c19badfe1c",
+    "glm_vx/gguf_reader.py": "ac44eb337fc45fa3853fefa7087b7e88049fdc01d368b345aaf1f2bb088edc31",
+    "kernels/backend.py": "cf486a8ce85a294d8644234ddcb120d07663b42d03da292dc4024cb63e814f70",
+    "kernels/packed.py": "c5675b0a92cf601bd40c6b78191c5f8bc8172ed0bdb98ce443fdcbb88e7fd1f2",
+    "validation/trace_identity.py": "37368ecdb19bf5ea89d00409e7b69a21e7552fe7cb8f24ce23082b070443e91a",
+    "validation/trace_gate.py": "a2fece60f2eae48043bec13e24bc6a2507ebf3d9e9a6de38c01ec04da683aef6",
+    "validation/export_vx_trace.py": "f822b8e0e0fc7684e2f7f05ae583f7640922fc0d908f790ef939e84ed2a9c046"
+  },
+  "dependencies": {
+    "files_sha256": {
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/gguf/__init__.py": "3ccfc0104cd7ea88c6028743b7bf3f2c89b5f474425de03a217a6072320d7c2f",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/gguf/constants.py": "fbdda77cd6bc5e35db1ec315f477f48861f0726a17cc7d8927bdeb02fef734f1",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/gguf/gguf.py": "f0c0eeedad0911784b52ffed8e162a0eb5ae6d535ce35705bc16196e46597a72",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/gguf/gguf_reader.py": "eae238bda2de442d8c255fae52382c468519f9176cce2f2613f6c43f09e4e901",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/gguf/gguf_writer.py": "5095ea15add3d8438b7cf67a7a3defbb257b3817ca5d76accef1ca7872169922",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/gguf/lazy.py": "031cbfa656c7a02df89cc78afce45b6f11321059be173f01c4521ea9e8a94980",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/gguf/metadata.py": "bf4931a187c293fc976529f39523bd02143acff1ce529cecd1ce9957805149b0",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/gguf/quants.py": "04bb420aa84706d69b698680a7b11c93260e47989d9a829686efc7cb7825a2d9",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/gguf/tensor_mapping.py": "ea9503620972d3ec84acb57c1d26454a7ab214a029ed289e762b4c10732c6062",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/gguf/utility.py": "f34ad9dcc74667a6d7d3fc85bcba0f4d33a5c606bc4c7722845d2adfccb987a3",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/gguf/vocab.py": "1abe3789d2aa738c811d0876d077de5bda1e81858ba4cf8bd192825713e3e0b7",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/numpy/_core/_multiarray_umath.cpython-310-x86_64-linux-gnu.so": "c634eaf05367af02b815cf3d2020fbeee9b47426af1fe26cf3189e4798932dc5",
+      "/srv/nanocodex/workspace/glm-vx/docs/parity-evidence/ggml-codec-parity.json": "00ddfb329e2402fdb6e0d944c1690d03beab564c204dd4e5a55dcbbd07567d1b",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/numpy.libs/libgfortran-040039e1-0352e75f.so.5.0.0": "c6090048eccc763522c12ef016f81da6b627cb3a044f55cf0479a839c41c0980",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/numpy.libs/libquadmath-96973f99-934c22de.so.0.0.0": "6ed5137f412781ad7863439fb543613f620b43c32b63292a0029246162f5bbc6",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/numpy.libs/libscipy_openblas64_-56d6093b.so": "0bd815d04b6b54990e3cccc7528fbb696456d09569f533d0390c13f0cdc4dd4a",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/numpy-2.2.6.dist-info/METADATA": "22d648f53848429464ca643b40d73b49a920d47876fc77c395d4dca4e834904a",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/numpy-2.2.6.dist-info/RECORD": "d8e605940933dae5308f1c60b7e5edccd9dc0393af73d1f0d8c4b58cf9f44c81",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/gguf-0.17.1.dist-info/METADATA": "a5af3f71ee6e7e858a1ead73ce1f7b1dee771198c5b5114e3450d6b65ee69002",
+      "/srv/nanocodex/workspace/glm-vx/.venv/lib/python3.10/site-packages/gguf-0.17.1.dist-info/RECORD": "5d42594ba137d26bf7c5ec0043636209ca04b9f6ea0eb7bd54ef01ba921f93b2"
+    },
+    "versions": {
+      "numpy": "2.2.6",
+      "gguf": "0.17.1"
+    }
+  },
+  "numerical_mode": "f32-official-expert-order-v2",
+  "library_sha256": "f2bc9751ad54071fdee3d4eb0b454632f12fc40db30291f0186aac2b341c499f",
+  "elapsed_seconds": 259.8451296053827,
+  "tensor_count": 31172,
+  "scope": "Teacher-forced CPU GGUF trace; source/dependency and loaded-shard bindings, no producer attestation."
+}

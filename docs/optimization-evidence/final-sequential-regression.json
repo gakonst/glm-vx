@@ -1,0 +1,9 @@
+{
+  "scope": "same corrected Vx sequential mode regression before/after prefill-only tail changes; not independent model correctness",
+  "release_eligible": false,
+  "arrays_compared": 31172,
+  "same_keys": true,
+  "mismatches": [],
+  "before_sha256": "40ee459b6dfc3e62348c823de7ef483da82b8e0ba1bf4d966e0d9f0c5012c3f1",
+  "after_sha256": "40ee459b6dfc3e62348c823de7ef483da82b8e0ba1bf4d966e0d9f0c5012c3f1"
+}
