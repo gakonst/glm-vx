@@ -1,0 +1,25 @@
+{
+  "status": "complete",
+  "token_ids": [
+    9703,
+    10056
+  ],
+  "packed_weights": true,
+  "source_sha256": {
+    "glm_vx/model.py": "9c7b280b44b7da5b12619c13c51b07336b0678a149d8372fc29c89ecc1059ac5",
+    "glm_vx/gguf_checkpoint.py": "ad69d8c6ac226c914833be1d492d8561bf11c451aa7e3928309822c19badfe1c",
+    "glm_vx/gguf_reader.py": "ac44eb337fc45fa3853fefa7087b7e88049fdc01d368b345aaf1f2bb088edc31",
+    "kernels/backend.py": "cf486a8ce85a294d8644234ddcb120d07663b42d03da292dc4024cb63e814f70",
+    "kernels/packed.py": "13bdc4d8fdc626ae10ffd16bf2de5f2c838b18591c271952ac9b19b68a203532"
+  },
+  "library_sha256": "cff6023afc49cd7c03b8d30b4f91937494c06cfc1f68c5014bab75dda45d3441",
+  "elapsed_seconds": 206.23393902927637,
+  "tensor_count": 626,
+  "scope": "Full trained 78-layer GGUF regression on two prescribed tokens against saved pre-correction Vx O3 baseline; not independent or long-context parity. Per-token expert reduction still router-slot order for BOTH compared runs.",
+  "baseline_trace_sha256": "15de5883751ceda3725e61b75baa5c8810bc2cc912646a90ada973ef2b578951",
+  "candidate_trace_sha256": "15de5883751ceda3725e61b75baa5c8810bc2cc912646a90ada973ef2b578951",
+  "compared_arrays": 626,
+  "bitwise_equal": true,
+  "failures": [],
+  "baseline_elapsed_seconds": 461.942156419158
+}

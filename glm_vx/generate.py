@@ -36,8 +36,10 @@ def main():
     p.add_argument('--max-tokens',type=int,default=8)
     p.add_argument('--backend',choices=['vx','numpy-reference'],default='vx')
     p.add_argument('--decoded-cache-mib',type=int,default=512)
+    p.add_argument('--packed-weights',action='store_true',help='opt in to Vx packed GGUF dot products with F32 activations')
     p.add_argument('--output',required=True,help='JSON receipt updated after every completed model token')
     a=p.parse_args()
+    if a.packed_weights and a.backend != 'vx':p.error('packed weights requires --backend vx')
     if a.max_tokens<1 or a.decoded_cache_mib<0:p.error('positive max tokens and nonnegative cache required')
     directory=Path(a.gguf) if Path(a.gguf).is_dir() else Path(a.gguf).parent
     from tokenizers import Tokenizer
@@ -57,7 +59,7 @@ def main():
     try:commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=Path(__file__).parent,text=True,stderr=subprocess.DEVNULL).strip()
     except (OSError,subprocess.CalledProcessError):commit=None
     report={'status':'loading','backend':backend.name,'checkpoint':str(directory),
-            'engine_commit':commit,'decode_threads':a.decode_threads,'gguf_version':importlib.metadata.version('gguf'),
+            'engine_commit':commit,'packed_weights':a.packed_weights,'decode_threads':a.decode_threads,'gguf_version':importlib.metadata.version('gguf'),
             'prompt':a.prompt,'formatted_prompt':formatted,'prompt_token_ids':tokens,
             'generated_token_ids':[],'steps':[],'scope':'GGUF base decoder using the supplied checkpoint/config; no MTP/speculative decoding.',
             'dimensions':{k:config[k] for k in ('num_hidden_layers','hidden_size','vocab_size','n_routed_experts')},
@@ -79,7 +81,7 @@ def main():
         report['gguf_metadata']={k:v for k,v in weights.store.metadata.items() if not k.startswith('tokenizer.')}
         manifest=directory/'manifest.json'
         if manifest.exists():report['source_manifest']=json.loads(manifest.read_text())
-        model=TracedModel(config,weights,backend);cache=model.new_cache()
+        model=TracedModel(config,weights,backend,packed_weights=a.packed_weights);cache=model.new_cache()
         report['status']='prefilling';save()
         for i,token in enumerate(tokens):
             began=time.monotonic()

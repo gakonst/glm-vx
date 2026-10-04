@@ -130,6 +130,7 @@ def main():
     p.add_argument('--config',help='HF config.json matching the GGUF; defaults to config.json beside its shards')
     p.add_argument('--decode-threads',type=int,default=1,help='GGUF unpacking workers, 1..32')
     p.add_argument('--decoded-cache-mib',type=int,default=512,help='bounded GGUF decoded-weight cache')
+    p.add_argument('--packed-weights',action='store_true',help='opt in to Vx packed GGUF dot products with F32 activations')
     p.add_argument('--tokenizer',help='local tokenizer.json')
     p.add_argument('--host',default='127.0.0.1'); p.add_argument('--port',type=int,default=8000)
     p.add_argument('--max-sequences',type=int,default=8); p.add_argument('--token-budget',type=int,default=8192)
@@ -143,6 +144,7 @@ def main():
     p.add_argument('--gpu-weight-cache-mib',type=int,default=512)
     p.add_argument('--gpu-tuning',help='verified shape-specific plan produced by python -m gpu.tune')
     args=p.parse_args()
+    if args.packed_weights and (not args.gguf or args.backend != 'vx'):p.error('packed weights requires --gguf and --backend vx')
     if args.prefix_cache_mib<0:p.error('prefix cache must be nonnegative')
     if args.max_pending_events<2:p.error('max pending events must be at least two')
     if args.gpu_weight_cache_mib<0:p.error('GPU weight cache must be nonnegative')
@@ -182,7 +184,7 @@ def main():
     if args.tokenizer:
         from tokenizers import Tokenizer
         tokenizer=Tokenizer.from_file(args.tokenizer)
-    model=Model(config,weights,backend)
+    model=Model(config,weights,backend,packed_weights=args.packed_weights)
     scheduler=Scheduler(model,max_sequences=args.max_sequences,token_budget=args.token_budget,prefill_chunk=args.prefill_chunk,decode_prefill_tokens=args.decode_prefill_tokens,prefix_cache_bytes=args.prefix_cache_mib*1024**2,max_pending_events=args.max_pending_events,batched_prefill=args.batched_prefill)
     server=Server((args.host,args.port),scheduler,tokenizer,name)
     print(json.dumps({'listening':f'http://{args.host}:{server.server_port}','model':name,'backend':backend.name}),flush=True)

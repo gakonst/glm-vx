@@ -14,3 +14,7 @@ gguf = ["gguf==0.17.1", "jinja2>=3.1.6"]
 glm-vx = "glm_vx.server:main"
 [tool.setuptools.packages.find]
 include = ["glm_vx*", "kernels*", "gpu*", "validation*"]
+
+[tool.setuptools.package-data]
+kernels = ["*.vx", "*.h", "*.bin", "ggml_tables.json", "GGML-LICENSE", "build.sh"]
+gpu = ["*.vx", "build.sh", "toolchain/*.vx"]

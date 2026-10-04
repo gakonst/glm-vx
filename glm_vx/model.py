@@ -42,8 +42,14 @@ class GlmMoeDsaModel:
     correction bias for selection only, and normalized selected probabilities.
     """
 
-    def __init__(self, config, weights, backend, *, trace=None):
+    def __init__(self, config, weights, backend, *, trace=None, packed_weights=False):
         self.trace = trace
+        if type(packed_weights) is not bool:
+            raise ValueError('packed_weights must be boolean')
+        if packed_weights and (not callable(getattr(weights, 'linear', None)) or
+                               not callable(getattr(backend, 'packed_matvec', None))):
+            raise ValueError('packed weights requires a compatible checkpoint and Vx backend')
+        self.packed_weights = packed_weights
         self.config = dict(config)
         self.weights, self.backend = weights, backend
         c = self.config
@@ -112,7 +118,10 @@ class GlmMoeDsaModel:
         return np.asarray(row, dtype=np.float32).copy()
 
     def _linear(self, prefix, x, bias=False):
-        y = self.backend.matvec(self._weight(prefix + '.weight'), x)
+        if self.packed_weights:
+            y = self.weights.linear(prefix + '.weight', x, self.backend)
+        else:
+            y = self.backend.matvec(self._weight(prefix + '.weight'), x)
         if bias:
             y = y + self._weight(prefix + '.bias')
         return y
@@ -210,6 +219,8 @@ class GlmMoeDsaModel:
             self._linear(prefix + '.gate_proj', x), self._linear(prefix + '.up_proj', x)))
 
     def _expert(self, prefix, expert, x):
+        if self.packed_weights:
+            return self._mlp(prefix + f'.experts.{expert}', x)
         # Native GLM checkpoint uses individual experts. Packed tensors support
         # the upstream runtime's in-memory representation too.
         try:
