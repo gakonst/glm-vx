@@ -208,7 +208,8 @@ def test_invalid_decode_configuration(tmp_path, option, value):
         GGUFStore(tmp_path / "unused.gguf", **{option: value})
 
 
-def test_iq1_s_independent_known_patterns(tmp_path):
+@pytest.mark.parametrize("threads", [1, 4])
+def test_iq1_s_independent_known_patterns(tmp_path, threads):
     # Independent GGML C reference, pinned when these vectors were audited:
     # https://github.com/ggml-org/llama.cpp/blob/11fe02151f79c41d0d4af7da708755d73b9c0da6/ggml/src/ggml-common.h#L1131
     # https://github.com/ggml-org/llama.cpp/blob/11fe02151f79c41d0d4af7da708755d73b9c0da6/ggml/src/ggml-quants.c#L2651
@@ -242,7 +243,7 @@ def test_iq1_s_independent_known_patterns(tmp_path):
                 expected[row, start:start + 8] = d * (2 * group + 1) * (np.array(grid[index]) + delta)
             encoded[row, 34 + group * 2:36 + group * 2] = np.frombuffer(struct.pack("<H", qh), dtype=np.uint8)
     path = write_gguf(tmp_path / "iq1s.gguf", [("weight", encoded, gguf.GGMLQuantizationType.IQ1_S)])
-    with opened(path, decode_rows=1) as store:
+    with opened(path, decode_rows=1, decode_threads=threads) as store:
         assert store.shape("weight") == (2, 256)
         np.testing.assert_array_equal(store.read("weight"), expected)
         np.testing.assert_array_equal(store.read("weight", rows=slice(1, 2)), expected[1:2])
@@ -286,7 +287,7 @@ def test_nonfinite_float_data_rejected(tmp_path, qtype, dtype, value):
 def test_quantized_row_slice_clipping_and_empty_ranges(tmp_path, row_slice):
     encoded, expected = q8_bytes((7, 64))
     path = write_gguf(tmp_path / "rows.gguf", [("matrix", encoded, gguf.GGMLQuantizationType.Q8_0)])
-    with opened(path, decode_rows=1) as store:
+    with opened(path, decode_rows=1, decode_threads=threads) as store:
         np.testing.assert_array_equal(store.read("matrix", rows=row_slice), expected[row_slice])
 
 
@@ -330,3 +331,18 @@ def test_nonfinite_quantized_data_rejected(tmp_path, scale):
         with np.errstate(invalid="ignore"):
             with pytest.raises(CheckpointError, match="nonfinite"):
                 store.read("weight")
+
+
+def test_parallel_decode_matches_reference_rows_and_closes_workers(tmp_path):
+    encoded, expected = q8_bytes((3, 16, 64))
+    path = write_gguf(tmp_path / 'parallel.gguf', [('weight', encoded, gguf.GGMLQuantizationType.Q8_0)])
+    with opened(path, decode_threads=4, decode_rows=2) as store:
+        np.testing.assert_array_equal(store.read('weight', expert=1), expected[1])
+        pool=store.pool
+    assert pool._shutdown
+
+
+@pytest.mark.parametrize('threads',[0,33,True,1.5])
+def test_invalid_decoder_worker_count(tmp_path,threads):
+    with pytest.raises(ValueError,match='decode_threads'):
+        GGUFStore(tmp_path/'absent.gguf',decode_threads=threads)

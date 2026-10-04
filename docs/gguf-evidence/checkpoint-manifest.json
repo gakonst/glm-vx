@@ -1,0 +1,66 @@
+{
+  "repo": "unsloth/GLM-5.3-GGUF",
+  "revision": "346b3591c7f28d1a23716f97a065ecf12ec14771",
+  "files": [
+    {
+      "rfilename": "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00001-of-00006.gguf",
+      "blobId": "01cb03e9ae859179fdb6f3176a229da6cac76050",
+      "size": 9428677,
+      "lfs": {
+        "sha256": "ff3adab0853dfb00bdf3889ec3f5556196f56b65783115720d57767bbd760dd9",
+        "size": 9428677,
+        "pointerSize": 132
+      }
+    },
+    {
+      "rfilename": "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00002-of-00006.gguf",
+      "blobId": "d63a88bfc05276fde859cdea2d13e21d6c88f8e2",
+      "size": 49968868928,
+      "lfs": {
+        "sha256": "659d04cf4fc0b6026944f34c0b590a635803bff06c1775361e28490db7b168f8",
+        "size": 49968868928,
+        "pointerSize": 136
+      }
+    },
+    {
+      "rfilename": "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00003-of-00006.gguf",
+      "blobId": "f3635c46f72254cb569cb91461da55b592fd7393",
+      "size": 49728982688,
+      "lfs": {
+        "sha256": "433302bac0e2d54da64c7c2f28509fa1b235aeccdf5b215a8a446ebaad1b5b27",
+        "size": 49728982688,
+        "pointerSize": 136
+      }
+    },
+    {
+      "rfilename": "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00004-of-00006.gguf",
+      "blobId": "8bd81467d5917357fb90bd57f435a2d2c46d4ea9",
+      "size": 49210788064,
+      "lfs": {
+        "sha256": "d0a6f19452d5b5cd498e1eb8fbe856e00aed7da1f80c27c095301eabe81e9bc1",
+        "size": 49210788064,
+        "pointerSize": 136
+      }
+    },
+    {
+      "rfilename": "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00005-of-00006.gguf",
+      "blobId": "ed246f3a8191e68dbd583c060c49a0a7ab613d72",
+      "size": 49471673632,
+      "lfs": {
+        "sha256": "2ea1537ffab40fa8b8584a8647ec10fbaa6199dfed45e4019b822da2b319db37",
+        "size": 49471673632,
+        "pointerSize": 136
+      }
+    },
+    {
+      "rfilename": "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00006-of-00006.gguf",
+      "blobId": "93984b6575f883b6b2e02710d2de55a33f84f981",
+      "size": 18325623904,
+      "lfs": {
+        "sha256": "42a76ef04ffc5e321e1240f4e572b6fa6fc3315da5bea22fb598d7460db210fe",
+        "size": 18325623904,
+        "pointerSize": 136
+      }
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "status": "completed_cpu_poc",
+  "model": "unsloth/GLM-5.3-GGUF",
+  "revision": "346b3591c7f28d1a23716f97a065ecf12ec14771",
+  "quantization": "UD-IQ1_S mixed-bit",
+  "weight_bytes": 216715365893,
+  "all_six_shards_sha256_verified": true,
+  "dimensions": {
+    "num_hidden_layers": 78,
+    "hidden_size": 6144,
+    "vocab_size": 154880,
+    "n_routed_experts": 256
+  },
+  "engine_commit": "4d3f1f6ba9fc27a5d4203da5049e0fa43f44b969",
+  "backend": "vx-cpu-f32",
+  "gguf_decoder_version": "0.17.1",
+  "raw_prompt": "Hello",
+  "prompt_token_ids": [
+    9703
+  ],
+  "generated_token_ids": [
+    154820
+  ],
+  "generated_text": "<|endoftext|>",
+  "combined_text": "Hello<|endoftext|>",
+  "finish_reason": "stop",
+  "elapsed_seconds": 430.4572966173291,
+  "first_token_seconds_including_load": 430.4495368413627,
+  "peak_rss_bytes": 26480058368,
+  "numpy_reference_first_token_matches": true,
+  "top5_token_sets_match": true,
+  "max_common_top5_logit_difference": 1.8596649169921875e-05,
+  "http_first_token_matches": true,
+  "http_sse_heartbeats": 42,
+  "http_elapsed_seconds": 423.41685354709625,
+  "native_library_sha256": "8ab282ede08bda26aa678fee30d87cc6abf57cdaea95902cb93446a10e7efbbe",
+  "limits": [
+    "Raw Hello completion produced end-of-text immediately; this validates a forward pass and serving, not a useful chat answer.",
+    "Vx, NumPy reference, and HTTP CPU proof runs overlapped on a shared machine; wall times are not a controlled speed benchmark.",
+    "A prior longer smoke attempt was interrupted before producing any tokens to reduce the run length; some file pages were warm.",
+    "Same quantized checkpoint and model graph; agreement with NumPy is not independent full-model validation or original FP8 checkpoint parity.",
+    "No GPU used, no tensor-core or production-throughput claim."
+  ]
+}

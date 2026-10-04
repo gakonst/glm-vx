@@ -1,0 +1,29 @@
+{
+  "updated": 1791088558.1781762,
+  "files": {
+    "GLM-5.3-UD-IQ1_S-00001-of-00006.gguf": {
+      "bytes": 9428677,
+      "state": "verified"
+    },
+    "GLM-5.3-UD-IQ1_S-00004-of-00006.gguf": {
+      "bytes": 49210788064,
+      "state": "verified"
+    },
+    "GLM-5.3-UD-IQ1_S-00003-of-00006.gguf": {
+      "bytes": 49728982688,
+      "state": "verified"
+    },
+    "GLM-5.3-UD-IQ1_S-00002-of-00006.gguf": {
+      "bytes": 49968868928,
+      "state": "verified"
+    },
+    "GLM-5.3-UD-IQ1_S-00005-of-00006.gguf": {
+      "bytes": 49471673632,
+      "state": "verified"
+    },
+    "GLM-5.3-UD-IQ1_S-00006-of-00006.gguf": {
+      "bytes": 18325623904,
+      "state": "verified"
+    }
+  }
+}

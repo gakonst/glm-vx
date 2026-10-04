@@ -7,14 +7,17 @@ from pathlib import Path
 import math
 import re
 import struct
+from concurrent.futures import ThreadPoolExecutor, wait
 import numpy as np
 from .checkpoint import CheckpointError
 
 class GGUFStore:
-    def __init__(self,path,*,decode_rows=128,max_decode_bytes=8*1024**3):
+    def __init__(self,path,*,decode_rows=128,max_decode_bytes=8*1024**3,decode_threads=1):
         import gguf
         if type(decode_rows) is not int or decode_rows<1:raise ValueError('decode_rows must be positive')
         if type(max_decode_bytes) is not int or max_decode_bytes<4:raise ValueError('max_decode_bytes must be positive')
+        if type(decode_threads) is not int or not 1<=decode_threads<=32:raise ValueError('decode_threads must be 1..32')
+        self.pool=ThreadPoolExecutor(max_workers=decode_threads) if decode_threads>1 else None
         self.readers=[];self.tensors={};self.metadata={};self.closed=False
         self.decode_rows=decode_rows;self.max_decode_bytes=max_decode_bytes
         path=Path(path)
@@ -94,15 +97,24 @@ class GGUFStore:
             else:
                 encoded=data.reshape(-1,data.shape[-1])
                 decoded=out.reshape(-1,shape[-1])
-                for start in range(0,len(encoded),self.decode_rows):
-                    decoded[start:start+self.decode_rows]=gguf.quants.dequantize(encoded[start:start+self.decode_rows],tensor.tensor_type)
+                def chunk(start):
+                    decoded[start:start+self.decode_rows]=gguf.quants.dequantize(np.asarray(encoded[start:start+self.decode_rows]),tensor.tensor_type)
+                starts=range(0,len(encoded),self.decode_rows)
+                if self.pool is None:
+                    for start in starts:chunk(start)
+                else:
+                    futures=[self.pool.submit(chunk,start) for start in starts]
+                    wait(futures)
+                    for future in futures:future.result()
             if not np.isfinite(out).all():raise CheckpointError('nonfinite decoded GGUF tensor: '+name)
         out.flags.writeable=False
         return out
 
     def close(self):
         if self.closed:return
-        self.closed=True;self.tensors.clear()
+        self.closed=True
+        if self.pool is not None:self.pool.shutdown(wait=True)
+        self.tensors.clear()
         for reader in self.readers:
             reader.tensors.clear();reader.fields.clear();reader.data._mmap.close()
         self.readers.clear()

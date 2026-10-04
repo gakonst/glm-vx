@@ -31,11 +31,11 @@ _ALIASES={
 }
 
 class GGUFCheckpoint:
-    def __init__(self,path,config,*,cache_bytes=512*1024**2,decode_rows=128):
+    def __init__(self,path,config,*,cache_bytes=512*1024**2,decode_rows=128,decode_threads=1):
         if type(cache_bytes) is not int or cache_bytes<0:raise ValueError('cache_bytes must be nonnegative')
         self.config=dict(config);self.validated=GLMConfig.from_dict(config)
         self.cache=OrderedDict();self.cache_bytes=0;self.limit=cache_bytes
-        self.store=GGUFStore(path,decode_rows=decode_rows)
+        self.store=GGUFStore(path,decode_rows=decode_rows,decode_threads=decode_threads)
         try:
             self._validate_metadata()
             self.validate_manifest()

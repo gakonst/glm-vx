@@ -28,6 +28,7 @@ files, preserves a 10 GiB disk margin and verifies the matching official config,
 tokenizer and chat template. It does not download a second copy to a Hub cache.
 Remove `--raw` to format the user message with the pinned official chat template;
 this selects low reasoning effort and adds the model's thinking prefix.
+`--reasoning-effort` accepts low/high/max.
 Generated output may be truncated before reasoning or the final answer finishes.
 
 For HTTP serving:
@@ -50,7 +51,9 @@ before inference. It decodes only the selected expert or requested embedding
 rows; it never expands an entire bank of 256 experts. Other matrices are decoded
 as needed, in bounded row chunks. The decoded-weight LRU defaults to 512 MiB
 (`--decoded-cache-mib`), but this is not a total-process memory cap: live matrices,
-activations, decoder scratch and mapped file pages consume additional RAM. A
+activations, decoder scratch and mapped file pages consume additional RAM. Optional
+`--decode-threads 4` unpacks disjoint row chunks concurrently; this uses CPU
+threads only and can increase temporary memory. A
 full vocabulary projection can temporarily require several GiB. OS paging makes
 this possible without fitting all weights in RAM; it does not make it fast.
 

@@ -1,0 +1,18 @@
+{
+  "config.json": {
+    "bytes": 29464,
+    "sha256": "3ac72612095574542f7fff847ada8e59d9199dd8af44bdf625d7e02615572e69"
+  },
+  "tokenizer.json": {
+    "bytes": 20217442,
+    "sha256": "19e773648cb4e65de8660ea6365e10acca112d42a854923df93db4a6f333a82d"
+  },
+  "tokenizer_config.json": {
+    "bytes": 761,
+    "sha256": "98b1271574f41abf89427ae2dda030d94dc9478f0edc5a8bd240db213c6fd5fc"
+  },
+  "chat_template.jinja": {
+    "bytes": 10734,
+    "sha256": "3740abcea51c45830cb3ca562084ad5fb2ef53589376f73332e9886f93ade41c"
+  }
+}

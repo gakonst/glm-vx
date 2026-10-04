@@ -1,0 +1,74 @@
+.....................................................FFFFF............   [100%]
+=================================== FAILURES ===================================
+________ test_quantized_row_slice_clipping_and_empty_ranges[row_slice0] ________
+
+tmp_path = PosixPath('/tmp/pytest-of-nanocodex/pytest-32/test_quantized_row_slice_clipp0')
+row_slice = slice(None, None, None)
+
+    @pytest.mark.parametrize("row_slice", [slice(None), slice(-100, 100), slice(-3, -1), slice(100, 200), slice(5, 2)])
+    def test_quantized_row_slice_clipping_and_empty_ranges(tmp_path, row_slice):
+        encoded, expected = q8_bytes((7, 64))
+        path = write_gguf(tmp_path / "rows.gguf", [("matrix", encoded, gguf.GGMLQuantizationType.Q8_0)])
+>       with opened(path, decode_rows=1, decode_threads=threads) as store:
+E       NameError: name 'threads' is not defined
+
+tests/test_gguf_reader.py:290: NameError
+________ test_quantized_row_slice_clipping_and_empty_ranges[row_slice1] ________
+
+tmp_path = PosixPath('/tmp/pytest-of-nanocodex/pytest-32/test_quantized_row_slice_clipp1')
+row_slice = slice(-100, 100, None)
+
+    @pytest.mark.parametrize("row_slice", [slice(None), slice(-100, 100), slice(-3, -1), slice(100, 200), slice(5, 2)])
+    def test_quantized_row_slice_clipping_and_empty_ranges(tmp_path, row_slice):
+        encoded, expected = q8_bytes((7, 64))
+        path = write_gguf(tmp_path / "rows.gguf", [("matrix", encoded, gguf.GGMLQuantizationType.Q8_0)])
+>       with opened(path, decode_rows=1, decode_threads=threads) as store:
+E       NameError: name 'threads' is not defined
+
+tests/test_gguf_reader.py:290: NameError
+________ test_quantized_row_slice_clipping_and_empty_ranges[row_slice2] ________
+
+tmp_path = PosixPath('/tmp/pytest-of-nanocodex/pytest-32/test_quantized_row_slice_clipp2')
+row_slice = slice(-3, -1, None)
+
+    @pytest.mark.parametrize("row_slice", [slice(None), slice(-100, 100), slice(-3, -1), slice(100, 200), slice(5, 2)])
+    def test_quantized_row_slice_clipping_and_empty_ranges(tmp_path, row_slice):
+        encoded, expected = q8_bytes((7, 64))
+        path = write_gguf(tmp_path / "rows.gguf", [("matrix", encoded, gguf.GGMLQuantizationType.Q8_0)])
+>       with opened(path, decode_rows=1, decode_threads=threads) as store:
+E       NameError: name 'threads' is not defined
+
+tests/test_gguf_reader.py:290: NameError
+________ test_quantized_row_slice_clipping_and_empty_ranges[row_slice3] ________
+
+tmp_path = PosixPath('/tmp/pytest-of-nanocodex/pytest-32/test_quantized_row_slice_clipp3')
+row_slice = slice(100, 200, None)
+
+    @pytest.mark.parametrize("row_slice", [slice(None), slice(-100, 100), slice(-3, -1), slice(100, 200), slice(5, 2)])
+    def test_quantized_row_slice_clipping_and_empty_ranges(tmp_path, row_slice):
+        encoded, expected = q8_bytes((7, 64))
+        path = write_gguf(tmp_path / "rows.gguf", [("matrix", encoded, gguf.GGMLQuantizationType.Q8_0)])
+>       with opened(path, decode_rows=1, decode_threads=threads) as store:
+E       NameError: name 'threads' is not defined
+
+tests/test_gguf_reader.py:290: NameError
+________ test_quantized_row_slice_clipping_and_empty_ranges[row_slice4] ________
+
+tmp_path = PosixPath('/tmp/pytest-of-nanocodex/pytest-32/test_quantized_row_slice_clipp4')
+row_slice = slice(5, 2, None)
+
+    @pytest.mark.parametrize("row_slice", [slice(None), slice(-100, 100), slice(-3, -1), slice(100, 200), slice(5, 2)])
+    def test_quantized_row_slice_clipping_and_empty_ranges(tmp_path, row_slice):
+        encoded, expected = q8_bytes((7, 64))
+        path = write_gguf(tmp_path / "rows.gguf", [("matrix", encoded, gguf.GGMLQuantizationType.Q8_0)])
+>       with opened(path, decode_rows=1, decode_threads=threads) as store:
+E       NameError: name 'threads' is not defined
+
+tests/test_gguf_reader.py:290: NameError
+=========================== short test summary info ============================
+FAILED tests/test_gguf_reader.py::test_quantized_row_slice_clipping_and_empty_ranges[row_slice0]
+FAILED tests/test_gguf_reader.py::test_quantized_row_slice_clipping_and_empty_ranges[row_slice1]
+FAILED tests/test_gguf_reader.py::test_quantized_row_slice_clipping_and_empty_ranges[row_slice2]
+FAILED tests/test_gguf_reader.py::test_quantized_row_slice_clipping_and_empty_ranges[row_slice3]
+FAILED tests/test_gguf_reader.py::test_quantized_row_slice_clipping_and_empty_ranges[row_slice4]
+5 failed, 65 passed in 0.46s

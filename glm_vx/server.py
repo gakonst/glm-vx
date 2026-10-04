@@ -125,6 +125,7 @@ def main():
     source.add_argument('--checkpoint',help='local safetensors checkpoint directory')
     source.add_argument('--gguf',help='GLM-DSA GGUF first shard or directory; CPU disk-offload PoC')
     p.add_argument('--config',help='HF config.json matching the GGUF; defaults to config.json beside its shards')
+    p.add_argument('--decode-threads',type=int,default=1,help='GGUF unpacking workers, 1..32')
     p.add_argument('--decoded-cache-mib',type=int,default=512,help='bounded GGUF decoded-weight cache')
     p.add_argument('--tokenizer',help='local tokenizer.json')
     p.add_argument('--host',default='127.0.0.1'); p.add_argument('--port',type=int,default=8000)
@@ -158,7 +159,7 @@ def main():
         from .gguf_checkpoint import GGUFCheckpoint
         directory=Path(args.gguf) if Path(args.gguf).is_dir() else Path(args.gguf).parent
         with open(args.config or directory/'config.json') as f:config=json.load(f)
-        weights=GGUFCheckpoint(args.gguf,config,cache_bytes=args.decoded_cache_mib*1024**2)
+        weights=GGUFCheckpoint(args.gguf,config,cache_bytes=args.decoded_cache_mib*1024**2,decode_threads=args.decode_threads)
         if not args.tokenizer and (directory/'tokenizer.json').exists():args.tokenizer=str(directory/'tokenizer.json')
         name='glm-gguf-vx-experimental'
     else:

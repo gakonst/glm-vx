@@ -1,0 +1,188 @@
+{
+  "status": "complete",
+  "backend": "vx-cpu-f32",
+  "checkpoint": "/srv/nanocodex/workspace/models/glm-5.3-iq1s",
+  "engine_commit": "4d3f1f6ba9fc27a5d4203da5049e0fa43f44b969",
+  "gguf_version": "0.17.1",
+  "prompt": "Hello",
+  "formatted_prompt": "Hello",
+  "prompt_token_ids": [
+    9703
+  ],
+  "generated_token_ids": [
+    154820
+  ],
+  "steps": [
+    {
+      "phase": "prefill",
+      "index": 0,
+      "seconds": 423.7143103145063
+    },
+    {
+      "phase": "sample",
+      "index": 0,
+      "token": 154820,
+      "top5": [
+        {
+          "id": 154820,
+          "logit": 7.733119964599609
+        },
+        {
+          "id": 565,
+          "logit": 4.153467655181885
+        },
+        {
+          "id": 59,
+          "logit": 2.9742562770843506
+        },
+        {
+          "id": 4102,
+          "logit": 2.3564882278442383
+        },
+        {
+          "id": 319,
+          "logit": 1.9507155418395996
+        }
+      ],
+      "logits_sha256": "8fe3fccc5f77cbb4b6ac3afe2d65321d8017689082846121945a3b98fbb9bdcd"
+    }
+  ],
+  "scope": "GGUF base decoder using the supplied checkpoint/config; no MTP/speculative decoding.",
+  "dimensions": {
+    "num_hidden_layers": 78,
+    "hidden_size": 6144,
+    "vocab_size": 154880,
+    "n_routed_experts": 256
+  },
+  "tokenizer_sha256": "19e773648cb4e65de8660ea6365e10acca112d42a854923df93db4a6f333a82d",
+  "elapsed_seconds": 430.4572966173291,
+  "peak_rss_bytes": 26480058368,
+  "gguf_metadata": {
+    "general.architecture": "glm-dsa",
+    "general.type": "model",
+    "general.sampling.top_p": 0.949999988079071,
+    "general.sampling.temp": 1.0,
+    "general.name": "Glm-5.3",
+    "general.version": "5.3",
+    "general.basename": "Glm-5.3",
+    "general.quantized_by": "Unsloth",
+    "general.size_label": "256x22B",
+    "general.license": "other",
+    "general.repo_url": "https://huggingface.co/unsloth",
+    "general.tags": [
+      "text-generation"
+    ],
+    "general.languages": [
+      "en",
+      "zh"
+    ],
+    "glm-dsa.block_count": 79,
+    "glm-dsa.context_length": 1048576,
+    "glm-dsa.embedding_length": 6144,
+    "glm-dsa.feed_forward_length": 12288,
+    "glm-dsa.attention.head_count": 64,
+    "glm-dsa.attention.head_count_kv": 1,
+    "glm-dsa.rope.freq_base": 8000000.0,
+    "glm-dsa.attention.layer_norm_rms_epsilon": 9.999999747378752e-06,
+    "glm-dsa.expert_count": 256,
+    "glm-dsa.expert_used_count": 8,
+    "glm-dsa.expert_group_count": 1,
+    "glm-dsa.expert_group_used_count": 1,
+    "glm-dsa.expert_gating_func": 2,
+    "glm-dsa.attention.key_length": 576,
+    "glm-dsa.attention.value_length": 512,
+    "glm-dsa.leading_dense_block_count": 3,
+    "glm-dsa.vocab_size": 154880,
+    "glm-dsa.attention.q_lora_rank": 2048,
+    "glm-dsa.attention.kv_lora_rank": 512,
+    "glm-dsa.attention.key_length_mla": 256,
+    "glm-dsa.attention.value_length_mla": 256,
+    "glm-dsa.expert_feed_forward_length": 2048,
+    "glm-dsa.expert_shared_count": 1,
+    "glm-dsa.expert_weights_scale": 2.5,
+    "glm-dsa.expert_weights_norm": true,
+    "glm-dsa.rope.dimension_count": 64,
+    "glm-dsa.nextn_predict_layers": 1,
+    "glm-dsa.attention.indexer.head_count": 32,
+    "glm-dsa.attention.indexer.key_length": 128,
+    "glm-dsa.attention.indexer.top_k": 2048,
+    "general.quantization_version": 2,
+    "general.file_type": 24,
+    "quantize.imatrix.file": "GLM-5.3-GGUF/imatrix_unsloth.gguf",
+    "quantize.imatrix.dataset": "unsloth_calibration_GLM-5.3.txt",
+    "quantize.imatrix.entries_count": 1065,
+    "quantize.imatrix.chunks_count": 209,
+    "split.no": 0,
+    "split.tensors.count": 1809,
+    "split.count": 6
+  },
+  "source_manifest": {
+    "repo": "unsloth/GLM-5.3-GGUF",
+    "revision": "346b3591c7f28d1a23716f97a065ecf12ec14771",
+    "files": [
+      {
+        "rfilename": "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00001-of-00006.gguf",
+        "blobId": "01cb03e9ae859179fdb6f3176a229da6cac76050",
+        "size": 9428677,
+        "lfs": {
+          "sha256": "ff3adab0853dfb00bdf3889ec3f5556196f56b65783115720d57767bbd760dd9",
+          "size": 9428677,
+          "pointerSize": 132
+        }
+      },
+      {
+        "rfilename": "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00002-of-00006.gguf",
+        "blobId": "d63a88bfc05276fde859cdea2d13e21d6c88f8e2",
+        "size": 49968868928,
+        "lfs": {
+          "sha256": "659d04cf4fc0b6026944f34c0b590a635803bff06c1775361e28490db7b168f8",
+          "size": 49968868928,
+          "pointerSize": 136
+        }
+      },
+      {
+        "rfilename": "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00003-of-00006.gguf",
+        "blobId": "f3635c46f72254cb569cb91461da55b592fd7393",
+        "size": 49728982688,
+        "lfs": {
+          "sha256": "433302bac0e2d54da64c7c2f28509fa1b235aeccdf5b215a8a446ebaad1b5b27",
+          "size": 49728982688,
+          "pointerSize": 136
+        }
+      },
+      {
+        "rfilename": "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00004-of-00006.gguf",
+        "blobId": "8bd81467d5917357fb90bd57f435a2d2c46d4ea9",
+        "size": 49210788064,
+        "lfs": {
+          "sha256": "d0a6f19452d5b5cd498e1eb8fbe856e00aed7da1f80c27c095301eabe81e9bc1",
+          "size": 49210788064,
+          "pointerSize": 136
+        }
+      },
+      {
+        "rfilename": "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00005-of-00006.gguf",
+        "blobId": "ed246f3a8191e68dbd583c060c49a0a7ab613d72",
+        "size": 49471673632,
+        "lfs": {
+          "sha256": "2ea1537ffab40fa8b8584a8647ec10fbaa6199dfed45e4019b822da2b319db37",
+          "size": 49471673632,
+          "pointerSize": 136
+        }
+      },
+      {
+        "rfilename": "UD-IQ1_S/GLM-5.3-UD-IQ1_S-00006-of-00006.gguf",
+        "blobId": "93984b6575f883b6b2e02710d2de55a33f84f981",
+        "size": 18325623904,
+        "lfs": {
+          "sha256": "42a76ef04ffc5e321e1240f4e572b6fa6fc3315da5bea22fb598d7460db210fe",
+          "size": 18325623904,
+          "pointerSize": 136
+        }
+      }
+    ]
+  },
+  "first_token_seconds_including_load": 430.4495368413627,
+  "text": "<|endoftext|>",
+  "finish_reason": "stop"
+}

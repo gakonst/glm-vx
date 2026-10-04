@@ -13,7 +13,7 @@ from .model import Model
 from .gguf_checkpoint import GGUFCheckpoint
 
 
-def render_prompt(directory,prompt,raw=False):
+def render_prompt(directory,prompt,raw=False,reasoning_effort="low"):
     if raw:return prompt
     from jinja2.sandbox import ImmutableSandboxedEnvironment
     env=ImmutableSandboxedEnvironment(extensions=['jinja2.ext.loopcontrols'])
@@ -22,13 +22,15 @@ def render_prompt(directory,prompt,raw=False):
     env.filters['tojson']=lambda value,**kwargs:json.dumps(value,ensure_ascii=False,**kwargs)
     template=env.from_string((directory/'chat_template.jinja').read_text())
     return template.render(messages=[{'role':'user','content':prompt}],tools=None,
-                           add_generation_prompt=True,clear_thinking=True,reasoning_effort='low')
+                           add_generation_prompt=True,clear_thinking=True,reasoning_effort=reasoning_effort)
 
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--gguf',required=True)
     p.add_argument('--config')
+    p.add_argument('--decode-threads',type=int,default=1)
+    p.add_argument('--reasoning-effort',choices=['low','high','max'],default='low')
     p.add_argument('--prompt',default='Hello')
     p.add_argument('--raw',action='store_true',help='raw completion, without the official chat template')
     p.add_argument('--max-tokens',type=int,default=8)
@@ -41,7 +43,7 @@ def main():
     from tokenizers import Tokenizer
     tokenizer=Tokenizer.from_file(str(directory/'tokenizer.json'))
     config=json.loads(Path(a.config or directory/'config.json').read_text())
-    formatted=render_prompt(directory,a.prompt,a.raw)
+    formatted=render_prompt(directory,a.prompt,a.raw,a.reasoning_effort)
     tokens=tokenizer.encode(formatted,add_special_tokens=False).ids
     if not tokens or len(tokens)+a.max_tokens>config['max_position_embeddings']:p.error('empty prompt or context overflow')
     if a.backend=='vx':
@@ -55,7 +57,7 @@ def main():
     try:commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=Path(__file__).parent,text=True,stderr=subprocess.DEVNULL).strip()
     except (OSError,subprocess.CalledProcessError):commit=None
     report={'status':'loading','backend':backend.name,'checkpoint':str(directory),
-            'engine_commit':commit,'gguf_version':importlib.metadata.version('gguf'),
+            'engine_commit':commit,'decode_threads':a.decode_threads,'gguf_version':importlib.metadata.version('gguf'),
             'prompt':a.prompt,'formatted_prompt':formatted,'prompt_token_ids':tokens,
             'generated_token_ids':[],'steps':[],'scope':'GGUF base decoder using the supplied checkpoint/config; no MTP/speculative decoding.',
             'dimensions':{k:config[k] for k in ('num_hidden_layers','hidden_size','vocab_size','n_routed_experts')},
@@ -73,7 +75,7 @@ def main():
     weights=None
     try:
         save()
-        weights=GGUFCheckpoint(a.gguf,config,cache_bytes=a.decoded_cache_mib*1024**2)
+        weights=GGUFCheckpoint(a.gguf,config,cache_bytes=a.decoded_cache_mib*1024**2,decode_threads=a.decode_threads)
         report['gguf_metadata']={k:v for k,v in weights.store.metadata.items() if not k.startswith('tokenizer.')}
         manifest=directory/'manifest.json'
         if manifest.exists():report['source_manifest']=json.loads(manifest.read_text())

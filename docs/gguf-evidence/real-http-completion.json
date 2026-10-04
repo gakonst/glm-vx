@@ -1,0 +1,65 @@
+{
+  "status": "complete",
+  "health": {
+    "status": "ok",
+    "model": "glm-gguf-vx-experimental",
+    "backend": "vx-cpu-f32",
+    "active_requests": 0,
+    "reserved_tokens": 0,
+    "max_sequences": 1,
+    "token_budget": 64
+  },
+  "request": {
+    "prompt": "Hello",
+    "max_tokens": 1,
+    "stream": true
+  },
+  "events": [
+    {
+      "seconds": 423.41665568575263,
+      "data": {
+        "id": "cmpl-a8d11d0215cf4678bc12bc80f1aa37b7",
+        "object": "text_completion",
+        "created": 1791088884,
+        "model": "glm-gguf-vx-experimental",
+        "choices": [
+          {
+            "index": 0,
+            "text": "",
+            "token_ids": [
+              154820
+            ],
+            "finish_reason": null
+          }
+        ]
+      }
+    },
+    {
+      "seconds": 423.4168256483972,
+      "data": {
+        "id": "cmpl-a8d11d0215cf4678bc12bc80f1aa37b7",
+        "object": "text_completion",
+        "created": 1791088884,
+        "model": "glm-gguf-vx-experimental",
+        "choices": [
+          {
+            "index": 0,
+            "text": "",
+            "token_ids": [
+              154820
+            ],
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 1,
+          "completion_tokens": 1,
+          "total_tokens": 2
+        }
+      }
+    }
+  ],
+  "heartbeats": 42,
+  "elapsed_seconds": 423.41685354709625,
+  "scope": "Real full GLM-5.3 IQ1_S through local CPU Vx HTTP SSE; other CPU validation jobs ran concurrently."
+}

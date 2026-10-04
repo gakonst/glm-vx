@@ -1,0 +1,126 @@
+{
+  "scope": "Real trained-weight row samples; no full-model generation yet. Native Vx matvec compared with NumPy on the same decoded rows. Quant unpacking is upstream gguf-py.",
+  "results": [
+    {
+      "type": "Q4_K",
+      "shard": "GLM-5.3-UD-IQ1_S-00002-of-00006.gguf",
+      "tensor": "output.weight",
+      "decoded_shape": [
+        8,
+        6144
+      ],
+      "raw_sha256": "4c41437e3440d40638875ceb40fde000d770b90e8507473270900e0fbd741981",
+      "max_abs_vx_vs_numpy_error": 5.774199962615967e-08
+    },
+    {
+      "type": "Q8_0",
+      "shard": "GLM-5.3-UD-IQ1_S-00002-of-00006.gguf",
+      "tensor": "blk.0.attn_k_b.weight",
+      "decoded_shape": [
+        8,
+        192
+      ],
+      "raw_sha256": "1677b61ecfd4e574b491488d88c2e2782bf07f29a0e743582583ecb642626248",
+      "max_abs_vx_vs_numpy_error": 9.313225746154785e-10
+    },
+    {
+      "type": "Q5_K",
+      "shard": "GLM-5.3-UD-IQ1_S-00002-of-00006.gguf",
+      "tensor": "blk.0.attn_output.weight",
+      "decoded_shape": [
+        8,
+        16384
+      ],
+      "raw_sha256": "24533e6aa6542eb26b0e5273aa53314d89a35b1f6227d4a8e24d95e60b0a8793",
+      "max_abs_vx_vs_numpy_error": 4.0046870708465576e-08
+    },
+    {
+      "type": "Q6_K",
+      "shard": "GLM-5.3-UD-IQ1_S-00002-of-00006.gguf",
+      "tensor": "blk.0.ffn_down.weight",
+      "decoded_shape": [
+        8,
+        12288
+      ],
+      "raw_sha256": "7a94074e5bf9e22eac1e4d7a533bf3bea345cacb7fd72858002c21323c520484",
+      "max_abs_vx_vs_numpy_error": 4.44706529378891e-08
+    },
+    {
+      "type": "F32",
+      "shard": "GLM-5.3-UD-IQ1_S-00002-of-00006.gguf",
+      "tensor": "blk.0.indexer.proj.weight",
+      "decoded_shape": [
+        8,
+        6144
+      ],
+      "raw_sha256": "0f9ae2a982ba4afe03fd17903b08619146b8b2ee2b3046057798ec62fc91a580",
+      "max_abs_vx_vs_numpy_error": 1.564621925354004e-07
+    },
+    {
+      "type": "IQ3_XXS",
+      "shard": "GLM-5.3-UD-IQ1_S-00002-of-00006.gguf",
+      "tensor": "blk.3.ffn_down_exps.weight",
+      "decoded_shape": [
+        8,
+        2048
+      ],
+      "raw_sha256": "3ab590b8d769c7ff33588d5b9275cf6fd2bf3d013d215b87279bdfd7a745aab5",
+      "max_abs_vx_vs_numpy_error": 8.381903171539307e-09
+    },
+    {
+      "type": "IQ1_S",
+      "shard": "GLM-5.3-UD-IQ1_S-00002-of-00006.gguf",
+      "tensor": "blk.3.ffn_gate_exps.weight",
+      "decoded_shape": [
+        8,
+        6144
+      ],
+      "raw_sha256": "4afbb9d1c999ac5d0f87e700c28a42437e3945c5bc450860d1e11ef6c7268c3c",
+      "max_abs_vx_vs_numpy_error": 3.3527612686157227e-08
+    },
+    {
+      "type": "IQ2_XXS",
+      "shard": "GLM-5.3-UD-IQ1_S-00002-of-00006.gguf",
+      "tensor": "blk.4.ffn_gate_exps.weight",
+      "decoded_shape": [
+        8,
+        6144
+      ],
+      "raw_sha256": "dc4e78634a364c4a4f814468aa91555e93b88b0cc63ceed1b5f4aa62511fd581",
+      "max_abs_vx_vs_numpy_error": 1.6763806343078613e-08
+    },
+    {
+      "type": "IQ4_XS",
+      "shard": "GLM-5.3-UD-IQ1_S-00002-of-00006.gguf",
+      "tensor": "blk.8.ffn_down_exps.weight",
+      "decoded_shape": [
+        8,
+        2048
+      ],
+      "raw_sha256": "ec17e86b26f5d52a5162dbc60639c649ed04050f5b32d986e45f379c7a779a9d",
+      "max_abs_vx_vs_numpy_error": 1.0069925338029861e-08
+    },
+    {
+      "type": "Q3_K",
+      "shard": "GLM-5.3-UD-IQ1_S-00006-of-00006.gguf",
+      "tensor": "blk.78.ffn_down_exps.weight",
+      "decoded_shape": [
+        8,
+        2048
+      ],
+      "raw_sha256": "48f8fbeaccec337e3e1db3597fbb4f46dde08dbaf5c3b597f1d0e5dcf9567283",
+      "max_abs_vx_vs_numpy_error": 8.847564458847046e-09
+    },
+    {
+      "type": "Q2_K",
+      "shard": "GLM-5.3-UD-IQ1_S-00006-of-00006.gguf",
+      "tensor": "blk.78.ffn_gate_exps.weight",
+      "decoded_shape": [
+        8,
+        6144
+      ],
+      "raw_sha256": "f35a6885d3b5b02882711a60e84386f0b0350ac0ab7199ea69f38f2010de02b5",
+      "max_abs_vx_vs_numpy_error": 6.938353180885315e-08
+    }
+  ]
+}
