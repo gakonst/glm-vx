@@ -1,0 +1,264 @@
+{
+  "base_revision": "3ae29e5",
+  "finding": "checkpoint DSA scheduling defaults silently select wrong layer topology",
+  "scope": "tiny random F32 CPU models only; no trained model run or weights read",
+  "official_source_execution": "unmodified pinned __post_init__ method AST with a no-op base class; not full Transformers execution",
+  "official_schedule_checks": [
+    {
+      "patch": {},
+      "official_indexer_types": [
+        "full",
+        "full",
+        "full",
+        "full"
+      ],
+      "actual_indexer_types": [
+        "full",
+        "full",
+        "full",
+        "full"
+      ]
+    },
+    {
+      "patch": {
+        "index_topk_freq": 4
+      },
+      "official_indexer_types": [
+        "full",
+        "full",
+        "shared",
+        "shared"
+      ],
+      "actual_indexer_types": [
+        "full",
+        "full",
+        "shared",
+        "shared"
+      ]
+    },
+    {
+      "patch": {
+        "index_skip_topk_offset": 3
+      },
+      "official_indexer_types": [
+        "full",
+        "full",
+        "full",
+        "full"
+      ],
+      "actual_indexer_types": [
+        "full",
+        "full",
+        "full",
+        "full"
+      ]
+    },
+    {
+      "patch": {
+        "index_topk_freq": 4,
+        "index_skip_topk_offset": 3
+      },
+      "official_indexer_types": [
+        "full",
+        "full",
+        "full",
+        "shared"
+      ],
+      "actual_indexer_types": [
+        "full",
+        "full",
+        "full",
+        "shared"
+      ]
+    },
+    {
+      "patch": {
+        "index_topk_pattern": "FSSF"
+      },
+      "official_indexer_types": [
+        "full",
+        "shared",
+        "shared",
+        "full"
+      ],
+      "actual_indexer_types": [
+        "full",
+        "shared",
+        "shared",
+        "full"
+      ]
+    }
+  ],
+  "seed": 31,
+  "tokens": [
+    1,
+    7,
+    2,
+    11,
+    4,
+    9
+  ],
+  "index_topk": 2,
+  "regressions": [
+    {
+      "backend": "NumpyBackend",
+      "execution": "sequential",
+      "before_max_abs_logit_difference": 0.04976215213537216,
+      "before_changed_logit_count": 1024,
+      "total_logits": 1536,
+      "before_index_key_counts": [
+        6,
+        6,
+        6,
+        0
+      ],
+      "after_index_key_counts": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "before_last_layer_selected": [
+        4,
+        0
+      ],
+      "after_last_layer_selected": [
+        0,
+        5
+      ],
+      "after_exact_logit_equality": true
+    },
+    {
+      "backend": "NumpyBackend",
+      "execution": "chunk",
+      "before_max_abs_logit_difference": 0.0316198505461216,
+      "before_changed_logit_count": 256,
+      "total_logits": 256,
+      "before_index_key_counts": [
+        6,
+        6,
+        6,
+        0
+      ],
+      "after_index_key_counts": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "before_last_layer_selected": [
+        4,
+        0
+      ],
+      "after_last_layer_selected": [
+        0,
+        5
+      ],
+      "after_exact_logit_equality": true
+    },
+    {
+      "backend": "VxBackend",
+      "execution": "sequential",
+      "before_max_abs_logit_difference": 0.04976220428943634,
+      "before_changed_logit_count": 1024,
+      "total_logits": 1536,
+      "before_index_key_counts": [
+        6,
+        6,
+        6,
+        0
+      ],
+      "after_index_key_counts": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "before_last_layer_selected": [
+        4,
+        0
+      ],
+      "after_last_layer_selected": [
+        0,
+        5
+      ],
+      "after_exact_logit_equality": true
+    },
+    {
+      "backend": "VxBackend",
+      "execution": "chunk",
+      "before_max_abs_logit_difference": 0.031619831919670105,
+      "before_changed_logit_count": 256,
+      "total_logits": 256,
+      "before_index_key_counts": [
+        6,
+        6,
+        6,
+        0
+      ],
+      "after_index_key_counts": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "before_last_layer_selected": [
+        4,
+        0
+      ],
+      "after_last_layer_selected": [
+        0,
+        5
+      ],
+      "after_exact_logit_equality": true
+    }
+  ],
+  "vx_library_sha256": "a8ec82d570a39c36d7fdfea1117d046f4d8f779b5cf2a19a766e79f2f55e55c8",
+  "sources": [
+    {
+      "file": "configuration_glm_moe_dsa.py",
+      "url": "https://raw.githubusercontent.com/huggingface/transformers/469230357aab0f2b303b0d638c1f8d06edb14184/src/transformers/models/glm_moe_dsa/configuration_glm_moe_dsa.py",
+      "sha256": "1afa39ac6d0b6b374c973ef32c3c318d10c6c957916531e15a286eb5713acaae"
+    },
+    {
+      "file": "modeling_glm_moe_dsa.py",
+      "url": "https://raw.githubusercontent.com/huggingface/transformers/469230357aab0f2b303b0d638c1f8d06edb14184/src/transformers/models/glm_moe_dsa/modeling_glm_moe_dsa.py",
+      "sha256": "039993e90e650395e65ecfd6f803a7200799967b88535f5742c490fe2346f1d8"
+    },
+    {
+      "file": "vllm_dsa_attention.py",
+      "url": "https://raw.githubusercontent.com/vllm-project/vllm/138810056093301f4881050fcf2b1786939da387/vllm/models/deepseek_v32/attention.py",
+      "sha256": "5f79428445612114b2e9bfef8393e0d5e36fff96ec19184d9b2ade54bde8e12c"
+    },
+    {
+      "file": "vllm_dsa_model.py",
+      "url": "https://raw.githubusercontent.com/vllm-project/vllm/138810056093301f4881050fcf2b1786939da387/vllm/models/deepseek_v32/nvidia/model.py",
+      "sha256": "e53c068dc43981c20bfd83384764b57234a7e3c5e5235b988cdecebc1b5788e4"
+    },
+    {
+      "file": "vllm_deepseek_v2.py",
+      "url": "https://raw.githubusercontent.com/vllm-project/vllm/138810056093301f4881050fcf2b1786939da387/vllm/model_executor/models/deepseek_v2.py",
+      "sha256": "5cd8c8883b18cac91979781a8b191703781971d8c59cb9823167cd3e0dfc2408"
+    },
+    {
+      "file": "sglang_model_config.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/92d60351e2eb0dc2a947ff4a18c79bc54b6c77ce/python/sglang/srt/configs/model_config.py",
+      "sha256": "e54adcf0411bc2bddceaefd06dc1e06ed5ce4abdb2076a4fdb792b0e94d9f654"
+    },
+    {
+      "file": "sglang_deepseek_v2.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/92d60351e2eb0dc2a947ff4a18c79bc54b6c77ce/python/sglang/srt/models/deepseek_v2.py",
+      "sha256": "a2afeaf163181a1bb9b40c23925abfddca21eb30b65fefa987d10e55e8a870fa"
+    },
+    {
+      "file": "sglang_forward_mla.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/92d60351e2eb0dc2a947ff4a18c79bc54b6c77ce/python/sglang/srt/models/deepseek_common/attention_forward_methods/forward_mla.py",
+      "sha256": "7533d21070b6c76d3e458ba7873a375f9ed0f4dfbfe3266d490eab1ceac85a07"
+    },
+    {
+      "file": "sglang_index_topk_share.py",
+      "url": "https://raw.githubusercontent.com/sgl-project/sglang/92d60351e2eb0dc2a947ff4a18c79bc54b6c77ce/python/sglang/srt/layers/attention/index_topk_share.py",
+      "sha256": "e4b2218c1b0ef472c5dc51c87e889c10742d33360d3fc7215458b64b6d3deebe"
+    }
+  ]
+}

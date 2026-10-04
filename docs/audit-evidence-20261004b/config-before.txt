@@ -1,0 +1,183 @@
+FFF.F..FF.                                                               [100%]
+=================================== FAILURES ===================================
+____ test_checkpoint_dsa_schedule_defaults_and_precedence[patch0-expected0] ____
+
+patch = {}, expected = ('full', 'full', 'full', 'full')
+
+    @pytest.mark.parametrize('patch,expected', [
+        ({}, ('full',) * 4),
+        ({'index_skip_topk_offset': 3}, ('full',) * 4),
+        ({'index_topk_freq': 4}, ('full', 'full', 'shared', 'shared')),
+        ({'index_topk_freq': 4, 'index_skip_topk_offset': 3},
+         ('full', 'full', 'full', 'shared')),
+        ({'indexer_types': None}, ('full',) * 4),
+        ({'index_topk_pattern': 'FSSF'}, ('full', 'shared', 'shared', 'full')),
+        ({'indexer_types': ['full', 'shared', 'full', 'shared'],
+          'index_topk_pattern': 'FFFF'}, ('full', 'shared', 'full', 'shared')),
+    ])
+    def test_checkpoint_dsa_schedule_defaults_and_precedence(patch, expected):
+        raw = dict(omitted_schedule(), **patch)
+        config = GLMConfig.from_dict(raw)
+>       assert config.indexer_types == expected
+E       AssertionError: assert ('full', 'ful...ll', 'shared') == ('full', 'ful...full', 'full')
+E         
+E         At index 3 diff: 'shared' != 'full'
+E         Use -v to get more diff
+
+tests/test_config_dsa_defaults.py:39: AssertionError
+____ test_checkpoint_dsa_schedule_defaults_and_precedence[patch1-expected1] ____
+
+patch = {'index_skip_topk_offset': 3}
+expected = ('full', 'full', 'full', 'full')
+
+    @pytest.mark.parametrize('patch,expected', [
+        ({}, ('full',) * 4),
+        ({'index_skip_topk_offset': 3}, ('full',) * 4),
+        ({'index_topk_freq': 4}, ('full', 'full', 'shared', 'shared')),
+        ({'index_topk_freq': 4, 'index_skip_topk_offset': 3},
+         ('full', 'full', 'full', 'shared')),
+        ({'indexer_types': None}, ('full',) * 4),
+        ({'index_topk_pattern': 'FSSF'}, ('full', 'shared', 'shared', 'full')),
+        ({'indexer_types': ['full', 'shared', 'full', 'shared'],
+          'index_topk_pattern': 'FFFF'}, ('full', 'shared', 'full', 'shared')),
+    ])
+    def test_checkpoint_dsa_schedule_defaults_and_precedence(patch, expected):
+        raw = dict(omitted_schedule(), **patch)
+        config = GLMConfig.from_dict(raw)
+>       assert config.indexer_types == expected
+E       AssertionError: assert ('full', 'ful...ll', 'shared') == ('full', 'ful...full', 'full')
+E         
+E         At index 3 diff: 'shared' != 'full'
+E         Use -v to get more diff
+
+tests/test_config_dsa_defaults.py:39: AssertionError
+____ test_checkpoint_dsa_schedule_defaults_and_precedence[patch2-expected2] ____
+
+patch = {'index_topk_freq': 4}, expected = ('full', 'full', 'shared', 'shared')
+
+    @pytest.mark.parametrize('patch,expected', [
+        ({}, ('full',) * 4),
+        ({'index_skip_topk_offset': 3}, ('full',) * 4),
+        ({'index_topk_freq': 4}, ('full', 'full', 'shared', 'shared')),
+        ({'index_topk_freq': 4, 'index_skip_topk_offset': 3},
+         ('full', 'full', 'full', 'shared')),
+        ({'indexer_types': None}, ('full',) * 4),
+        ({'index_topk_pattern': 'FSSF'}, ('full', 'shared', 'shared', 'full')),
+        ({'indexer_types': ['full', 'shared', 'full', 'shared'],
+          'index_topk_pattern': 'FFFF'}, ('full', 'shared', 'full', 'shared')),
+    ])
+    def test_checkpoint_dsa_schedule_defaults_and_precedence(patch, expected):
+        raw = dict(omitted_schedule(), **patch)
+        config = GLMConfig.from_dict(raw)
+>       assert config.indexer_types == expected
+E       AssertionError: assert ('full', 'ful...ll', 'shared') == ('full', 'ful...ed', 'shared')
+E         
+E         At index 2 diff: 'full' != 'shared'
+E         Use -v to get more diff
+
+tests/test_config_dsa_defaults.py:39: AssertionError
+____ test_checkpoint_dsa_schedule_defaults_and_precedence[patch4-expected4] ____
+
+patch = {'indexer_types': None}, expected = ('full', 'full', 'full', 'full')
+
+    @pytest.mark.parametrize('patch,expected', [
+        ({}, ('full',) * 4),
+        ({'index_skip_topk_offset': 3}, ('full',) * 4),
+        ({'index_topk_freq': 4}, ('full', 'full', 'shared', 'shared')),
+        ({'index_topk_freq': 4, 'index_skip_topk_offset': 3},
+         ('full', 'full', 'full', 'shared')),
+        ({'indexer_types': None}, ('full',) * 4),
+        ({'index_topk_pattern': 'FSSF'}, ('full', 'shared', 'shared', 'full')),
+        ({'indexer_types': ['full', 'shared', 'full', 'shared'],
+          'index_topk_pattern': 'FFFF'}, ('full', 'shared', 'full', 'shared')),
+    ])
+    def test_checkpoint_dsa_schedule_defaults_and_precedence(patch, expected):
+        raw = dict(omitted_schedule(), **patch)
+        config = GLMConfig.from_dict(raw)
+>       assert config.indexer_types == expected
+E       AssertionError: assert ('full', 'ful...ll', 'shared') == ('full', 'ful...full', 'full')
+E         
+E         At index 3 diff: 'shared' != 'full'
+E         Use -v to get more diff
+
+tests/test_config_dsa_defaults.py:39: AssertionError
+_____________ test_omitted_schedule_executes_every_indexer[False] ______________
+
+batched = False
+
+    @pytest.mark.parametrize('batched', [False, True])
+    def test_omitted_schedule_executes_every_indexer(batched):
+        raw = omitted_schedule()
+        # Exceed top-k so accidental sharing changes the actual sparse attention.
+        raw['index_topk'] = 2
+        weights = tiny_weights(raw, seed=31)
+        expected = GlmMoeDsaModel(dict(raw, indexer_types=['full'] * 4), weights, NumpyBackend())
+        actual = GlmMoeDsaModel(GLMConfig.from_dict(raw).to_dict(), weights, NumpyBackend())
+        actual_cache, expected_cache = actual.new_cache(), expected.new_cache()
+        tokens = [1, 7, 2, 11, 4, 9]
+        if batched:
+            wanted = expected.prefill_chunk(tokens, expected_cache)
+            got = actual.prefill_chunk(tokens, actual_cache)
+        else:
+            wanted = expected.prefill(tokens, expected_cache)
+            got = actual.prefill(tokens, actual_cache)
+        # No numerical tolerance: these must execute the exact same operations.
+>       np.testing.assert_array_equal(got, wanted)
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 1024 / 1536 (66.7%)
+E       Max absolute difference among violations: 0.04976215
+E       Max relative difference among violations: 96.79958
+E        ACTUAL: array([[ 0.135007, -0.07346 ,  0.131493, ...,  0.175377,  0.165408,
+E                0.016799],
+E              [ 0.084785, -0.089676,  0.14657 , ...,  0.05812 ,  0.085646,...
+E        DESIRED: array([[ 0.135007, -0.07346 ,  0.131493, ...,  0.175377,  0.165408,
+E                0.016799],
+E              [ 0.084785, -0.089676,  0.14657 , ...,  0.05812 ,  0.085646,...
+
+tests/test_config_dsa_defaults.py:62: AssertionError
+______________ test_omitted_schedule_executes_every_indexer[True] ______________
+
+batched = True
+
+    @pytest.mark.parametrize('batched', [False, True])
+    def test_omitted_schedule_executes_every_indexer(batched):
+        raw = omitted_schedule()
+        # Exceed top-k so accidental sharing changes the actual sparse attention.
+        raw['index_topk'] = 2
+        weights = tiny_weights(raw, seed=31)
+        expected = GlmMoeDsaModel(dict(raw, indexer_types=['full'] * 4), weights, NumpyBackend())
+        actual = GlmMoeDsaModel(GLMConfig.from_dict(raw).to_dict(), weights, NumpyBackend())
+        actual_cache, expected_cache = actual.new_cache(), expected.new_cache()
+        tokens = [1, 7, 2, 11, 4, 9]
+        if batched:
+            wanted = expected.prefill_chunk(tokens, expected_cache)
+            got = actual.prefill_chunk(tokens, actual_cache)
+        else:
+            wanted = expected.prefill(tokens, expected_cache)
+            got = actual.prefill(tokens, actual_cache)
+        # No numerical tolerance: these must execute the exact same operations.
+>       np.testing.assert_array_equal(got, wanted)
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 256 / 256 (100%)
+E       Max absolute difference among violations: 0.03161985
+E       Max relative difference among violations: 31.713549
+E        ACTUAL: array([ 9.351140e-02,  6.961083e-02,  3.451520e-01, -4.422016e-02,
+E               4.779053e-02, -1.022402e-01,  4.193746e-04, -6.502471e-02,
+E              -2.941011e-02,  2.380742e-01, -1.382761e-01,  1.005132e-01,...
+E        DESIRED: array([ 0.090759,  0.067722,  0.342089, -0.046052,  0.059042, -0.118042,
+E               0.004771, -0.072443, -0.022738,  0.231871, -0.127363,  0.081112,
+E               0.062086,  0.125929,  0.150235, -0.012632, -0.178666,  0.185012,...
+
+tests/test_config_dsa_defaults.py:62: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_config_dsa_defaults.py::test_checkpoint_dsa_schedule_defaults_and_precedence[patch0-expected0]
+FAILED tests/test_config_dsa_defaults.py::test_checkpoint_dsa_schedule_defaults_and_precedence[patch1-expected1]
+FAILED tests/test_config_dsa_defaults.py::test_checkpoint_dsa_schedule_defaults_and_precedence[patch2-expected2]
+FAILED tests/test_config_dsa_defaults.py::test_checkpoint_dsa_schedule_defaults_and_precedence[patch4-expected4]
+FAILED tests/test_config_dsa_defaults.py::test_omitted_schedule_executes_every_indexer[False]
+FAILED tests/test_config_dsa_defaults.py::test_omitted_schedule_executes_every_indexer[True]
+6 failed, 4 passed in 0.17s

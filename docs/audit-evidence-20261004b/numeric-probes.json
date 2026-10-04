@@ -1,0 +1,34 @@
+{
+  "underflow_router_ids": [
+    3,
+    2
+  ],
+  "underflow_router_weights": [
+    0.0,
+    0.0
+  ],
+  "zero_rmsnorm": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "zero_layernorm": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "extreme_finite_softmax": [
+    1.0,
+    0.0
+  ]
+}

@@ -192,6 +192,12 @@ class GLMConfig:
         if unknown:
             raise ConfigError(f"unknown configuration fields: {sorted(unknown)}")
         kwargs = {k: v for k, v in data.items() if k in names}
+        # Checkpoint omissions follow the official architecture defaults. The
+        # dataclass convenience defaults describe GLM-5.3, whose checkpoint
+        # explicitly supplies frequency=4 and offset=3; do not inject that
+        # model-specific sharing schedule into other valid checkpoints.
+        kwargs.setdefault("index_topk_freq", 1)
+        kwargs.setdefault("index_skip_topk_offset", 2)
         rope = data.get("rope_parameters", {"rope_type": "default", "rope_theta": 8_000_000.0})
         if not isinstance(rope, dict) or rope.get("rope_type") != "default" or set(rope) - {"rope_type", "rope_theta"}:
             raise ConfigError("only default RoPE is supported")
