@@ -35,7 +35,8 @@ seeds, and one BLAS/OpenMP thread. No shell command strings are interpolated.
 ## Required gates and provenance
 
 Each candidate must build successfully and pass the fixed model, packed-model,
-backend, batch-prefill, top-k, trace, cache, scheduler and HTTP lifecycle tests. Selected synthetic packed-codec tests
+backend, batch-prefill (including singleton packed dispatch and 1–17-row tails),
+top-k, trace, cache, scheduler and HTTP lifecycle tests. Selected synthetic packed-codec tests
 also run against the independently pinned native GGML codec reference. The
 reference's source hashes and library fingerprint are recorded and rechecked;
 missing reference assets fail the run. No trained GGUF rows are accessed.

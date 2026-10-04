@@ -60,7 +60,8 @@ Source/config/library fingerprints are checked again at completion.
 `--contract` reuses **only** existing config/checkpoint identity. Its thresholds
 are neither edited nor used to grant eligibility. Checkpoint SHA256 values are
 explicitly recorded as **declared, not rehashed**; shard size/mtime are checked
-before and after. Teacher-forced tokens are recorded separately. No 216 GB hash
+before and after. The shard paths actually opened by the loader must match the
+bound set; a neighboring unrelated checkpoint is rejected. Teacher-forced tokens are recorded separately. No 216 GB hash
 scan is performed. A complete trace receipt still has `eligible:false`; an
 independently approved comparison contract is a separate requirement. Exceptions
 produce a `failed` receipt with a possibly partial NPZ, never a complete one.
@@ -79,7 +80,7 @@ For each position/layer, NPZ captures:
   pairs explicitly if comparing membership/weights with a score-sorted router.
 - `pN.logits`: complete final vocabulary logits.
 
-## Tiny validation completed; trained run intentionally not started
+## Tiny validation and trained comparison
 
 `tests/test_official_gguf_trace.py` runs in the isolated official environment:
 **23 passed in 5.42 seconds**. No test opens the trained checkpoint. Tests include:
@@ -98,11 +99,11 @@ For each position/layer, NPZ captures:
   using an explicitly injected tiny checkpoint provider.
 
 `validation/evidence/official-streamed-tiny-20261004.json` binds the test result
-and dependency fingerprints. Full trained correctness/performance/RSS remain
-unmeasured until the root schedules the command below. Original failed gate
-receipts and all thresholds remain untouched.
+and dependency fingerprints. The full trained run and its independent Vx comparison are recorded in the
+[current integration report](../docs/OPTIMIZATION-PROGRESS.md). Original failed
+gate receipts and all thresholds remain untouched.
 
-## Ready command (root schedules after other trained IO finishes)
+## Reproduce a trace
 
 The already-installed environment is in this parity worktree. It can run the
 script from another checkout by setting that checkout's `PYTHONPATH`/cwd; the
@@ -130,3 +131,42 @@ pytest `9.1.1`. The environment was aligned to the existing verified codec with:
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 PYTHONPATH="$PWD" \
   build/official-venv/bin/python -m pytest tests/test_official_gguf_trace.py -q
 ```
+
+## Compare to a bound Vx trace
+
+```sh
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 \
+  .venv/bin/python -m validation.export_vx_trace \
+  --gguf /path/to/glm-5.3-iq1s \
+  --contract docs/optimization-evidence/frozen-trained-contract.json \
+  --library kernels/build-o3/libglm_vx.so --packed-weights \
+  --tokens 9703 10056 --output build/my-vx-trace
+.venv/bin/python -m validation.compare_official_trace \
+  --contract docs/optimization-evidence/frozen-trained-contract.json \
+  --config /path/to/glm-5.3-iq1s/config.json \
+  --reference build/my-official-trace --candidate build/my-vx-trace \
+  --library kernels/build-o3/libglm_vx.so --output build/my-comparison.json
+```
+
+Use the same contract path/content and token IDs for both exporters, and a fresh
+output path for every run. A manifest alongside the checkpoint must identify the
+same declared shard digests. The candidate fingerprints actual imported local
+modules, the independently validated GGUF decoder, NumPy and the selected native
+library; all are checked again after serialization. The comparator verifies
+receipt/archive hashes, loaded shard bindings, every layer and all vocabulary
+logits for every required position. Missing, skipped or stale data fails.
+
+DSA comparison is exact causal membership, retaining raw official selected slots
+in the archive. Expert IDs compare exactly after canonical sorting; their weights
+move with the corresponding IDs. Raw ordered arrays are never rewritten. Routing
+weights use the inherited layer-output budget as an explicitly uncalibrated
+additional diagnostic. Every numerical failure is retained; budgets remain the
+original values. The old contract's producer/archive fields describe the historical
+expanded reference, so this comparator records the current producer/archive pins
+separately and explicitly reuses only geometry, weights/config and budgets.
+
+Passing a finite comparison still sets `release_eligible:false`: it is not a
+producer attestation, original-FP8 quality validation, held-out prompt suite,
+long-context proof, or permission to alter tolerances. Mutation tests in
+`tests/test_official_trace_comparison.py` verify rejection behavior independently
+of either model implementation.

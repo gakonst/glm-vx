@@ -216,11 +216,14 @@ def test_cli_receipt_complete_or_failed_without_trained_io(tmp_path,monkeypatch,
     (folder/'fixture.gguf').write_bytes(b'fixture file, checkpoint provider replaced only in this test')
     contract=tmp_path/'contract.json'
     contract.write_text(json.dumps({'pins':{'config_sha256':tool.sha_file(folder/'config.json'), 'weights_sha256':{'fixture.gguf':'a'*64}}}))
+    (folder/'manifest.json').write_text(json.dumps({'files':[{'rfilename':'fixture.gguf','lfs':{'sha256':'a'*64}}]}))
     if corrupt:
         w['model.layers.0.input_layernorm.weight']=w['model.layers.0.input_layernorm.weight'].astype(np.float64)
     closed=[]
     class FixtureCheckpoint:
         def __init__(self,path,config,**kwargs):
+            from types import SimpleNamespace
+            self.store=SimpleNamespace(paths=[folder/'fixture.gguf'])
             assert kwargs['cache_bytes']==0
         def tensor(self,name,*,rows=None):
             value=w[name]
@@ -240,6 +243,7 @@ def test_cli_receipt_complete_or_failed_without_trained_io(tmp_path,monkeypatch,
     assert receipt['status']==('failed' if corrupt else 'complete')
     assert receipt['eligible'] is False
     assert closed==[True]
+    assert receipt['loaded_checkpoint_paths']=={'fixture.gguf':str((folder/'fixture.gguf').resolve())}
     if not corrupt:
         with np.load(output/'arrays.npz') as archive:
             np.testing.assert_array_equal(archive['p1.logits'],expected[1])

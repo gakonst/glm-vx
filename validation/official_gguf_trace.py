@@ -309,13 +309,17 @@ def dependency_pins(torch, modeling, configuration):
         paths += [Path(distribution.locate_file(file)) for file in distribution.files or []
                   if Path(file).name in ('RECORD','direct_url.json','METADATA')]
     paths += sorted(Path(gguf.quants.__file__).parent.glob('*.py'))
-    paths += [root/name for name in ('validation/official_gguf_trace.py', 'glm_vx/gguf_checkpoint.py', 'glm_vx/gguf_reader.py', 'glm_vx/config.py', 'metadata/sources.json', 'docs/parity-evidence/ggml-codec-parity.json')]
+    paths += [Path(__file__).resolve(), root/'metadata/sources.json', codec_evidence]
+    paths += [Path(importlib.import_module(name).__file__).resolve() for name in
+              ('validation.trace_identity','validation.trace_gate','glm_vx.gguf_checkpoint',
+               'glm_vx.gguf_reader','glm_vx.config','glm_vx.checkpoint')]
     hashes = {str(path):sha_file(path) for path in paths}
     versions = {name:importlib.metadata.version(name) for name in ('torch','transformers','numpy','gguf','huggingface-hub')}
     return {'files_sha256':hashes,'versions':versions}
 
 
 def main(argv=None):
+    from validation.trace_identity import bind_model, bind_loaded
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--gguf', type=Path, required=True)
     parser.add_argument('--contract', type=Path, required=True, help='existing frozen provenance; budgets are not modified or used as a promotion gate')
@@ -340,11 +344,8 @@ def main(argv=None):
     if torch.get_num_interop_threads() != 1:
         torch.set_num_interop_threads(1)
     pins = dependency_pins(torch, modeling, configuration)
-    checkpoint_files = {}
-    for declared, digest in contract['pins']['weights_sha256'].items():
-        path = args.gguf/Path(declared).name
-        stat = path.stat()
-        checkpoint_files[declared] = {'declared_sha256':digest, 'bytes':stat.st_size, 'mtime_ns':stat.st_mtime_ns}
+    identity = bind_model(args.gguf, args.contract)
+    checkpoint_files = identity['checkpoint_files']
     from glm_vx.gguf_checkpoint import GGUFCheckpoint
     args.output.mkdir(parents=True)
     receipt = {'status':'running', 'eligible':False, 'numerical_mode':NUMERICAL_MODE,
@@ -365,6 +366,7 @@ def main(argv=None):
     archive = None
     try:
         checkpoint = GGUFCheckpoint(args.gguf, config, cache_bytes=0, decode_threads=args.decode_threads)
+        receipt['loaded_checkpoint_paths'] = bind_loaded(identity, args.gguf, checkpoint.store.paths)
         archive = TraceArchive(args.output/'arrays.npz')
         def capture(pos, name, value):
             archive.capture(pos,name,value)
@@ -377,6 +379,8 @@ def main(argv=None):
             raise RuntimeError('source or dependency changed during execution')
         if receipt['config_sha256'] != sha_file(config_path) or receipt['contract_sha256'] != sha_file(args.contract):
             raise RuntimeError('config or frozen provenance changed during execution')
+        if identity != bind_model(args.gguf,args.contract) or receipt['loaded_checkpoint_paths'] != bind_loaded(identity,args.gguf,checkpoint.store.paths):
+            raise RuntimeError('checkpoint binding changed during execution')
         for declared, original in checkpoint_files.items():
             stat = (args.gguf/Path(declared).name).stat()
             if (stat.st_size,stat.st_mtime_ns) != (original['bytes'],original['mtime_ns']):

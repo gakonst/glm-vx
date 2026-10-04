@@ -27,7 +27,7 @@ FILES=('tests/test_model.py','tests/test_batched_prefill.py','tests/test_topk_he
        'tests/test_cpu_candidate_gate.py','tests/test_chunk_review.py',
        'tests/test_prefill_serving.py','tests/test_prefix_cache.py','tests/test_scheduler.py',
        'tests/test_scheduler_latency.py','tests/test_server.py','tests/test_model_trace.py',
-       'tests/test_dsa_boundaries.py','tests/test_trace_gate.py')
+       'tests/test_dsa_boundaries.py','tests/test_trace_gate.py','tests/test_prefill_singletons.py')
 PACKED_NODES=('test_synthetic_raw_bytes_codec_and_dot_exact','test_iq1_all_2048_grid_indices_and_scale_bits',
               'test_half_lookup_all_finite_bit_patterns','test_bounds_before_kernel',
               'test_store_rejects_bad_expert_or_rows','test_empty_rows_and_close_waits_for_borrow',
