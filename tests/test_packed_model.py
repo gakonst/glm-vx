@@ -37,7 +37,7 @@ def test_mixed_quantized_model_prefill_decode_cache_exact(tmp_path):
         for token in tokens:
             np.testing.assert_array_equal(a.forward(token, ca), b.forward(token, cb))
             compare_cache(ca, cb)
-        # Batch path can expand weights once/chunk, then packed decoding resumes.
+        # Batched projections retain packed weights; scalar decoding resumes exactly.
         np.testing.assert_array_equal(a.prefill([8, 4, 3], ca)[-1], b.prefill_chunk([8, 4, 3], cb))
         np.testing.assert_array_equal(a.forward(9, ca), b.forward(9, cb))
         compare_cache(ca, cb)

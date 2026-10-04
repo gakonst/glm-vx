@@ -117,6 +117,19 @@ class VxBackend:
             return result
         return matvec(self.lib, raw, kind, shape, x)
 
+    def packed_linear_batch(self, raw, kind, shape, x):
+        """Batched projections directly from borrowed GGUF weight bytes."""
+        from .packed import matmul, batch_input
+        if int(kind) == 0:
+            rows, cols, suffix, x = batch_input(raw, kind, shape, x)
+            if len(x) == 0 or rows == 0:
+                return np.empty((len(x), rows), dtype=np.float32)
+            result = self.linear_batch(raw.view(np.float32).reshape(shape), x)
+            if not np.isfinite(result).all():
+                raise ValueError('nonfinite packed GGUF output')
+            return result
+        return matmul(self.lib, raw, kind, shape, x)
+
     def rmsnorm(self, x, w, eps):
         x, w = _array(x, 'input'), _array(w, 'weight')
         if w.ndim != 1 or w.size != x.shape[-1] or not w.size:

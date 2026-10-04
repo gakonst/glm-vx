@@ -133,6 +133,26 @@ class GGUFCheckpoint:
         with self.store.packed_rows(source,expert=expert) as (raw,shape,kind):
             return backend.packed_matvec(raw,kind,shape,x)
 
+    def linear_batch(self,name,x,backend):
+        """Borrow one quantized matrix for a bounded token batch, without decode."""
+        if self.store.closed:raise RuntimeError('GGUF checkpoint is closed')
+        source,expert=self._resolve(name)
+        supported=getattr(backend,'supports_packed',None)
+        kind=None if source.endswith('__kv_b__') else self.store.tensors[source].tensor_type
+        if kind is not None and callable(supported) and supported(kind):
+            with self.store.packed_rows(source,expert=expert) as (raw,shape,kind):
+                batch=getattr(backend,'packed_linear_batch',None)
+                if callable(batch):return batch(raw,kind,shape,x)
+                # Compatible older backends still retain packed weight storage.
+                from kernels.packed import batch_input
+                rows,cols,suffix,x=batch_input(raw,kind,shape,x)
+                if not len(x):return np.empty((0,rows),np.float32)
+                return np.stack([backend.packed_matvec(raw,kind,shape,row) for row in x])
+        weight=self.tensor(name)
+        batch=getattr(backend,'linear_batch',None)
+        if callable(batch):return batch(weight,x)
+        return np.stack([backend.matvec(weight,row) for row in x])
+
     def __call__(self,name):return self.tensor(name)
     def close(self):
         self.cache.clear();self.cache_bytes=0;self.store.close()

@@ -100,3 +100,45 @@ def unpack_for_validation(lib, raw, kind, shape):
     if code:
         raise ValueError(f'Vx unpack {suffix} rejected arguments ({code})')
     return out
+
+
+def batch_input(raw, kind, shape, x):
+    """Validate bounded token batches before allocating/transposing buffers."""
+    rows, cols, suffix = _buffers(raw, kind, shape)
+    x = np.asarray(x, dtype=np.float32)
+    if x.ndim != 2 or x.shape[1] != cols:
+        raise ValueError('packed batch input must be [batch,weight columns]')
+    batch = x.shape[0]
+    if batch > 64:
+        raise ValueError('packed batch supports at most 64 tokens')
+    if batch * cols > _MAX or batch * rows > _MAX:
+        raise ValueError('packed batch exceeds Vx int32 indexing capacity')
+    if not np.isfinite(x).all():
+        raise ValueError('packed input must be finite')
+    return rows, cols, suffix, x
+
+
+def matmul(lib, raw, kind, shape, x):
+    """Decode each packed weight once per token tile; keep dot order unchanged.
+
+    Input transpose and output allocation are included in the public operation.
+    Older libraries explicitly use packed matvec per row, never expanded weights.
+    """
+    rows, cols, suffix, x = batch_input(raw, kind, shape, x)
+    batch = len(x)
+    if batch == 0 or rows == 0:
+        return np.empty((batch, rows), dtype=np.float32)
+    fn = getattr(lib, 'glm_vx_packed_batch_' + suffix, None)
+    if fn is None or batch == 1:
+        return np.stack([matvec(lib, raw, kind, shape, row) for row in x])
+    xt = np.ascontiguousarray(x.T)
+    out = np.empty((batch, rows), dtype=np.float32)
+    half, table = lookup_tables()
+    fn.argtypes, fn.restype = [_F, _B, _F, _F, _B, _I, _I, _I], _I
+    code = fn(out.ctypes.data_as(_F), raw.ctypes.data_as(_B), xt.ctypes.data_as(_F),
+              half.ctypes.data_as(_F), table.ctypes.data_as(_B), rows, cols, batch)
+    if code:
+        raise ValueError(f'Vx packed batch {suffix} rejected arguments ({code})')
+    if not np.isfinite(out).all():
+        raise ValueError('nonfinite packed GGUF output')
+    return out

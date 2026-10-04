@@ -15,6 +15,11 @@ def _linear(model, prefix, x, bias=False):
     if model.packed_weights and len(x) == 1:
         # Retain packed matvec for singleton chunks and final vocabulary logits.
         return model._linear(prefix, x[0], bias)[None, :]
+    if model.packed_weights:
+        packed_batch = getattr(model.weights, 'linear_batch', None)
+        if callable(packed_batch):
+            y = packed_batch(prefix + '.weight', x, model.backend)
+            return y + model._weight(prefix + '.bias') if bias else y
     w = model._weight(prefix + '.weight')
     batch = getattr(model.backend, 'linear_batch', None)
     y = batch(w, x) if callable(batch) else np.stack([model.backend.matvec(w, row) for row in x])
