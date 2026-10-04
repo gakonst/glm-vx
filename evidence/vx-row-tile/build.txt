@@ -1,0 +1,1 @@
+[flat-codegen] emitted module via the flat path

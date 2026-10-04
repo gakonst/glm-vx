@@ -1,0 +1,53 @@
+[flat-codegen] emitted module via the flat path
+Warning[W1003] at 22:3: Unreachable code after return, break, or continue
+Warning[W1003] at 26:3: Unreachable code after return, break, or continue
+Warning[W1009]: Unused function parameter 'j'
+Warning[W1009]: Unused function parameter 'table'
+Warning[W1009]: Unused function parameter 'table'
+Warning[W1009]: Unused function parameter 'table'
+Warning[W1009]: Unused function parameter 'table'
+Warning[W1009]: Unused function parameter 'table'
+Warning[W1009]: Unused function parameter 'table'
+Warning[W1009]: Unused function parameter 'table'
+[flat-codegen] emitted module via the flat path
+0000000000007e70 T glm_vx_add
+00000000000031c0 T glm_vx_attention
+0000000000007c40 T glm_vx_axpy
+00000000000027a0 T glm_vx_index_scores
+0000000000008180 T glm_vx_layernorm
+0000000000005970 T glm_vx_matmul_nt
+0000000000007490 T glm_vx_matvec
+000000000000e560 T glm_vx_packed_f16
+000000000000dd20 T glm_vx_packed_iq1_s
+000000000000d720 T glm_vx_packed_iq2_xxs
+000000000000d1d0 T glm_vx_packed_iq3_xxs
+000000000000cc00 T glm_vx_packed_iq4_xs
+000000000000c6d0 T glm_vx_packed_q2_k
+000000000000c1f0 T glm_vx_packed_q3_k
+000000000000bc20 T glm_vx_packed_q4_k
+000000000000b750 T glm_vx_packed_q5_k
+000000000000b1f0 T glm_vx_packed_q6_k
+000000000000e130 T glm_vx_packed_q8_0
+00000000000086e0 T glm_vx_rmsnorm
+0000000000005930 T glm_vx_rope
+0000000000002100 T glm_vx_rope_glm
+00000000000044e0 T glm_vx_rope_offset
+0000000000003e50 T glm_vx_router
+0000000000004470 T glm_vx_sigmoid_scalar
+0000000000002f80 T glm_vx_softmax
+00000000000029b0 T glm_vx_sparse_attention
+00000000000080a0 T glm_vx_swiglu
+0000000000003770 T glm_vx_topk
+0000000000003cd0 T glm_vx_topk_sift
+0000000000003ca0 T glm_vx_topk_worse
+000000000000e390 T glm_vx_unpack_f16
+000000000000d9b0 T glm_vx_unpack_iq1_s
+000000000000d3f0 T glm_vx_unpack_iq2_xxs
+000000000000ce40 T glm_vx_unpack_iq3_xxs
+000000000000c8f0 T glm_vx_unpack_iq4_xs
+000000000000c3e0 T glm_vx_unpack_q2_k
+000000000000bee0 T glm_vx_unpack_q3_k
+000000000000b950 T glm_vx_unpack_q4_k
+000000000000b3e0 T glm_vx_unpack_q5_k
+000000000000aef0 T glm_vx_unpack_q6_k
+000000000000df60 T glm_vx_unpack_q8_0

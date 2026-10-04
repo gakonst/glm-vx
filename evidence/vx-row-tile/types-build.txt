@@ -1,0 +1,2 @@
+[flat-codegen] emit declined: an emitter gap at src/codegen/flat/emit/arith.rs:66 [emitter-gap(src/codegen/flat/emit/arith.rs:66)]
+[flat-codegen] program outside the flat subset; using the AST path

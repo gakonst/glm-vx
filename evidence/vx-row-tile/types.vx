@@ -1,0 +1,9 @@
+fn vector_add(a: <4 x f32>, b: <4 x f32>) -> <4 x f32> { return a + b; }
+fn half_to_float(out: *mut f32, x: *const f16, n: i32) -> i32 {
+  unsafe { for i in 0..n { out[i] = x[i] as f32; } }
+  return 0;
+}
+fn bf16_to_float(out: *mut f32, x: *const bf16, n: i32) -> i32 {
+  unsafe { for i in 0..n { out[i] = x[i] as f32; } }
+  return 0;
+}

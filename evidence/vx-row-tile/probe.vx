@@ -1,0 +1,168 @@
+fn baseline(out: *mut f32, weight: *const f32, x: *const f32, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols < 0 { return -1; }
+  unsafe {
+    for r in 0..rows {
+      let mut sum: f32 = 0.0;
+      for c in 0..cols { sum = sum + weight[r * cols + c] * x[c]; }
+      out[r] = sum;
+    }
+  }
+  return 0;
+}
+
+fn tile2(out: *mut f32, weight: *const f32, x: *const f32, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols < 0 { return -1; }
+  unsafe {
+    for block in 0..(rows / 2) {
+      let r: i32 = block * 2;
+      let mut s0: f32 = 0.0;
+      let mut s1: f32 = 0.0;
+      for c in 0..cols {
+        let v: f32 = x[c];
+        s0 = s0 + weight[(r + 0) * cols + c] * v;
+        s1 = s1 + weight[(r + 1) * cols + c] * v;
+      }
+      out[r + 0] = s0;
+      out[r + 1] = s1;
+    }
+    for r in ((rows / 2) * 2)..rows {
+      let mut sum: f32 = 0.0;
+      for c in 0..cols { sum = sum + weight[r * cols + c] * x[c]; }
+      out[r] = sum;
+    }
+  }
+  return 0;
+}
+
+fn tile4(out: *mut f32, weight: *const f32, x: *const f32, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols < 0 { return -1; }
+  unsafe {
+    for block in 0..(rows / 4) {
+      let r: i32 = block * 4;
+      let mut s0: f32 = 0.0;
+      let mut s1: f32 = 0.0;
+      let mut s2: f32 = 0.0;
+      let mut s3: f32 = 0.0;
+      for c in 0..cols {
+        let v: f32 = x[c];
+        s0 = s0 + weight[(r + 0) * cols + c] * v;
+        s1 = s1 + weight[(r + 1) * cols + c] * v;
+        s2 = s2 + weight[(r + 2) * cols + c] * v;
+        s3 = s3 + weight[(r + 3) * cols + c] * v;
+      }
+      out[r + 0] = s0;
+      out[r + 1] = s1;
+      out[r + 2] = s2;
+      out[r + 3] = s3;
+    }
+    for r in ((rows / 4) * 4)..rows {
+      let mut sum: f32 = 0.0;
+      for c in 0..cols { sum = sum + weight[r * cols + c] * x[c]; }
+      out[r] = sum;
+    }
+  }
+  return 0;
+}
+
+fn tile8(out: *mut f32, weight: *const f32, x: *const f32, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols < 0 { return -1; }
+  unsafe {
+    for block in 0..(rows / 8) {
+      let r: i32 = block * 8;
+      let mut s0: f32 = 0.0;
+      let mut s1: f32 = 0.0;
+      let mut s2: f32 = 0.0;
+      let mut s3: f32 = 0.0;
+      let mut s4: f32 = 0.0;
+      let mut s5: f32 = 0.0;
+      let mut s6: f32 = 0.0;
+      let mut s7: f32 = 0.0;
+      for c in 0..cols {
+        let v: f32 = x[c];
+        s0 = s0 + weight[(r + 0) * cols + c] * v;
+        s1 = s1 + weight[(r + 1) * cols + c] * v;
+        s2 = s2 + weight[(r + 2) * cols + c] * v;
+        s3 = s3 + weight[(r + 3) * cols + c] * v;
+        s4 = s4 + weight[(r + 4) * cols + c] * v;
+        s5 = s5 + weight[(r + 5) * cols + c] * v;
+        s6 = s6 + weight[(r + 6) * cols + c] * v;
+        s7 = s7 + weight[(r + 7) * cols + c] * v;
+      }
+      out[r + 0] = s0;
+      out[r + 1] = s1;
+      out[r + 2] = s2;
+      out[r + 3] = s3;
+      out[r + 4] = s4;
+      out[r + 5] = s5;
+      out[r + 6] = s6;
+      out[r + 7] = s7;
+    }
+    for r in ((rows / 8) * 8)..rows {
+      let mut sum: f32 = 0.0;
+      for c in 0..cols { sum = sum + weight[r * cols + c] * x[c]; }
+      out[r] = sum;
+    }
+  }
+  return 0;
+}
+
+fn integrated(out: *mut f32, weight: *const f32, x: *const f32, rows: i32, cols: i32) -> i32 {
+  if rows < 0 { return -1; }
+  if cols < 0 { return -1; }
+  unsafe {
+    for block in 0..(rows / 8) {
+      let r: i32 = block * 8;
+      let mut s0: f32 = 0.0;
+      let mut s1: f32 = 0.0;
+      let mut s2: f32 = 0.0;
+      let mut s3: f32 = 0.0;
+      let mut s4: f32 = 0.0;
+      let mut s5: f32 = 0.0;
+      let mut s6: f32 = 0.0;
+      let mut s7: f32 = 0.0;
+      for c in 0..cols {
+        let v: f32 = x[c];
+        s0 = s0 + weight[(r + 0) * cols + c] * v;
+        s1 = s1 + weight[(r + 1) * cols + c] * v;
+        s2 = s2 + weight[(r + 2) * cols + c] * v;
+        s3 = s3 + weight[(r + 3) * cols + c] * v;
+        s4 = s4 + weight[(r + 4) * cols + c] * v;
+        s5 = s5 + weight[(r + 5) * cols + c] * v;
+        s6 = s6 + weight[(r + 6) * cols + c] * v;
+        s7 = s7 + weight[(r + 7) * cols + c] * v;
+      }
+      out[r + 0] = s0;
+      out[r + 1] = s1;
+      out[r + 2] = s2;
+      out[r + 3] = s3;
+      out[r + 4] = s4;
+      out[r + 5] = s5;
+      out[r + 6] = s6;
+      out[r + 7] = s7;
+    }
+    let mut tail: i32 = (rows / 8) * 8;
+    for pair in 0..((rows - tail) / 2) {
+      let r: i32 = tail + pair * 2;
+      let mut s0: f32 = 0.0;
+      let mut s1: f32 = 0.0;
+      for c in 0..cols {
+        let v: f32 = x[c];
+        s0 = s0 + weight[r * cols + c] * v;
+        s1 = s1 + weight[(r + 1) * cols + c] * v;
+      }
+      out[r] = s0;
+      out[r + 1] = s1;
+    }
+    tail = tail + ((rows - tail) / 2) * 2;
+    for r in tail..rows {
+      let mut sum: f32 = 0.0;
+      for c in 0..cols { sum = sum + weight[r * cols + c] * x[c]; }
+      out[r] = sum;
+    }
+  }
+  return 0;
+}

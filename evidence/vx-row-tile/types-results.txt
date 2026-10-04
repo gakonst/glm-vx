@@ -1,0 +1,2 @@
+half_to_float 63488 finite bit patterns exact; NaN/Inf classes matched
+bf16_to_float 65280 finite bit patterns exact; NaN/Inf classes matched

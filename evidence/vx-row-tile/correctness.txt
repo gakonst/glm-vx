@@ -1,0 +1,2 @@
+kernels/build/libglm_vx.so: 252 bit-exact cases, output canaries and negative-dimension checks passed
+kernels/build-o3/libglm_vx.so: 252 bit-exact cases, output canaries and negative-dimension checks passed
