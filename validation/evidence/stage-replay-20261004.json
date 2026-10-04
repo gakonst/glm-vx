@@ -1,0 +1,669 @@
+{
+  "scope": "bounded diagnostics and actual official tiny eager validation; no trained-model promotion",
+  "stage0": {
+    "scope": "diagnostic, not gate eligibility; inherited layer-output budget is not a calibrated stage budget",
+    "first_nonidentical": {
+      "key": "p0.layer.0.input_norm",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 4.76837158203125e-07,
+      "normalized_l2": 9.076877090197084e-07,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    "first_outside_inherited_budget": {
+      "key": "p0.layer.0.indexer.query_projection",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.0.indexer.query_projection",
+        "index": [
+          6,
+          119
+        ],
+        "metrics": {
+          "max_abs": 3.0517578125e-05,
+          "normalized_l2": 9.508829102316145e-07
+        }
+      },
+      "max_abs": 3.0517578125e-05,
+      "normalized_l2": 9.508829102316146e-07,
+      "outside_elementwise_budget": 2
+    },
+    "missing_reference": [],
+    "missing_candidate": [],
+    "layer": 0,
+    "numerical_mode": "f32-v2",
+    "token_ids": [
+      9703,
+      10056
+    ],
+    "elapsed_seconds": 9.366612818092108,
+    "pins": {
+      "contract_sha256": "e5daccfed587d2db1e0adb6aa4f064016333df78c100d1cedf8743d062019ebd",
+      "input_trace_sha256": "6440829416fba7910f410ff59c19cd1402ca195af22b2e838848e574b7aae2b4",
+      "selection_trace_sha256": "15de5883751ceda3725e61b75baa5c8810bc2cc912646a90ada973ef2b578951",
+      "library_sha256": "f72dcf7e9182baea987e3973d2ba60d507c3a2326293b9ce4d260575067f242f",
+      "config_sha256": "3ac72612095574542f7fff847ada8e59d9199dd8af44bdf625d7e02615572e69",
+      "source_sha256": {
+        "glm_vx/model.py": "ea3b9193b6b6b2321c6bd7be8f7e3915dac1a762ef4002f3364db82a8ec0a62b",
+        "validation/expanded_reference.py": "707ac41b65e2a8d00605d8baa1e4afbb2abe716ad405aaa0a5b33b5299b24aa5",
+        "validation/stage_replay.py": "ac3b4bbf6aac321a426a3a829b8697fcf8548055a38a35824f9fc5537b6b06a8"
+      },
+      "reference_sha256": "25ce3a7d748ace7750f926ec32c24a0201a57da520b2a58aac356527ce7a208b",
+      "candidate_sha256": "f40bc05ab72bfc7e7a9ddc62bd63aaac09b7f150351357dd19ac5e6c1e14c29a"
+    },
+    "checkpoint_identity": "config verified; checkpoint bytes use existing frozen manifest, not rehashed by replay",
+    "compared_tensors": 306,
+    "all_discrete_exact": true,
+    "max_absolute_error": 3.24249267578125e-05,
+    "max_normalized_l2": 1.001293275339086e-05,
+    "selected_metrics": [
+      {
+        "key": "p0.layer.0.output",
+        "reference_dtype": "float32",
+        "candidate_dtype": "float32",
+        "exact": false,
+        "max_abs": 1.2293457984924316e-07,
+        "normalized_l2": 1.4824204400497833e-06,
+        "within_inherited_budget": true,
+        "outside_elementwise_budget": 0
+      },
+      {
+        "key": "p1.layer.0.output",
+        "reference_dtype": "float32",
+        "candidate_dtype": "float32",
+        "exact": false,
+        "max_abs": 2.0489096641540527e-07,
+        "normalized_l2": 2.0303266743461314e-06,
+        "within_inherited_budget": true,
+        "outside_elementwise_budget": 0
+      }
+    ]
+  },
+  "stage9": {
+    "scope": "diagnostic, not gate eligibility; inherited layer-output budget is not a calibrated stage budget",
+    "first_nonidentical": {
+      "key": "p0.layer.9.input_norm",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "max_abs": 4.76837158203125e-07,
+      "normalized_l2": 5.781998681476606e-07,
+      "within_inherited_budget": true,
+      "outside_elementwise_budget": 0
+    },
+    "first_outside_inherited_budget": {
+      "key": "p0.layer.9.mlp.shared_output",
+      "reference_dtype": "float32",
+      "candidate_dtype": "float32",
+      "exact": false,
+      "within_inherited_budget": false,
+      "failure": "absolute/relative budget exceeded",
+      "failure_detail": {
+        "code": "numeric",
+        "message": "absolute/relative budget exceeded",
+        "tensor": "p0.layer.9.mlp.shared_output",
+        "index": [
+          66
+        ],
+        "metrics": {
+          "max_abs": 0.0001220703125,
+          "normalized_l2": 2.304147895695372e-06
+        }
+      },
+      "max_abs": 0.0001220703125,
+      "normalized_l2": 2.304147895695373e-06,
+      "outside_elementwise_budget": 41
+    },
+    "missing_reference": [],
+    "missing_candidate": [],
+    "layer": 9,
+    "numerical_mode": "f32-v2",
+    "token_ids": [
+      9703,
+      10056
+    ],
+    "elapsed_seconds": 16.94855633378029,
+    "pins": {
+      "contract_sha256": "e5daccfed587d2db1e0adb6aa4f064016333df78c100d1cedf8743d062019ebd",
+      "input_trace_sha256": "6440829416fba7910f410ff59c19cd1402ca195af22b2e838848e574b7aae2b4",
+      "selection_trace_sha256": "15de5883751ceda3725e61b75baa5c8810bc2cc912646a90ada973ef2b578951",
+      "library_sha256": "f72dcf7e9182baea987e3973d2ba60d507c3a2326293b9ce4d260575067f242f",
+      "config_sha256": "3ac72612095574542f7fff847ada8e59d9199dd8af44bdf625d7e02615572e69",
+      "source_sha256": {
+        "glm_vx/model.py": "ea3b9193b6b6b2321c6bd7be8f7e3915dac1a762ef4002f3364db82a8ec0a62b",
+        "validation/expanded_reference.py": "707ac41b65e2a8d00605d8baa1e4afbb2abe716ad405aaa0a5b33b5299b24aa5",
+        "validation/stage_replay.py": "ac3b4bbf6aac321a426a3a829b8697fcf8548055a38a35824f9fc5537b6b06a8"
+      },
+      "reference_sha256": "e3e5f9e5165da361082061871d0728b6f37ea9816df50ba570700fa30caa6df8",
+      "candidate_sha256": "07f28e3665a3b69557a53746cc2b9c2b5b3f1e6df3d47c9e386ff2c48ff5138a"
+    },
+    "checkpoint_identity": "config verified; checkpoint bytes use existing frozen manifest, not rehashed by replay",
+    "compared_tensors": 400,
+    "all_discrete_exact": true,
+    "max_absolute_error": 0.0005950927734375,
+    "max_normalized_l2": 2.3123861336028203e-05,
+    "selected_metrics": [
+      {
+        "key": "p0.layer.9.mlp.shared.gate",
+        "reference_dtype": "float32",
+        "candidate_dtype": "float32",
+        "exact": false,
+        "max_abs": 4.4345855712890625e-05,
+        "normalized_l2": 2.3500389253507394e-06,
+        "within_inherited_budget": true,
+        "outside_elementwise_budget": 0
+      },
+      {
+        "key": "p0.layer.9.mlp.shared.up",
+        "reference_dtype": "float32",
+        "candidate_dtype": "float32",
+        "exact": false,
+        "max_abs": 4.482269287109375e-05,
+        "normalized_l2": 2.2806411025963375e-06,
+        "within_inherited_budget": true,
+        "outside_elementwise_budget": 0
+      },
+      {
+        "key": "p0.layer.9.mlp.shared.activation",
+        "reference_dtype": "float32",
+        "candidate_dtype": "float32",
+        "exact": false,
+        "max_abs": 0.0005950927734375,
+        "normalized_l2": 2.7355014154165416e-06,
+        "within_inherited_budget": true,
+        "outside_elementwise_budget": 0
+      },
+      {
+        "key": "p0.layer.9.mlp.shared_output",
+        "reference_dtype": "float32",
+        "candidate_dtype": "float32",
+        "exact": false,
+        "within_inherited_budget": false,
+        "failure": "absolute/relative budget exceeded",
+        "failure_detail": {
+          "code": "numeric",
+          "message": "absolute/relative budget exceeded",
+          "tensor": "p0.layer.9.mlp.shared_output",
+          "index": [
+            66
+          ],
+          "metrics": {
+            "max_abs": 0.0001220703125,
+            "normalized_l2": 2.304147895695372e-06
+          }
+        },
+        "max_abs": 0.0001220703125,
+        "normalized_l2": 2.304147895695373e-06,
+        "outside_elementwise_budget": 41
+      },
+      {
+        "key": "p0.layer.9.output",
+        "reference_dtype": "float32",
+        "candidate_dtype": "float32",
+        "exact": false,
+        "within_inherited_budget": false,
+        "failure": "absolute/relative budget exceeded",
+        "failure_detail": {
+          "code": "numeric",
+          "message": "absolute/relative budget exceeded",
+          "tensor": "p0.layer.9.output",
+          "index": [
+            136
+          ],
+          "metrics": {
+            "max_abs": 0.0001220703125,
+            "normalized_l2": 1.980956964622218e-06
+          }
+        },
+        "max_abs": 0.0001220703125,
+        "normalized_l2": 1.980956964622219e-06,
+        "outside_elementwise_budget": 36
+      },
+      {
+        "key": "p1.layer.9.mlp.shared.gate",
+        "reference_dtype": "float32",
+        "candidate_dtype": "float32",
+        "exact": false,
+        "max_abs": 7.450580596923828e-07,
+        "normalized_l2": 1.5336808779878753e-06,
+        "within_inherited_budget": true,
+        "outside_elementwise_budget": 0
+      },
+      {
+        "key": "p1.layer.9.mlp.shared.up",
+        "reference_dtype": "float32",
+        "candidate_dtype": "float32",
+        "exact": false,
+        "max_abs": 8.344650268554688e-07,
+        "normalized_l2": 1.617185612875885e-06,
+        "within_inherited_budget": true,
+        "outside_elementwise_budget": 0
+      },
+      {
+        "key": "p1.layer.9.mlp.shared.activation",
+        "reference_dtype": "float32",
+        "candidate_dtype": "float32",
+        "exact": false,
+        "max_abs": 9.313225746154785e-08,
+        "normalized_l2": 2.2055336634709856e-06,
+        "within_inherited_budget": true,
+        "outside_elementwise_budget": 0
+      },
+      {
+        "key": "p1.layer.9.mlp.shared_output",
+        "reference_dtype": "float32",
+        "candidate_dtype": "float32",
+        "exact": false,
+        "max_abs": 2.9802322387695312e-08,
+        "normalized_l2": 1.999480724474069e-06,
+        "within_inherited_budget": true,
+        "outside_elementwise_budget": 0
+      },
+      {
+        "key": "p1.layer.9.output",
+        "reference_dtype": "float32",
+        "candidate_dtype": "float32",
+        "exact": false,
+        "max_abs": 1.4901161193847656e-07,
+        "normalized_l2": 9.262942857271636e-07,
+        "within_inherited_budget": true,
+        "outside_elementwise_budget": 0
+      }
+    ]
+  },
+  "linear": {
+    "scope": "identical-input projection diagnostic; no gate promotion",
+    "weight": "model.layers.9.mlp.shared_experts.down_proj.weight",
+    "keys": [
+      "p0.layer.9.mlp.shared.activation",
+      "p1.layer.9.mlp.shared.activation"
+    ],
+    "shape": [
+      6144,
+      2048
+    ],
+    "input_trace_sha256": "e3e5f9e5165da361082061871d0728b6f37ea9816df50ba570700fa30caa6df8",
+    "contract_sha256": "e5daccfed587d2db1e0adb6aa4f064016333df78c100d1cedf8743d062019ebd",
+    "decoded_weight_sha256": "289adc1c3e892a7632fcd5641a7d4d135ba51bd563614acc79d440062e42562d",
+    "library_sha256": "f72dcf7e9182baea987e3973d2ba60d507c3a2326293b9ce4d260575067f242f",
+    "source_sha256": "3a79874ac636765e02b6d2ad237c0c378a844b4aa296d157e6b43b63feb351a2",
+    "arrays_sha256": "ad3d7e6096ff89ffcc85396fe6fc78e67032b558d8825fe1dfbcf63354ab4344",
+    "comparisons": {
+      "vx_f32": {
+        "scope": "diagnostic, not gate eligibility; inherited layer-output budget is not a calibrated stage budget",
+        "first_nonidentical": {
+          "key": "output",
+          "reference_dtype": "float32",
+          "candidate_dtype": "float32",
+          "exact": false,
+          "max_abs": 4.38690185546875e-05,
+          "normalized_l2": 6.55879985643522e-07,
+          "within_inherited_budget": true,
+          "outside_elementwise_budget": 0
+        },
+        "first_outside_inherited_budget": null,
+        "missing_reference": [],
+        "missing_candidate": [],
+        "compared_tensors": 1,
+        "all_discrete_exact": true,
+        "max_absolute_error": 4.38690185546875e-05,
+        "max_normalized_l2": 6.55879985643522e-07
+      },
+      "numpy_batch_f32": {
+        "scope": "diagnostic, not gate eligibility; inherited layer-output budget is not a calibrated stage budget",
+        "first_nonidentical": null,
+        "first_outside_inherited_budget": null,
+        "missing_reference": [],
+        "missing_candidate": [],
+        "compared_tensors": 1,
+        "all_discrete_exact": true,
+        "max_absolute_error": 0.0,
+        "max_normalized_l2": 0.0
+      },
+      "numpy_row_f32": {
+        "scope": "diagnostic, not gate eligibility; inherited layer-output budget is not a calibrated stage budget",
+        "first_nonidentical": {
+          "key": "output",
+          "reference_dtype": "float32",
+          "candidate_dtype": "float32",
+          "exact": false,
+          "max_abs": 1.52587890625e-05,
+          "normalized_l2": 3.145964959732471e-07,
+          "within_inherited_budget": true,
+          "outside_elementwise_budget": 0
+        },
+        "first_outside_inherited_budget": null,
+        "missing_reference": [],
+        "missing_candidate": [],
+        "compared_tensors": 1,
+        "all_discrete_exact": true,
+        "max_absolute_error": 1.52587890625e-05,
+        "max_normalized_l2": 3.145964959732471e-07
+      },
+      "f64_diagnostic_rounded_f32": {
+        "scope": "diagnostic, not gate eligibility; inherited layer-output budget is not a calibrated stage budget",
+        "first_nonidentical": {
+          "key": "output",
+          "reference_dtype": "float32",
+          "candidate_dtype": "float32",
+          "exact": false,
+          "max_abs": 1.33514404296875e-05,
+          "normalized_l2": 2.8603784690353757e-07,
+          "within_inherited_budget": true,
+          "outside_elementwise_budget": 0
+        },
+        "first_outside_inherited_budget": null,
+        "missing_reference": [],
+        "missing_candidate": [],
+        "compared_tensors": 1,
+        "all_discrete_exact": true,
+        "max_absolute_error": 1.33514404296875e-05,
+        "max_normalized_l2": 2.8603784690353757e-07
+      }
+    }
+  },
+  "official": {
+    "status": "pass",
+    "scope": "actual pinned official eager CPU, two random tiny models, batch and cached decode; not trained-model promotion",
+    "transformers_revision": "469230357aab0f2b303b0d638c1f8d06edb14184",
+    "torch_version": "2.14.1+cpu",
+    "transformers_version": "5.19.0.dev0",
+    "numpy_version": "2.2.6",
+    "contract_sha256": "e5daccfed587d2db1e0adb6aa4f064016333df78c100d1cedf8743d062019ebd",
+    "library_sha256": "f72dcf7e9182baea987e3973d2ba60d507c3a2326293b9ce4d260575067f242f",
+    "source_sha256": "5e41b1028ef3fa27d77e7244f9fd0e5a6b28911a3f9f273c964cdacd7e8780d6",
+    "dependencies_sha256": {
+      "glm_vx/model.py": "ea3b9193b6b6b2321c6bd7be8f7e3915dac1a762ef4002f3364db82a8ec0a62b",
+      "validation/expanded_reference.py": "707ac41b65e2a8d00605d8baa1e4afbb2abe716ad405aaa0a5b33b5299b24aa5",
+      "validation/stage_replay.py": "ac3b4bbf6aac321a426a3a829b8697fcf8548055a38a35824f9fc5537b6b06a8",
+      "tests/test_model.py": "5270d90166f4981fd6687839437a5da2080ca64e187a9f615afe42c363d09aae"
+    },
+    "arrays_sha256": "d087602f72ca75968ca615aedd1d790b8f52a01d3237ede564d84cbeb0f3a12e",
+    "comparisons": [
+      {
+        "scope": "diagnostic, not gate eligibility; inherited layer-output budget is not a calibrated stage budget",
+        "first_nonidentical": {
+          "key": "p0.layer.0.output",
+          "reference_dtype": "float32",
+          "candidate_dtype": "float32",
+          "exact": false,
+          "max_abs": 1.1920928955078125e-07,
+          "normalized_l2": 1.9720653927985171e-07,
+          "within_inherited_budget": true,
+          "outside_elementwise_budget": 0
+        },
+        "first_outside_inherited_budget": null,
+        "missing_reference": [],
+        "missing_candidate": [],
+        "seed": 123,
+        "token_ids": [
+          1,
+          7,
+          2,
+          11
+        ],
+        "execution": "official_batch",
+        "implementation": "vx_compressed",
+        "causal_selection_mismatches": [],
+        "compared_tensors": 20,
+        "all_discrete_exact": true,
+        "max_absolute_error": 2.5331974029541016e-06,
+        "max_normalized_l2": 2.6184519452390654e-06
+      },
+      {
+        "scope": "diagnostic, not gate eligibility; inherited layer-output budget is not a calibrated stage budget",
+        "first_nonidentical": {
+          "key": "p0.layer.0.output",
+          "reference_dtype": "float32",
+          "candidate_dtype": "float32",
+          "exact": false,
+          "max_abs": 6.705522537231445e-08,
+          "normalized_l2": 1.4854951313035032e-07,
+          "within_inherited_budget": true,
+          "outside_elementwise_budget": 0
+        },
+        "first_outside_inherited_budget": null,
+        "missing_reference": [],
+        "missing_candidate": [],
+        "seed": 123,
+        "token_ids": [
+          1,
+          7,
+          2,
+          11
+        ],
+        "execution": "official_batch",
+        "implementation": "expanded_f32",
+        "causal_selection_mismatches": [],
+        "compared_tensors": 20,
+        "all_discrete_exact": true,
+        "max_absolute_error": 2.0563602447509766e-06,
+        "max_normalized_l2": 1.9119529722298125e-06
+      },
+      {
+        "scope": "diagnostic, not gate eligibility; inherited layer-output budget is not a calibrated stage budget",
+        "first_nonidentical": {
+          "key": "p0.layer.0.output",
+          "reference_dtype": "float32",
+          "candidate_dtype": "float32",
+          "exact": false,
+          "max_abs": 1.1920928955078125e-07,
+          "normalized_l2": 1.9180066805987194e-07,
+          "within_inherited_budget": true,
+          "outside_elementwise_budget": 0
+        },
+        "first_outside_inherited_budget": null,
+        "missing_reference": [],
+        "missing_candidate": [],
+        "seed": 123,
+        "token_ids": [
+          1,
+          7,
+          2,
+          11
+        ],
+        "execution": "official_incremental",
+        "implementation": "vx_compressed",
+        "causal_selection_mismatches": [],
+        "compared_tensors": 20,
+        "all_discrete_exact": true,
+        "max_absolute_error": 1.4901161193847656e-06,
+        "max_normalized_l2": 8.60382116799774e-07
+      },
+      {
+        "scope": "diagnostic, not gate eligibility; inherited layer-output budget is not a calibrated stage budget",
+        "first_nonidentical": {
+          "key": "p0.layer.0.output",
+          "reference_dtype": "float32",
+          "candidate_dtype": "float32",
+          "exact": false,
+          "max_abs": 1.7881393432617188e-07,
+          "normalized_l2": 3.4020541727389197e-07,
+          "within_inherited_budget": true,
+          "outside_elementwise_budget": 0
+        },
+        "first_outside_inherited_budget": null,
+        "missing_reference": [],
+        "missing_candidate": [],
+        "seed": 123,
+        "token_ids": [
+          1,
+          7,
+          2,
+          11
+        ],
+        "execution": "official_incremental",
+        "implementation": "expanded_f32",
+        "causal_selection_mismatches": [],
+        "compared_tensors": 20,
+        "all_discrete_exact": true,
+        "max_absolute_error": 1.8477439880371094e-06,
+        "max_normalized_l2": 1.656742516958122e-06
+      },
+      {
+        "scope": "diagnostic, not gate eligibility; inherited layer-output budget is not a calibrated stage budget",
+        "first_nonidentical": {
+          "key": "p0.layer.0.output",
+          "reference_dtype": "float32",
+          "candidate_dtype": "float32",
+          "exact": false,
+          "max_abs": 2.3469328880310059e-07,
+          "normalized_l2": 3.1445360186806107e-07,
+          "within_inherited_budget": true,
+          "outside_elementwise_budget": 0
+        },
+        "first_outside_inherited_budget": null,
+        "missing_reference": [],
+        "missing_candidate": [],
+        "seed": 456,
+        "token_ids": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "execution": "official_batch",
+        "implementation": "vx_compressed",
+        "causal_selection_mismatches": [],
+        "compared_tensors": 30,
+        "all_discrete_exact": true,
+        "max_absolute_error": 8.940696716308594e-07,
+        "max_normalized_l2": 6.824477009920486e-07
+      },
+      {
+        "scope": "diagnostic, not gate eligibility; inherited layer-output budget is not a calibrated stage budget",
+        "first_nonidentical": {
+          "key": "p0.layer.0.output",
+          "reference_dtype": "float32",
+          "candidate_dtype": "float32",
+          "exact": false,
+          "max_abs": 2.086162567138672e-07,
+          "normalized_l2": 2.73525964873592e-07,
+          "within_inherited_budget": true,
+          "outside_elementwise_budget": 0
+        },
+        "first_outside_inherited_budget": null,
+        "missing_reference": [],
+        "missing_candidate": [],
+        "seed": 456,
+        "token_ids": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "execution": "official_batch",
+        "implementation": "expanded_f32",
+        "causal_selection_mismatches": [],
+        "compared_tensors": 30,
+        "all_discrete_exact": true,
+        "max_absolute_error": 1.3709068298339844e-06,
+        "max_normalized_l2": 8.327799385586194e-07
+      },
+      {
+        "scope": "diagnostic, not gate eligibility; inherited layer-output budget is not a calibrated stage budget",
+        "first_nonidentical": {
+          "key": "p0.layer.0.output",
+          "reference_dtype": "float32",
+          "candidate_dtype": "float32",
+          "exact": false,
+          "max_abs": 2.9243528842926025e-07,
+          "normalized_l2": 3.250276043304965e-07,
+          "within_inherited_budget": true,
+          "outside_elementwise_budget": 0
+        },
+        "first_outside_inherited_budget": null,
+        "missing_reference": [],
+        "missing_candidate": [],
+        "seed": 456,
+        "token_ids": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "execution": "official_incremental",
+        "implementation": "vx_compressed",
+        "causal_selection_mismatches": [],
+        "compared_tensors": 30,
+        "all_discrete_exact": true,
+        "max_absolute_error": 1.0132789611816406e-06,
+        "max_normalized_l2": 1.0260432093694418e-06
+      },
+      {
+        "scope": "diagnostic, not gate eligibility; inherited layer-output budget is not a calibrated stage budget",
+        "first_nonidentical": {
+          "key": "p0.layer.0.output",
+          "reference_dtype": "float32",
+          "candidate_dtype": "float32",
+          "exact": false,
+          "max_abs": 2.6635825634002686e-07,
+          "normalized_l2": 3.090047395329614e-07,
+          "within_inherited_budget": true,
+          "outside_elementwise_budget": 0
+        },
+        "first_outside_inherited_budget": null,
+        "missing_reference": [],
+        "missing_candidate": [],
+        "seed": 456,
+        "token_ids": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "execution": "official_incremental",
+        "implementation": "expanded_f32",
+        "causal_selection_mismatches": [],
+        "compared_tensors": 30,
+        "all_discrete_exact": true,
+        "max_absolute_error": 1.043081283569336e-06,
+        "max_normalized_l2": 1.1087259389043605e-06
+      }
+    ]
+  },
+  "legacy_layer9_bitwise_reproduction": {
+    "p0.layer.9.output": true,
+    "p1.layer.9.output": true
+  },
+  "frozen_gate": {
+    "status": "fail",
+    "eligible": false,
+    "first_failure": {
+      "code": "numeric",
+      "message": "absolute/relative budget exceeded",
+      "case": "hello-let-teacher-forced-v1",
+      "tensor": "p0.layer.9.output",
+      "operation": "layer_output",
+      "position": 0,
+      "layer": 9,
+      "index": [
+        136
+      ],
+      "metrics": {
+        "max_abs": 0.0001068115234375,
+        "normalized_l2": 1.6521141722310907e-06
+      }
+    }
+  },
+  "tests": {
+    "targeted": "..............s......................................................... [ 79%]\n...................                                                      [100%]\n90 passed, 1 skipped in 22.06s\n",
+    "previously_skipped_native": ".                                                                        [100%]\n1 passed, 10 deselected in 0.06s\n"
+  }
+}

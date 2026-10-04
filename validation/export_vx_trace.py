@@ -20,6 +20,6 @@ def main():
   for token in args.tokens:model.forward(token,cache)
  finally:weights.close()
  np.savez(args.output/'arrays.npz',**arrays)
- receipt={'status':'complete','token_ids':args.tokens,'packed_weights':args.packed_weights,'source_sha256':{f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ['glm_vx/model.py','glm_vx/gguf_checkpoint.py','glm_vx/gguf_reader.py','kernels/backend.py','kernels/packed.py']},'library_sha256':hashlib.sha256(args.library.read_bytes()).hexdigest(),'elapsed_seconds':time.monotonic()-start,'tensor_count':len(arrays),'scope':'Teacher-forced full layer outputs, current-token cache entries, selections and complete logits; other internal stages not yet exported.'}
+ receipt={'status':'complete','token_ids':args.tokens,'packed_weights':args.packed_weights,'source_sha256':{f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in ['glm_vx/model.py','glm_vx/gguf_checkpoint.py','glm_vx/gguf_reader.py','kernels/backend.py','kernels/packed.py']},'library_sha256':hashlib.sha256(args.library.read_bytes()).hexdigest(),'elapsed_seconds':time.monotonic()-start,'tensor_count':len(arrays),'scope':'Teacher-forced layer outputs, cache entries, selections, logits and per-operation CPU attention/indexer/MLP stages and expert reductions; fused backends expose only observable outputs.'}
  (args.output/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n');print(json.dumps(receipt),flush=True)
 if __name__=='__main__':main()

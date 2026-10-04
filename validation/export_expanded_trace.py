@@ -6,7 +6,7 @@ from glm_vx.gguf_checkpoint import GGUFCheckpoint
 from validation.expanded_reference import expanded_batch_oracle
 
 def main():
- p=argparse.ArgumentParser();p.add_argument('--gguf',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--tokens',type=int,nargs='+',required=True);a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--gguf',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--tokens',type=int,nargs='+',required=True);p.add_argument('--numerical-mode',choices=('f32-v2','legacy-v1'),default='f32-v2');a=p.parse_args()
  if a.output.exists():p.error('output exists')
  if len(a.tokens)>32:p.error('bounded expanded reference supports at most32 tokens')
  c=json.loads((a.gguf/'config.json').read_text())
@@ -24,9 +24,9 @@ def main():
  def capture(pos,name,value):
   arrays[f'p{pos}.{name}']=value
   if pos==len(a.tokens)-1:print(json.dumps({'tensor':name,'seconds':time.monotonic()-start}),flush=True)
- try:logits,selections=expanded_batch_oracle(c,Weights(),a.tokens,trace=capture)
+ try:logits,selections=expanded_batch_oracle(c,Weights(),a.tokens,trace=capture,numerical_mode=a.numerical_mode)
  finally:w.close()
  for pos in range(len(a.tokens)):arrays[f'p{pos}.logits']=logits[pos]
  np.savez(a.output/'arrays.npz',**arrays)
- (a.output/'receipt.json').write_text(json.dumps({'status':'complete','token_ids':a.tokens,'elapsed_seconds':time.monotonic()-start,'scope':'independent expanded-KV F32 equations; shared GGUF decoder separately checked against native GGML; not official Transformers execution'},indent=2)+'\n')
+ (a.output/'receipt.json').write_text(json.dumps({'status':'complete','numerical_mode':a.numerical_mode,'token_ids':a.tokens,'elapsed_seconds':time.monotonic()-start,'scope':'independent expanded-KV equations with explicit numerical_mode; shared GGUF decoder separately checked against native GGML; not official Transformers execution'},indent=2)+'\n')
 if __name__=='__main__':main()

@@ -135,8 +135,11 @@ class GlmMoeDsaModel:
 
     def _index(self, prefix, x, q_residual, position, state):
         b = self.backend
+        stage = prefix.replace('model.layers.', 'layer.').replace('.self_attn', '')
         q = self._linear(prefix + '.wq_b', q_residual).reshape(self.index_heads, self.index_dim)
+        self._trace(position, stage + '.query_projection', q)
         key = self._linear(prefix + '.wk', x)
+        self._trace(position, stage + '.key_projection', key)
         # Prefer a fused native LayerNorm when exposed; the six-op backend
         # contract can express the same normalization as centered RMSNorm.
         layernorm = getattr(b, 'layernorm', None)
@@ -146,12 +149,16 @@ class GlmMoeDsaModel:
         else:
             mean = b.matvec(np.full((1, self.index_dim), 1.0 / self.index_dim, dtype=np.float32), key)[0]
             key = self._norm(prefix + '.k_norm', key - mean, 1e-6) + self._weight(prefix + '.k_norm.bias')
+        self._trace(position, stage + '.key_norm', key)
         key = np.concatenate((b.rope(key[:self.rot], position, self.theta), key[self.rot:]))
         state.index_keys.append(np.asarray(key, dtype=np.float32).copy())
         keys = np.stack(state.index_keys)
         queries = np.stack([np.concatenate((b.rope(q[h, :self.rot], position, self.theta), q[h, self.rot:]))
                             for h in range(self.index_heads)])
         head_weights = self._linear(prefix + '.weights_proj', x) * self.index_heads ** -0.5
+        self._trace(position, stage + '.query', queries)
+        self._trace(position, stage + '.key', key)
+        self._trace(position, stage + '.head_weights', head_weights)
         index_scores = getattr(b, 'index_scores', None)
         if callable(index_scores):
             scores = index_scores(queries, keys, head_weights, self.index_dim ** -0.5)
@@ -159,6 +166,7 @@ class GlmMoeDsaModel:
             scores_by_head = [np.maximum(b.matvec(keys, query) * self.index_dim ** -0.5, 0.0)
                               for query in queries]
             scores = b.matvec(np.stack(scores_by_head).T, head_weights)
+        self._trace(position, stage + '.scores', scores)
         count = min(self.index_topk, len(state.index_keys))
         # Stable tie breaking by position. Torch topk does not specify tie order;
         # untied scores agree, and all selected tokens remain causal.
@@ -171,11 +179,19 @@ class GlmMoeDsaModel:
         b, c = self.backend, self.config
         prefix = f'model.layers.{layer}.self_attn'
         has_bias = bool(c.get('attention_bias', False))
-        q_residual = self._norm(prefix + '.q_a_layernorm', self._linear(prefix + '.q_a_proj', x, has_bias), 1e-6)
+        stage = f'layer.{layer}.attention'
+        q_a = self._linear(prefix + '.q_a_proj', x, has_bias)
+        self._trace(position, stage + '.q_a', q_a)
+        q_residual = self._norm(prefix + '.q_a_layernorm', q_a, 1e-6)
+        self._trace(position, stage + '.q_norm', q_residual)
         query = self._linear(prefix + '.q_b_proj', q_residual).reshape(self.heads, self.nope + self.rot)
+        self._trace(position, stage + '.query_projection', query)
         compressed = self._linear(prefix + '.kv_a_proj_with_mqa', x, has_bias)
+        self._trace(position, stage + '.kv_a', compressed)
         latent = self._norm(prefix + '.kv_a_layernorm', compressed[:self.rank], 1e-6)
         rotary_key = b.rope(compressed[self.rank:], position, self.theta)
+        self._trace(position, f'layer.{layer}.latent', latent)
+        self._trace(position, f'layer.{layer}.rope_key', rotary_key)
         state.latents.append(np.asarray(latent, dtype=np.float32).copy())
         state.rope_keys.append(np.asarray(rotary_key, dtype=np.float32).copy())
         if self.indexer_types[layer] == 'full':
@@ -184,6 +200,7 @@ class GlmMoeDsaModel:
             if previous_selection is None:
                 raise ValueError('Shared DSA layer has no preceding full indexer selection')
             selected = previous_selection
+        self._trace(position, f'layer.{layer}.selected', selected)
         state.selected_indices = selected.copy()
         latents = np.stack([state.latents[int(i)] for i in selected])
         rotary_keys = np.stack([state.rope_keys[int(i)] for i in selected])
@@ -197,61 +214,132 @@ class GlmMoeDsaModel:
                                        for h in range(self.heads)])
             attended = fused(latent_queries, rotary_queries, latents, rotary_keys,
                              (self.nope + self.rot) ** -0.5)
+            self._trace(position, stage + '.fused_attended_latent', attended)
             outputs = [b.matvec(kv_weight[h, self.nope:], attended[h]) for h in range(self.heads)]
-            return self._linear(prefix + '.o_proj', np.concatenate(outputs), has_bias), selected
+            self._trace(position, stage + '.heads', np.stack(outputs))
+            result = self._linear(prefix + '.o_proj', np.concatenate(outputs), has_bias)
+            self._trace(position, stage + '.output', result)
+            return result, selected
         for h in range(self.heads):
             # q_nope . (W_k c) == c . (W_k^T q_nope).
             latent_query = b.matvec(kv_weight[h, :self.nope].T, query[h, :self.nope])
             rotary_query = b.rope(query[h, self.nope:], position, self.theta)
             scores = b.matvec(latents, latent_query) + b.matvec(rotary_keys, rotary_query)
-            probs = b.softmax(scores * (self.nope + self.rot) ** -0.5)
+            scores = scores * (self.nope + self.rot) ** -0.5
+            self._trace(position, stage + f'.head.{h}.scores', scores)
+            probs = b.softmax(scores)
+            self._trace(position, stage + f'.head.{h}.probabilities', probs)
             attended_latent = b.matvec(latents.T, probs)
             outputs.append(b.matvec(kv_weight[h, self.nope:], attended_latent))
-        return self._linear(prefix + '.o_proj', np.concatenate(outputs), has_bias), selected
+        self._trace(position, stage + '.heads', np.stack(outputs))
+        result = self._linear(prefix + '.o_proj', np.concatenate(outputs), has_bias)
+        self._trace(position, stage + '.output', result)
+        return result, selected
 
-    def _mlp(self, prefix, x):
+    def _mlp_values(self, gate, up, down, x, position, stage):
+        resident_mlp = getattr(self.backend, 'mlp', None)
+        if callable(resident_mlp):
+            # Do not substitute an unfused diagnostic computation: report only
+            # observable fused output. Missing internal stages remain explicit.
+            return resident_mlp(gate, up, down, x)
+        projected_gate = self.backend.matvec(gate, x)
+        projected_up = self.backend.matvec(up, x)
+        self._trace(position, stage + '.gate', projected_gate)
+        self._trace(position, stage + '.up', projected_up)
+        activation = self.backend.swiglu(projected_gate, projected_up)
+        self._trace(position, stage + '.activation', activation)
+        return self.backend.matvec(down, activation)
+
+    def _mlp(self, prefix, x, position=0):
+        stage = prefix.replace('model.layers.', 'layer.').replace('.shared_experts', '.shared').replace('.experts.', '.expert.')
         resident_mlp = getattr(self.backend, 'mlp', None)
         if callable(resident_mlp):
             return resident_mlp(self._weight(prefix + '.gate_proj.weight'),
                                 self._weight(prefix + '.up_proj.weight'),
                                 self._weight(prefix + '.down_proj.weight'), x)
-        return self._linear(prefix + '.down_proj', self.backend.swiglu(
-            self._linear(prefix + '.gate_proj', x), self._linear(prefix + '.up_proj', x)))
+        gate = self._linear(prefix + '.gate_proj', x)
+        up = self._linear(prefix + '.up_proj', x)
+        self._trace(position, stage + '.gate', gate)
+        self._trace(position, stage + '.up', up)
+        activation = self.backend.swiglu(gate, up)
+        self._trace(position, stage + '.activation', activation)
+        return self._linear(prefix + '.down_proj', activation)
 
-    def _expert(self, prefix, expert, x):
+    def _expert(self, prefix, expert, x, position=0):
+        stage = prefix.replace('model.layers.', 'layer.') + f'.expert.{expert}'
         if self.packed_weights:
-            return self._mlp(prefix + f'.experts.{expert}', x)
-        # Native GLM checkpoint uses individual experts. Packed tensors support
-        # the upstream runtime's in-memory representation too.
+            return self._mlp(prefix + f'.experts.{expert}', x, position)
         try:
             gate = self._weight(f'{prefix}.experts.{expert}.gate_proj.weight')
         except KeyError:
             gate_up = self._weight(prefix + '.experts.gate_up_proj')[expert]
             projected = self.backend.matvec(gate_up, x)
             half = projected.shape[0] // 2
-            return self.backend.matvec(self._weight(prefix + '.experts.down_proj')[expert],
-                                       self.backend.swiglu(projected[:half], projected[half:]))
+            self._trace(position, stage + '.gate', projected[:half])
+            self._trace(position, stage + '.up', projected[half:])
+            activation = self.backend.swiglu(projected[:half], projected[half:])
+            self._trace(position, stage + '.activation', activation)
+            return self.backend.matvec(self._weight(prefix + '.experts.down_proj')[expert], activation)
         up = self._weight(f'{prefix}.experts.{expert}.up_proj.weight')
         down = self._weight(f'{prefix}.experts.{expert}.down_proj.weight')
-        resident_mlp = getattr(self.backend, 'mlp', None)
-        if callable(resident_mlp):
-            return resident_mlp(gate, up, down, x)
-        return self.backend.matvec(down, self.backend.swiglu(self.backend.matvec(gate, x), self.backend.matvec(up, x)))
+        return self._mlp_values(gate, up, down, x, position, stage)
 
-    def _feed_forward(self, layer, x):
+    def _feed_forward(self, layer, x, position=0):
         prefix = f'model.layers.{layer}.mlp'
+        stage = f'layer.{layer}.mlp'
         if self.mlp_types[layer] == 'dense':
-            return self._mlp(prefix, x)
+            result = self._mlp(prefix, x, position)
+            self._trace(position, stage + '.output', result)
+            return result
         c = self.config
-        indices, weights = self.backend.route(self._linear(prefix + '.gate', x),
+        logits = self._linear(prefix + '.gate', x)
+        self._trace(position, stage + '.router_logits', logits)
+        indices, weights = self.backend.route(logits,
             self._weight(prefix + '.gate.e_score_correction_bias'),
             int(c['num_experts_per_tok']), float(c.get('routed_scaling_factor', 1.0)))
+        self._trace(position, stage + '.route_ids', np.asarray(indices, dtype=np.int64))
+        self._trace(position, stage + '.route_weights', weights)
         result = np.zeros(self.hidden, dtype=np.float32)
-        for expert, weight in zip(indices, weights):
-            result += self._expert(prefix, int(expert), x) * float(weight)
+        # Pinned official eager Experts iterates expert_hit.nonzero(), ascending
+        # expert ID, regardless of router top-k order. Reduction order is visible
+        # in F32; keep the ID/weight association while matching that semantics.
+        order = np.argsort(indices, kind='stable')
+        self._trace(position, stage + '.aggregation_ids', np.asarray(indices, dtype=np.int64)[order])
+        for slot in order:
+            expert, weight = int(indices[slot]), weights[slot]
+            output = self._expert(prefix, expert, x, position)
+            self._trace(position, stage + f'.expert.{expert}.output', output)
+            weighted = output * float(weight)
+            self._trace(position, stage + f'.expert.{expert}.weighted', weighted)
+            result += weighted
+            self._trace(position, stage + f'.expert.{expert}.partial_sum', result)
+        self._trace(position, stage + '.routed_sum', result)
         if int(c.get('n_shared_experts', 1)) > 0:
-            result += self._mlp(prefix + '.shared_experts', x)
+            shared = self._mlp(prefix + '.shared_experts', x, position)
+            self._trace(position, stage + '.shared_output', shared)
+            result += shared
+        self._trace(position, stage + '.output', result)
         return result
+
+    def forward_layer(self, layer, x, position, state, previous_selection=None):
+        """Execute one layer for bounded validation replay of captured inputs.
+
+        The caller owns cache consistency/rollback for this low-level entry point.
+        Normal serving uses forward(), which validates and rolls back the request.
+        """
+        prefix = f'model.layers.{layer}'
+        selected = previous_selection
+        self._trace(position, f'layer.{layer}.input', x)
+        normalized = self._norm(prefix + '.input_layernorm', x, self.eps)
+        self._trace(position, f'layer.{layer}.input_norm', normalized)
+        attended, selected = self._attention(layer, normalized, position, state, selected)
+        x = x + attended
+        self._trace(position, f'layer.{layer}.attention_residual', x)
+        normalized = self._norm(prefix + '.post_attention_layernorm', x, self.eps)
+        self._trace(position, f'layer.{layer}.post_attention_norm', normalized)
+        x = x + self._feed_forward(layer, normalized, position)
+        self._trace(position, f'layer.{layer}.output', x)
+        return x, selected
 
     def forward(self, token_id, cache):
         """Append one token at cache.position and return next-token logits."""
@@ -283,14 +371,7 @@ class GlmMoeDsaModel:
             x = self._embedding(int(token_id))
             selected = None
             for layer, state in enumerate(cache.layers):
-                prefix = f'model.layers.{layer}'
-                attended, selected = self._attention(layer, self._norm(prefix + '.input_layernorm', x, self.eps), position, state, selected)
-                x = x + attended
-                x = x + self._feed_forward(layer, self._norm(prefix + '.post_attention_layernorm', x, self.eps))
-                self._trace(position, f'layer.{layer}.output', x)
-                self._trace(position, f'layer.{layer}.selected', state.selected_indices)
-                self._trace(position, f'layer.{layer}.latent', state.latents[-1])
-                self._trace(position, f'layer.{layer}.rope_key', state.rope_keys[-1])
+                x, selected = self.forward_layer(layer, x, position, state, selected)
             logits = None
             if output_logits:
                 x = self._norm('model.norm', x, self.eps)
