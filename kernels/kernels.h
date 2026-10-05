@@ -31,12 +31,13 @@ int32_t glm_vx_rope_glm(float *out, const float *x, const float *cosine, const f
  * half is the exact 65536-entry IEEE half->f32 table; table is the 19600-byte
  * pinned ggml_tables.bin. Caller checks buffer byte counts, block alignment,
  * finite data and signed-int32 index bounds. No weight matrix allocation.
- * Batch kernels take transposed x[cols,batch], write out[batch,rows], and
+ * Batch v2 kernels pack x as transposed [cols,tile] tiles (64..1), write
+ * out[batch,rows], and
  * require batch in 0..64 plus batch*cols and batch*rows within int32 capacity.
  * Unpack exports are diagnostics only, not used by serving. */
 #define GLM_VX_PACKED_DECL(kind) \
 int32_t glm_vx_packed_##kind(float *out, const uint8_t *w, const float *x, const float *half, const uint8_t *table, int32_t rows, int32_t cols); \
-int32_t glm_vx_packed_batch_##kind(float *out, const uint8_t *w, const float *x, const float *half, const uint8_t *table, int32_t rows, int32_t cols, int32_t batch); \
+int32_t glm_vx_packed_batch_v2_##kind(float *out, const uint8_t *w, const float *x, const float *half, const uint8_t *table, int32_t rows, int32_t cols, int32_t batch); \
 int32_t glm_vx_unpack_##kind(float *out, const uint8_t *w, const float *half, const uint8_t *table, int32_t blocks);
 GLM_VX_PACKED_DECL(f16)
 GLM_VX_PACKED_DECL(q8_0)

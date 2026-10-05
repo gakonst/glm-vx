@@ -128,10 +128,21 @@ def matmul(lib, raw, kind, shape, x):
     batch = len(x)
     if batch == 0 or rows == 0:
         return np.empty((batch, rows), dtype=np.float32)
-    fn = getattr(lib, 'glm_vx_packed_batch_' + suffix, None)
+    tiled = getattr(lib, 'glm_vx_packed_batch_v2_' + suffix, None)
+    fn = tiled or getattr(lib, 'glm_vx_packed_batch_' + suffix, None)
     if fn is None or batch == 1:
         return np.stack([matvec(lib, raw, kind, shape, row) for row in x])
-    xt = np.ascontiguousarray(x.T)
+    if tiled is None:
+        xt = np.ascontiguousarray(x.T)  # previous column-major kernel ABI
+    else:
+        # Fixed-stride token tiles let LLVM vectorize every tail width. Packing
+        # touches activations only: O(batch*cols), never O(weight rows*cols).
+        xt = np.empty(x.size, dtype=np.float32)
+        token = 0
+        for tile in (64, 32, 16, 8, 4, 2, 1):
+            if batch-token >= tile:
+                xt[token*cols:(token+tile)*cols].reshape(cols, tile)[:] = x[token:token+tile].T
+                token += tile
     out = np.empty((batch, rows), dtype=np.float32)
     half, table = lookup_tables()
     fn.argtypes, fn.restype = [_F, _B, _F, _F, _B, _I, _I, _I], _I

@@ -1,0 +1,20 @@
+{
+  "fetched": "2026-10-04",
+  "sources": [
+    {
+      "name": "upstream-grammar.md",
+      "url": "https://raw.githubusercontent.com/vx-lang/Vx/1c18982669a1c2c63a4212d82481f5a1a381ba04/docs/lang/grammar.md",
+      "sha256": "f8642aaecdef18fd8ab92a1ca2e057a4e7f68cb22a320dde8ea279dfbb5ff68d"
+    },
+    {
+      "name": "upstream-tensor-library.md",
+      "url": "https://raw.githubusercontent.com/vx-lang/Vx/1c18982669a1c2c63a4212d82481f5a1a381ba04/docs/implementation_plans/tensor_library.md",
+      "sha256": "b66b38e767c4483c43b82edff518ddcd7549bdb9ed9d7d8a54de28a61a4fa7d3"
+    },
+    {
+      "name": "vxlang-home.html",
+      "url": "https://vxlang.org/",
+      "sha256": "b3dbd89ce0c268a8cd4ec2e4252bf386b3bf5052d766835cfe548de4a44ee6c6"
+    }
+  ]
+}

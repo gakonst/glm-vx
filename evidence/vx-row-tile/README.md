@@ -55,8 +55,8 @@ packed decode throughput, cold mapped GGUF IO and other CPUs were not measured.
 
 ## Capability audit and primary sources
 
-- [Vx website](https://vxlang.org/) fetched 2026-10-04 (snapshot
-  `vxlang-home.html`). Its placement/type-system examples are not evidence that
+- [Vx website](https://vxlang.org/) fetched 2026-10-04 (snapshot digest in
+  `source-snapshots.json`). Its placement/type-system examples are not evidence that
   an inference library or kernel is implemented in the installed release.
 - [Release v0.0.2](https://github.com/vx-lang/Vx/releases/tag/v0.0.2), tag
   `24493283316e4f23b43e494faee02f45b8a953ae`. The release compiler was used unchanged.
@@ -72,7 +72,7 @@ packed decode throughput, cold mapped GGUF IO and other CPUs were not measured.
   documents `<N x T>`. `types.vx` proves the installed release accepts explicit
   `<4 x f32>` addition and actually emits `vaddps` (`types.asm`), although this
   SIMD-by-value function was not invoked through ctypes (its vector ABI differs).
-- Pointer loops over f16/bf16 compile, link, and execute. `test_types.py` checks
+- Pointer loops over f16/bf16 compile, link, and execute. `verify_types.py` checks
   all 65,536 encodings: every 63,488 finite f16 and 65,280 finite bf16 conversion
   matches bit-for-bit; NaN/Inf classes also match. Assembly has `vcvtph2ps` for f16
   and integer widening/shifts for bf16. This is concrete typed conversion support;

@@ -21,7 +21,7 @@ objdump -d --disassemble=glm_vx_matvec kernels/build-o3/kernels.o > "$E/kernels-
 vxc "$E/types.vx" -O 3 --action emit-obj -o "$E/types.o" > "$E/types-build.txt" 2>&1
 cc -shared "$E/types.o" -o "$E/types.so"
 objdump -d "$E/types.o" > "$E/types.asm"
-"$PYTHON" "$E/test_types.py" > "$E/types-results.txt"
+"$PYTHON" "$E/verify_types.py" > "$E/types-results.txt"
 # In this installed compiler emit-llvm prints LLVM-dialect MLIR to stdout,
 # despite accepting -o; preserve the actual output rather than label it LLVM IR.
 vxc "$E/probe.vx" -O 3 --action emit-llvm > "$E/ir-build.txt" 2>&1
