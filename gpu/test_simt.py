@@ -81,3 +81,32 @@ def test_split_online_mla_matches_dense_selected_oracle(simt,count,splits):
         probs=np.exp(scores-scores.max(axis=1,keepdims=True));probs/=probs.sum(axis=1,keepdims=True)
         expected=probs@keys[ids]
     np.testing.assert_allclose(out,expected,rtol=2e-5,atol=3e-6)
+
+
+@pytest.mark.parametrize('heads,tokens,dim,block', [
+    (1, 1, 1, 32), (3, 5, 31, 64), (5, 7, 32, 128),
+    (3, 5, 33, 128), (4, 3, 131, 64), (64, 1, 128, 32)])
+def test_index_scores_all_heads_and_warp_tails(simt, heads, tokens, dim, block):
+    from gpu.testing.index_reference import inputs, ordered_f32, warp_order_f32, reference_f64
+    q, keys, weights = args = inputs(heads, tokens, dim)
+    scale = float(np.float32(dim**-.5))
+    # Sentinel guards catch writes by tail warps outside the output extent.
+    guarded = np.full(tokens + 2, -98765., dtype='f4')
+    out = guarded[1:-1]
+    simt.run('glm_vx_gpu_index_scores', out, *args, tokens, heads, dim, scale,
+             grid=(tokens + block//32 - 1)//(block//32) + 1, block=block)
+    np.testing.assert_array_equal(out, warp_order_f32(*args, scale))
+    np.testing.assert_allclose(out, ordered_f32(*args, scale), rtol=3e-5, atol=3e-6)
+    np.testing.assert_allclose(out, reference_f64(*args, scale), rtol=3e-5, atol=3e-6)
+    np.testing.assert_array_equal(guarded[[0, -1]], [-98765., -98765.])
+
+
+@pytest.mark.parametrize('tokens,heads,dim,block', [
+    (0, 3, 33, 32), (-1, 3, 33, 32), (1, 0, 33, 32),
+    (1, 3, 0, 32), (1, 3, -1, 32)])
+def test_index_scores_invalid_scalar_geometry_does_not_write(simt, tokens, heads, dim, block):
+    out = np.array([-7654.], 'f4')
+    source = np.ones((3, 33), 'f4')
+    simt.run('glm_vx_gpu_index_scores', out, source, source, source,
+             tokens, heads, dim, 1., block=block)
+    np.testing.assert_array_equal(out, [-7654.])

@@ -517,6 +517,50 @@ class RuntimeTests(unittest.TestCase):
         self.assertEqual(self.library.launches, [])
 
 
+    def test_index_scores_resident_abi_and_reused_output(self):
+        kernels = self.suite()
+        q, keys, weights = (self.context.tensor(shape) for shape in ((3, 33), (5, 33), (3,)))
+        out, stream = self.context.tensor((5,)), self.context.stream()
+        def inspect(args):
+            params = args[9]
+            for i, tensor in enumerate((out, q, keys, weights)):
+                self.assertEqual(C.cast(params[i], C.POINTER(C.c_uint64))[0], tensor.pointer)
+            for i, expected in enumerate((5, 3, 33), 4):
+                self.assertEqual(C.cast(params[i], C.POINTER(C.c_int32))[0], expected)
+            self.assertEqual(C.cast(params[7], C.POINTER(C.c_float))[0], -.25)
+        self.library.on_launch = inspect
+        self.library.calls.clear()
+        self.assertIs(kernels.index_scores(q, keys, weights, -.25, out=out, stream=stream), out)
+        self.assertEqual(self.library.launches, [
+            ("glm_vx_gpu_index_scores", (2, 1, 1, 128, 1, 1), stream.handle.value)])
+        for forbidden in ("cuMemcpyHtoD_v2", "cuMemcpyDtoH_v2", "cuMemAlloc_v2", "cuStreamSynchronize"):
+            self.assertNotIn(forbidden, self.library.names())
+
+    def test_index_scores_empty_and_invalid_resident_contract(self):
+        kernels = self.suite()
+        q, keys, weights = (self.context.tensor(shape) for shape in ((3, 33), (5, 33), (3,)))
+        empty_keys = self.context.tensor((0, 33))
+        self.assertEqual(kernels.index_scores(q, empty_keys, weights).shape, (0,))
+        invalid = [
+            lambda: kernels.index_scores(q, keys, weights, float("nan")),
+            lambda: kernels.index_scores(q, empty_keys, weights, 1e40),
+            lambda: kernels.index_scores(self.context.tensor((0, 33)), keys, weights),
+            lambda: kernels.index_scores(self.context.tensor((3, 0)), self.context.tensor((5, 0)), weights),
+            lambda: kernels.index_scores(q, self.context.tensor((5, 32)), weights),
+            lambda: kernels.index_scores(q, keys, self.context.tensor((3,), "int32")),
+            lambda: kernels.index_scores(q, keys, self.context.tensor((3, 1))),
+            lambda: kernels.index_scores(q, keys, weights, out=q.view((5,))),
+            lambda: kernels.index_scores(q, keys, weights, out=self.context.tensor((4,))),
+        ]
+        for action in invalid:
+            with self.assertRaises(ValueError): action()
+        with CUDAContext(_driver=self.driver) as other:
+            with self.assertRaises(ValueError):
+                kernels.index_scores(q, other.tensor((5, 33)), weights)
+        q.close()
+        with self.assertRaises(RuntimeError): kernels.index_scores(q, keys, weights)
+        self.assertEqual(self.library.launches, [])
+
     def test_fp8_optional_module_loader_and_packed_abi(self):
         kernels = self.suite()
         packed = self.context.tensor((129, 257), "uint8")

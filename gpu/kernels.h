@@ -44,6 +44,17 @@ void glm_vx_gpu_rope_glm(float *out, const float *x, const float *cosine,
 void glm_vx_gpu_matvec(float *out, const float *weight, const float *x,
     int32_t rows, int32_t cols);
 
+/* Fused DSA: out:[tokens], q:[heads,dim], keys:[tokens,dim], weights:[heads].
+ * out[t] = sum_h weights[h]*relu(dot(q[h],keys[t])*scale).
+ * weights are ALREADY scaled by heads**-0.5; signed weights/scales are valid.
+ * Caller provides causal eligible keys; no top-k or causal mask in this entry.
+ * heads/dim>0, tokens>=0; tokens=0 is a no-op. Finite inputs/intermediates.
+ * block.x multiple32 in [32,1024], grid.x>=ceil(tokens/(block.x/32));
+ * suggested block.x=128. All lanes of a token warp participate in reductions.
+ * No scratch or shared memory; no output/input overlap. dim+63 must fit int32. */
+void glm_vx_gpu_index_scores(float *out, const float *q, const float *keys,
+    const float *weights, int32_t tokens, int32_t heads, int32_t dim, float scale);
+
 /* Absorbed compressed MLA, one decode query per head:
  * q_latent:[heads,rank], q_rope:[heads,rope_dim],
  * cache_latent:[tokens,rank], cache_rope:[tokens,rope_dim].

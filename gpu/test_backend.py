@@ -156,6 +156,12 @@ def test_tiny_glm_end_to_end_layout_and_cache(backend, monkeypatch):
     def unexpected_softmax(*args, **kwargs):
         pytest.fail('fused model path must not invoke per-head backend.softmax')
     monkeypatch.setattr(backend, 'softmax', unexpected_softmax)
+    index_calls = []
+    original_index_scores = backend.index_scores
+    def traced_index_scores(q, keys, head_weights, scale):
+        index_calls.append((q.shape, keys.shape, head_weights.copy(), scale))
+        return original_index_scores(q, keys, head_weights, scale)
+    monkeypatch.setattr(backend, 'index_scores', traced_index_scores)
     actual_model = Model(config, weights, backend)
     oracle_model = Model(config, weights, NumpyBackend())
     actual_cache, oracle_cache = actual_model.new_cache(), oracle_model.new_cache()
@@ -176,6 +182,9 @@ def test_tiny_glm_end_to_end_layout_and_cache(backend, monkeypatch):
                 assert got.index_keys == []
         assert backend.cache_bytes <= backend.cache_limit
         assert not backend.pinned
+    assert [(q, keys) for q, keys, weights, scale in index_calls] == [
+        ((1, 8), (1, 8)), ((1, 8), (2, 8)), ((1, 8), (3, 8))]
+    assert all(scale == 8**-.5 for q, keys, weights, scale in index_calls)
     assert len(calls) == 6  # two layers for each of three tokens
     assert [shape[2][0] for shape in calls] == [1, 1, 2, 2, 2, 2]
     assert all(q == (1, 4) and qr == (1, 4) for q, qr, latent, rotary in calls)

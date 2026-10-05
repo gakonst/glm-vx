@@ -64,6 +64,9 @@ not prove global optimality. No plan is emitted when CUDA is unavailable.
 - [Tiled GEMM](GEMM.md): explicit TF32 tensor-core MMA with shared staging and
   arbitrary residual shapes, alongside a separate full F32 reference mode.
 
+- [Fused DSA index scores](INDEX-SCORES.md): all signed head contributions in
+  one launch, with one upload per input and one final score readback in the
+  compatibility backend; a separate resident API supports output reuse.
 - Coalesced warp-per-row float32 matvec; tails need no padded weight allocation.
 - Direct **FP8 E4M3FN + 128×128 block scales** matvec; no expanded float32 weight
   matrix or per-element scale tensor in GPU memory.

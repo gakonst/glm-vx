@@ -163,6 +163,43 @@ fn glm_vx_gpu_matvec(out: *mut f32, weight: *const f32, x: *const f32, rows: i32
   }
 }
 
+// DSA index scores, one warp per token and all heads in one launch.
+// Caller supplies causal keys and head weights already scaled by heads**-0.5.
+// No head-by-token score matrix; signed weights apply AFTER the ReLU.
+fn glm_vx_gpu_index_scores(out: *mut f32, q: *const f32, keys: *const f32, weights: *const f32, tokens: i32, heads: i32, dim: i32, scale: f32) -> void {
+  if tokens <= 0 { return; }
+  if heads <= 0 { return; }
+  if dim <= 0 { return; }
+  unsafe {
+    let tid: i32 = vx_gpu_thread_idx_x();
+    let block: i32 = vx_gpu_block_dim_x();
+    if block < 32 { return; }
+    if block > 1024 { return; }
+    if block % 32 != 0 { return; }
+    let lane: i32 = tid % 32;
+    let token: i32 = vx_gpu_block_idx_x() * (block / 32) + tid / 32;
+    // Whole warps exit together, including tail warps, before full-mask shuffles.
+    if token >= tokens { return; }
+    let mut score: f32 = 0.0;
+    for head in 0..heads {
+      let mut dot: f32 = 0.0;
+      let mut d: i32 = lane;
+      for iteration in 0..((dim + 31) / 32) {
+        if d < dim { dot = dot + q[head * dim + d] * keys[token * dim + d]; }
+        d = d + 32;
+      }
+      let scaled: f32 = vxk_warp_sum(dot) * scale;
+      if lane == 0 {
+        let mut activated: f32 = scaled;
+        if activated < 0.0 { activated = 0.0; }
+        score = score + weights[head] * activated;
+      }
+    }
+    if lane == 0 { out[token] = score; }
+    return;
+  }
+}
+
 // Absorbed MLA: dot(q_latent,cache_latent) + dot(q_rope,cache_rope).
 // Cache latent is also the value. One CTA per (head, split), one value/thread.
 // Online softmax keeps O(rank) state without materializing scores/probabilities.

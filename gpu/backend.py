@@ -53,7 +53,7 @@ class GPUBackend:
                 self.tuning=plan
             self.module=self.ctx.load_ptx(ptx_path)
             self.stream=self.ctx.stream()
-            names=('matvec','rmsnorm','softmax','swiglu','rope_glm','router','mla_partial','mla_merge')
+            names=('matvec','index_scores','rmsnorm','softmax','swiglu','rope_glm','router','mla_partial','mla_merge')
             self.functions={name:self.module.kernel('glm_vx_gpu_'+name) for name in names}
         except BaseException:self.ctx.close();raise
 
@@ -107,6 +107,36 @@ class GPUBackend:
             wd,xd=self._upload(w,temps,True),self._upload(x,temps);out=self._out((rows,),temps)
             block=self.tuning['selected_block'] if self.tuning and self.tuning['shape']==[rows,cols] else 128
             self._launch('matvec',(rows+block//32-1)//(block//32),block,[out,wd,xd,I(rows),I(cols)])
+            return self._read(out)
+        finally:self._release(temps)
+
+    def index_scores(self,q,keys,weights,scale=None):
+        """Score causal keys once: sum_h weights[h]*relu(dot(q[h],keys[t])*scale).
+
+        weights already includes heads**-0.5; scale defaults to dim**-0.5.
+        Signed weights/scales are valid. No top-k or causal masking occurs here.
+        Three uploads, one launch, one readback; no cached mutable KV or host math.
+        Empty keys return an empty vector without a device operation.
+        """
+        if self._closed:raise RuntimeError('GPU backend is closed')
+        q,keys,weights=[np.asarray(x,dtype=np.float32) for x in (q,keys,weights)]
+        if q.ndim!=2 or keys.ndim!=2 or weights.ndim!=1:
+            raise ValueError('index_scores expects query[heads,dim], keys[tokens,dim], weights[heads]')
+        heads,dim=q.shape;tokens=keys.shape[0]
+        if heads<1 or dim<1 or keys.shape[1]!=dim or weights.size!=heads:
+            raise ValueError('index_scores dimensions do not match')
+        if max(q.size,keys.size,weights.size,dim,tokens)>_MAX-1024 or ((tokens+3)//4)*128>_MAX:
+            raise ValueError('index_scores dimensions must be int32-indexable')
+        scale=F(float(dim**-0.5 if scale is None else scale)).value
+        if not np.isfinite(scale):raise ValueError('index_scores scale must remain finite in float32')
+        if any(not np.isfinite(x).all() for x in (q,keys,weights)):
+            raise ValueError('index_scores inputs must be finite float32')
+        if tokens==0:return np.empty((0,),dtype=np.float32)
+        temps=[]
+        try:
+            qd,kd,wd=[self._upload(x,temps) for x in (q,keys,weights)]
+            out=self._out((tokens,),temps)
+            self._launch('index_scores',(tokens+3)//4,128,[out,qd,kd,wd,I(tokens),I(heads),I(dim),F(scale)])
             return self._read(out)
         finally:self._release(temps)
 

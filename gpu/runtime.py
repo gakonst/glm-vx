@@ -815,6 +815,33 @@ class GLMKernels:
         self._launch("matvec", (rows + 3) // 4, 128, [out, weight, x, _I32(rows), _I32(cols)], stream)
         return out
 
+    def index_scores(self, q, keys, weights, scale=None, *, out=None, stream=None):
+        """Fused DSA: q[heads,dim], causal keys[tokens,dim], weights[heads].
+
+        weights already includes heads**-0.5; scale defaults to dim**-0.5.
+        Signed weights/scales are allowed. Inputs and intermediates must be
+        finite; device values are never read for validation. No causal masking
+        or top-k is applied. Empty keys return an empty output without a launch.
+        Output cannot overlap inputs. Caller may reuse out across launches.
+        """
+        self._tensor(q, "q", ndim=2)
+        heads, dim = q.shape
+        _i32(heads, "heads", minimum=1)
+        _integer(dim, "dim", minimum=1, maximum=_INT_MAX - 63)
+        self._tensor(keys, "keys", ndim=2)
+        tokens = keys.shape[0]
+        self._tensor(keys, "keys", shape=(tokens, dim))
+        self._tensor(weights, "weights", shape=(heads,))
+        scale = _f32(dim**-0.5 if scale is None else scale, "scale")
+        grid = (tokens + 3) // 4
+        _integer(grid * 128, "launch stride", maximum=_INT_MAX)
+        out = self._out(out, (tokens,))
+        _separate(out, [q, keys, weights])
+        if tokens:
+            self._launch("index_scores", grid, 128,
+                         [out, q, keys, weights, _I32(tokens), _I32(heads), _I32(dim), scale], stream)
+        return out
+
     def mla_partial(self, q_latent, q_rope, cache_latent, cache_rope, selected, *,
                     splits=4, scale=1.0, count=None, numerator=None, stats=None, stream=None):
         self._tensor(q_latent, "q_latent", ndim=2)

@@ -82,7 +82,7 @@ class ContractTests(unittest.TestCase):
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             ptx = output.read_text()
             for name in ('rmsnorm', 'softmax', 'router', 'residual_rmsnorm',
-                         'swiglu', 'rope_glm', 'matvec', 'mla_partial', 'mla_merge',
+                         'swiglu', 'rope_glm', 'matvec', 'index_scores', 'mla_partial', 'mla_merge',
                          'rmsnorm_rows', 'softmax_rows'):
                 self.assertIn('.visible .entry glm_vx_gpu_' + name + '(', ptx)
             for token in ('shfl.sync.idx', 'shfl.sync.down', 'bar.sync', '.shared'):
