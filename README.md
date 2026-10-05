@@ -20,6 +20,13 @@ trained official comparison matches all 306 discrete checks but fails 112 of
 308 frozen numerical checks. **Automatic release promotion remains blocked.**
 The included tiny model has deterministic random weights and is for testing mechanics only.
 
+The [October 4–5 engine audit](docs/ENGINE-AUDIT-20261004.md) adds corrected DSA
+configuration defaults and cache identities, SIMD across independent output rows,
+fused packed GGUF batches with fixed-stride activation tiles, and a fused GPU
+index-score kernel. The new full trained two-token batched run matches the saved
+scalar Vx trace bit-for-bit across 1,898 checks, including both complete vocabulary
+outputs. This proves preservation of that baseline, not independent official parity.
+
 [Serving research and prioritized roadmap](docs/SERVING-RESEARCH.md) reviews GLM-specific
 provider work, papers, X discussions and their applicability to this engine.
 

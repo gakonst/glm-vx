@@ -79,7 +79,9 @@ No additional substantive mismatch was established in these bounded checks:
   2047/2048/2049/4096 tokens, batched/sequential cache equivalence, prefix snapshot
   ownership, interleaved requests and validated handoff. The inspected prefix
   cache namespaces model/backend/weights/config/revision and unpickles owning
-  state on every hit. No new serving-cache isolation bug was established.
+  state on every hit. This numerical audit did not inspect mutation of resolved execution fields;
+  the parallel [serving audit](SERVING-AUDIT-20261004B.md) subsequently reproduced
+  and fixed namespace omissions for those fields and packed mode.
 
 ## Reproduce
 

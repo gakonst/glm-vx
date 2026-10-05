@@ -84,3 +84,10 @@ only: indexer projections, key normalization/RoPE/cache gathering, top-k and mod
 orchestration still have existing host boundaries. It is not full graph capture
 or a replacement for SGLang's absorb-BMM/attention work. No hardware was rented,
 no benchmarks were run, and root CPU/model files were not changed.
+
+The integrated repository also fingerprints all CPU-SIMT numerical sources, the
+C++ lane harness, its build script and the linked binary. Re-run
+`gpu/testing/build_simt.sh` after source changes; a stale or missing build manifest
+fails before loading the library. This prevents a previous compiled kernel from
+masquerading as current-source validation. See the [integrated audit](../docs/ENGINE-AUDIT-20261004.md)
+for the full suite and trained CPU regression results.

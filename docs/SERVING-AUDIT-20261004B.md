@@ -90,7 +90,7 @@ custom op, and adds breakable graph support. This avoids paying graph dispatch
 for a single BMM. Its reported B200 1K/1K improvement is modest and workload
 specific; increasing capture coverage from 2K to 8K also cost 2.71 GB/GPU.
 
-**Local gap:** `gpu/backend.py:90-100` downloads results and synchronizes/frees
+**Gap at audit baseline:** `gpu/backend.py:90-100` downloads results and synchronizes/frees
 scratch around primitive calls. `glm_vx/model.py:136-177` launches indexer work
 through per-head primitives when the backend lacks `index_scores`; GPUBackend
 has no fused indexer hook. `gpu/runtime.py:694` exposes resident asynchronous
@@ -101,6 +101,13 @@ must define logical rows, physical padded rows and valid selections for all
 stages. Test ragged short rows, mixed newly imported/continuing requests, and
 future speculative verification modes. This is a design recommendation, not a
 newly diagnosed CPU scheduler failure or an instruction to copy GPU tolerances.
+
+**Implemented follow-up:** [fused Vx GPU index scoring](../gpu/INDEX-SCORES.md)
+now supplies the missing backend hook and a resident runtime entry. The adapter
+uses three uploads, one launch and one readback; the resident entry needs none
+of those transfers. Compiled CPU SIMT and SM80/SM90 assembly are checked. The
+broader projection/normalization/selection boundaries and actual GPU validation
+remain open; this is not whole-model graph capture.
 
 ### P1 observability: separate readiness delay from compute
 

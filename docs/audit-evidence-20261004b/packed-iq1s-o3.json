@@ -1,0 +1,14 @@
+{
+  "scope": "actual x86 object disassembly; SIMD per-token lanes, no GPU evidence",
+  "symbol": "glm_vx_packed_batch_v2_iq1_s",
+  "counts": {
+    "vmulps": 20,
+    "vaddps": 20,
+    "vfmadd": 0,
+    "zmm": 90,
+    "ymm": 106
+  },
+  "library_sha256": "3147b8b9bf470fcdae8a917dd0b454b82a4097513c9a8cccb443e6e0cd072ba6",
+  "source_sha256": "73afc23fad54251265b17cf4b649daa130c793b821403b58c794e1624bead301",
+  "assembly_sha256": "88a383d8e7492dcc1502cbf36e7e5f7a73eda5d6b90e22e06354f9be72197f17"
+}

@@ -8,7 +8,8 @@ LIB=Path(__file__).parent/'build/libsimt.so'
 
 class Simt:
     def __init__(self):
-        if not LIB.exists():raise RuntimeError('build gpu/testing/build_simt.sh before GPU arithmetic tests')
+        from gpu.testing.fingerprint import validate
+        validate(Path(__file__).resolve().parents[1])
         self.lib=C.CDLL(str(LIB))
         self.entry=C.CFUNCTYPE(None,C.c_void_p)
         self.lib.simt_launch.argtypes=[self.entry,C.c_void_p,C.c_int32,C.c_int32]

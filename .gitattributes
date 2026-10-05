@@ -18,3 +18,5 @@ docs/audit-evidence-20261004b/*.txt linguist-generated
 evidence/vx-row-tile/*.json linguist-generated
 evidence/vx-row-tile/*.txt linguist-generated
 evidence/vx-row-tile/*.asm linguist-generated
+docs/audit-evidence-20261004b/*.asm linguist-generated
+docs/audit-evidence-20261004b/*.npz binary
